@@ -25,7 +25,7 @@ struct Mutex* mpmtCreateMutex()
 		&handle,
 		NULL);
 
-	if(result != 0)
+	if (result != 0)
 		return NULL;
 #elif _WIN32
 	handle = CreateMutex(
@@ -50,7 +50,7 @@ struct Mutex* mpmtCreateMutex()
 void mpmtDestroyMutex(
 	struct Mutex* mutex)
 {
-	if(mutex)
+	if (mutex)
 	{
 #if __linux__ || __APPLE__
 		pthread_mutex_destroy(
@@ -67,7 +67,7 @@ void mpmtDestroyMutex(
 bool mpmtLockMutex(
 	struct Mutex* mutex)
 {
-	if(!mutex)
+	if (!mutex)
 		return false;
 
 #if __linux__ || __APPLE__
@@ -82,8 +82,9 @@ bool mpmtLockMutex(
 bool mpmtUnlockMutex(
 	struct Mutex* mutex)
 {
-	if(!mutex)
+	if (!mutex)
 		return false;
+
 #if __linux__ || __APPLE__
 	return pthread_mutex_unlock(
 		&mutex->handle) == 0;
@@ -95,8 +96,9 @@ bool mpmtUnlockMutex(
 bool mpmtTryLockMutex(
 	struct Mutex* mutex)
 {
-	if(!mutex)
+	if (!mutex)
 		return false;
+
 #if __linux__ || __APPLE__
 	return pthread_mutex_trylock(
 		&mutex->handle) == 0;
@@ -106,4 +108,3 @@ bool mpmtTryLockMutex(
 		0) == WAIT_OBJECT_0;
 #endif
 }
-

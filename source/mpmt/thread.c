@@ -52,7 +52,7 @@ struct Thread* mpmtCreateThread(
 	void (*routine)(void*),
 	void* argument)
 {
-	if(!routine)
+	if (!routine)
 		return NULL;
 
 	struct Thread* thread =
@@ -133,7 +133,7 @@ void mpmtDestroyThread(
 bool mpmtJoinThread(
 	struct Thread* thread)
 {
-	if(!thread || thread->detached)
+	if (!thread || thread->detached)
 		return false;
 
 #if __linux__ || __APPLE__
@@ -159,7 +159,7 @@ bool mpmtJoinThread(
 bool mpmtDetachThread(
 	struct Thread* thread)
 {
-	if(!thread || thread->detached)
+	if (!thread || thread->detached)
 		return false;
 
 #if __linux__ || __APPLE__

@@ -4,6 +4,7 @@
 struct Mutex;
 
 struct Mutex* mpmtCreateMutex();
+
 void mpmtDestroyMutex(
 	struct Mutex* mutex);
 
