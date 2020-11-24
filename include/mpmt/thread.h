@@ -13,5 +13,4 @@ bool mpmtJoinThread(
 	struct Thread* thread);
 bool mpmtDetachThread(
 	struct Thread* thread);
-void mpmtExitThread(
-	void* result);
+void mpmtExitThread();
