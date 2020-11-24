@@ -40,7 +40,7 @@ DWORD mpmtThreadRoutine(LPVOID argument)
 	struct ThreadData* data =
 		(struct ThreadData*)argument;
 	
-	data_routine(
+	data->routine(
 		data->argument);
 
 	free(data);
@@ -91,15 +91,13 @@ struct Thread* mpmtCreateThread(
 		return NULL;
 	}
 #elif _WIN32
-	LPDWORD threadID;
-
 	handle = CreateThread(
 		NULL, 
 		0,
 		mpmtThreadRoutine,
 		data,
 		0,
-		&threadID);
+		NULL);
 
 	if (handle == NULL)
 	{
