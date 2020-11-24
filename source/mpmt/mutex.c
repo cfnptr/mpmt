@@ -16,7 +16,7 @@ struct Mutex
 	MUTEX handle;
 };
 
-struct Mutex* mpmtCreateMutex()
+struct Mutex* createMutex()
 {
 	MUTEX handle;
 
@@ -47,7 +47,7 @@ struct Mutex* mpmtCreateMutex()
 	return mutex;
 }
 
-void mpmtDestroyMutex(
+void destroyMutex(
 	struct Mutex* mutex)
 {
 	if (mutex)
@@ -64,7 +64,7 @@ void mpmtDestroyMutex(
 	free(mutex);
 }
 
-bool mpmtLockMutex(
+bool lockMutex(
 	struct Mutex* mutex)
 {
 	if (!mutex)
@@ -79,7 +79,7 @@ bool mpmtLockMutex(
 		INFINITE) == WAIT_OBJECT_0;
 #endif
 }
-bool mpmtUnlockMutex(
+bool unlockMutex(
 	struct Mutex* mutex)
 {
 	if (!mutex)
@@ -93,7 +93,7 @@ bool mpmtUnlockMutex(
 		mutex->handle) == TRUE;
 #endif
 }
-bool mpmtTryLockMutex(
+bool tryLockMutex(
 	struct Mutex* mutex)
 {
 	if (!mutex)

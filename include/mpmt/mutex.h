@@ -3,14 +3,14 @@
 
 struct Mutex;
 
-struct Mutex* mpmtCreateMutex();
+struct Mutex* createMutex();
 
-void mpmtDestroyMutex(
+void destroyMutex(
 	struct Mutex* mutex);
 
-bool mpmtLockMutex(
+bool lockMutex(
 	struct Mutex* mutex);
-bool mpmtUnlockMutex(
+bool unlockMutex(
 	struct Mutex* mutex);
-bool mpmtTryLockMutex(
+bool tryLockMutex(
 	struct Mutex* mutex);

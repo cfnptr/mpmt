@@ -3,14 +3,14 @@
 
 struct Thread;
 
-struct Thread* mpmtCreateThread(
+struct Thread* createThread(
 	void (*routine)(void*),
 	void* argument);
-void mpmtDestroyThread(
+void destroyThread(
 	struct Thread* thread);
 
-bool mpmtJoinThread(
+bool joinThread(
 	struct Thread* thread);
-bool mpmtDetachThread(
+bool detachThread(
 	struct Thread* thread);
-void mpmtExitThread();
+void exitThread();

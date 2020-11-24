@@ -23,7 +23,8 @@ struct ThreadData
 };
 
 #if __linux__ || __APPLE__
-void* mpmtThreadRoutine(void* argument)
+void* mpmtThreadRoutine(
+	void* argument)
 {
 	struct ThreadData* data =
 		(struct ThreadData*)argument;
@@ -35,7 +36,8 @@ void* mpmtThreadRoutine(void* argument)
 	return NULL;
 }
 #elif _WIN32
-DWORD mpmtThreadRoutine(LPVOID argument)
+DWORD mpmtThreadRoutine(
+	LPVOID argument)
 {
 	struct ThreadData* data =
 		(struct ThreadData*)argument;
@@ -48,7 +50,7 @@ DWORD mpmtThreadRoutine(LPVOID argument)
 }
 #endif
 
-struct Thread* mpmtCreateThread(
+struct Thread* createThread(
 	void (*routine)(void*),
 	void* argument)
 {
@@ -110,7 +112,7 @@ struct Thread* mpmtCreateThread(
 	thread->handle = handle;
 	return thread;
 }
-void mpmtDestroyThread(
+void destroyThread(
 	struct Thread* thread)
 {
 	if (thread)
@@ -130,7 +132,7 @@ void mpmtDestroyThread(
 	free(thread);
 }
 
-bool mpmtJoinThread(
+bool joinThread(
 	struct Thread* thread)
 {
 	if (!thread || thread->detached)
@@ -156,7 +158,7 @@ bool mpmtJoinThread(
 	return true;
 #endif
 }
-bool mpmtDetachThread(
+bool detachThread(
 	struct Thread* thread)
 {
 	if (!thread || thread->detached)
@@ -173,7 +175,7 @@ bool mpmtDetachThread(
 	thread->detached = true;
 	return true;
 }
-void mpmtExitThread()
+void exitThread()
 {
 #if __linux__ || __APPLE__
 	pthread_exit(NULL);
