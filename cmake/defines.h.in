@@ -1,0 +1,7 @@
+#pragma once
+
+#define __MPMT__
+
+#define MPMT_VERSION_MAJOR @mpmt_VERSION_MAJOR@
+#define MPMT_VERSION_MINOR @mpmt_VERSION_MINOR@
+#define MPMT_VERSION_PATCH @mpmt_VERSION_PATCH@
