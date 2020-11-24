@@ -5,88 +5,181 @@
 #include <pthread.h>
 #define THREAD pthread_t
 #elif _WIN32
-// TODO:
+#include <windows.h>
+#define THREAD HANDLE
 #else
 #error Unknown operating system
 #endif
 
 struct Thread
 {
+	bool detached;
 	THREAD handle;
 };
+struct ThreadData
+{
+	void (*routine)(void*);
+	void* argument;
+};
+
+#if __linux__ || __APPLE__
+void* mpmtThreadRoutine(void* argument)
+{
+	struct ThreadData* data =
+		(struct ThreadData*)argument;
+
+	data->routine(
+		data->argument);
+
+	free(data);
+	return NULL;
+}
+#elif _WIN32
+DWORD mpmtThreadRoutine(LPVOID argument)
+{
+	struct ThreadData* data =
+		(struct ThreadData*)argument;
+	
+	data_routine(
+		data->argument);
+
+	free(data);
+	return 0;
+}
+#endif
 
 struct Thread* mpmtCreateThread(
-	void* (*routine)(void*),
+	void (*routine)(void*),
 	void* argument)
 {
 	if(!routine)
 		return NULL;
 
+	struct Thread* thread =
+		malloc(sizeof(struct Thread));
+
+	if (!thread)
+		return NULL;
+
+	thread->detached = false;
+
+	struct ThreadData* data =
+		malloc(sizeof(struct ThreadData));
+
+	if (!data)
+	{
+		free(thread);
+		return NULL;
+	}
+
+	data->routine = routine;
+	data->argument = argument;
+
 	THREAD handle;
 
+#if __linux__ || __APPLE__
 	int result = pthread_create(
 		&handle,
 		NULL,
-		routine,
-		argument);
+		mpmtThreadRoutine,
+		data);
 
-	if(result != 0)
+	if (result != 0)
+	{
+		free(data);
+		free(thread);
 		return NULL;
+	}
+#elif _WIN32
+	LPDWORD threadID;
 
-	struct Thread* thread =
-		malloc(sizeof(struct Thread));
+	handle = CreateThread(
+		NULL, 
+		0,
+		mpmtThreadRoutine,
+		data,
+		0,
+		&threadID);
+
+	if (handle == NULL)
+	{
+		free(data);
+		free(thread);
+		return NULL;
+	}
+#endif
+
 	thread->handle = handle;
 	return thread;
 }
 void mpmtDestroyThread(
 	struct Thread* thread)
 {
+	if (thread)
+	{
+		if (!thread->detached) 
+		{
+#if __linux__ || __APPLE__
+			pthread_detach(
+				thread->handle);
+#elif _WIN32
+			CloseHandle(
+				thread->handle);
+#endif
+		}
+	}
+
 	free(thread);
 }
 
 bool mpmtJoinThread(
-	struct Thread* thread,
-	void** _result)
+	struct Thread* thread)
 {
-	if(!thread)
+	if(!thread || thread->detached)
 		return false;
 
-	if(_result)
-	{
-		void* threadResult;
+#if __linux__ || __APPLE__
+	pthread_join(
+		thread->handle,
+		NULL);
 
-		int result = pthread_join(
-			thread->handle,
-			&threadResult);
-
-		if(result != 0)
-			return false;
-
-		*_result = threadResult;
-	}
-	else
-	{
-		int result = pthread_join(
-			thread->handle,
-			NULL);
-
-		if(result != 0)
-			return false;
-	}
-
+	thread->detached = true;
 	return true;
+#elif _WIN32
+	THREAD handle = thread->handle;
+
+	WaitForSingleObject(
+		handle,
+		INFINITE);
+	CloseHandle(
+		handle);
+
+	thread->detached = true;
+	return true;
+#endif
 }
 bool mpmtDetachThread(
 	struct Thread* thread)
 {
-	if(!thread)
+	if(!thread || thread->detached)
 		return false;
 
-	return pthread_detach(
+#if __linux__ || __APPLE__
+	pthread_detach(
 		thread->handle);
+#elif _WIN32
+	CloseHandle(
+		thread->handle);
+#endif
+
+	thread->detached = true;
+	return true;
 }
-void mpmtExitThread(
-	void* result)
+void mpmtExitThread()
 {
-	pthread_exit(result);
+#if __linux__ || __APPLE__
+	pthread_exit(NULL);
+#elif _WIN32
+	ExitThread(0);
+#endif
 }
