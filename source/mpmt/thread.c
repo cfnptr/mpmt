@@ -55,14 +55,10 @@ struct Thread* createThread(
 
 	struct Thread* thread =
 		malloc(sizeof(struct Thread));
-
-	if (!thread)
-		abort();
-
 	struct ThreadData* data =
 		malloc(sizeof(struct ThreadData));
 
-	if (!data)
+	if (!thread || !data)
 		abort();
 
 	data->function = function;
@@ -111,7 +107,7 @@ void joinThread(struct Thread* thread)
 		thread->handle,
 		NULL);
 
-	if(result != 0)
+	if (result != 0)
 		abort();
 #elif _WIN32
 	THREAD handle = thread->handle;
@@ -138,12 +134,12 @@ void detachThread(struct Thread* thread)
 #if __linux__ || __APPLE__
 	int result = pthread_detach(thread->handle);
 
-	if(result != 0)
+	if (result != 0)
 		abort();
 #elif _WIN32
 	BOOL result = CloseHandle(thread->handle);
 
-	if(result != TRUE)
+	if (result != TRUE)
 		abort();
 #endif
 }

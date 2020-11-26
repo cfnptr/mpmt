@@ -54,12 +54,12 @@ void destroyMutex(struct Mutex* mutex)
 #if __linux__ || __APPLE__
 		int result = pthread_mutex_destroy(&mutex->handle);
 
-		if(result != 0)
+		if (result != 0)
 			abort();
 #elif _WIN32
 		BOOL result = CloseHandle(mutex->handle);
 
-		if(result != TRUE)
+		if (result != TRUE)
 			abort();
 #endif
 	}
@@ -75,14 +75,14 @@ void lockMutex(struct Mutex* mutex)
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_lock(&mutex->handle);
 
-	if(result != 0)
+	if (result != 0)
 		abort();
 #elif _WIN32
 	DWORD result = WaitForSingleObject(
 		mutex->handle,
 		INFINITE);
 
-	if(result != WAIT_OBJECT_0)
+	if (result != WAIT_OBJECT_0)
 		abort();
 #endif
 }
@@ -95,12 +95,12 @@ void unlockMutex(struct Mutex* mutex)
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_unlock(&mutex->handle);
 
-	if(result != 0)
+	if (result != 0)
 		abort();
 #elif _WIN32
 	BOOL result = ReleaseMutex(mutex->handle);
 
-	if(result != TRUE)
+	if (result != TRUE)
 		abort();
 #endif
 }
