@@ -1,4 +1,5 @@
 #pragma once
+#include <stdlib.h>
 #include <stdbool.h>
 
 struct Thread;
@@ -13,4 +14,5 @@ bool joinThread(
 	struct Thread* thread);
 bool detachThread(
 	struct Thread* thread);
-void exitThread();
+void sleepThread(
+	size_t milliseconds);

@@ -175,11 +175,21 @@ bool detachThread(
 	thread->detached = true;
 	return true;
 }
-void exitThread()
+void sleepThread(
+	size_t milliseconds)
 {
 #if __linux__ || __APPLE__
-	pthread_exit(NULL);
+	struct timespec delay;
+
+	delay.tv_sec =
+		(long)milliseconds / 1000;
+	delay.tv_nsec =
+		(long)(milliseconds % 1000) * 1000000;
+
+	nanosleep(
+		&delay,
+		NULL);
 #elif _WIN32
-	ExitThread(0);
+	Sleep(milliseconds);
 #endif
 }
