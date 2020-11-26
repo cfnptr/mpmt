@@ -18,6 +18,12 @@ struct Mutex
 
 struct Mutex* createMutex()
 {
+	struct Mutex* mutex =
+		malloc(sizeof(struct Mutex));
+
+	if (!mutex)
+		abort();
+
 	MUTEX handle;
 
 #if __linux__ || __APPLE__
@@ -36,12 +42,6 @@ struct Mutex* createMutex()
 	if (handle == NULL)
 		abort();
 #endif
-
-	struct Mutex* mutex =
-		malloc(sizeof(struct Mutex));
-
-	if (!mutex)
-		abort();
 
 	mutex->handle = handle;
 	return mutex;
