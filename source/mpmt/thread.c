@@ -13,37 +13,33 @@
 
 struct Thread
 {
-	bool detached;
 	THREAD handle;
 };
+
 struct ThreadData
 {
-	void (*routine)(void*);
+	void (*function)(void*);
 	void* argument;
 };
 
 #if __linux__ || __APPLE__
-void* mpmtThreadRoutine(
-	void* argument)
+void* mpmtThreadRoutine(void* argument)
 {
 	struct ThreadData* data =
 		(struct ThreadData*)argument;
 
-	data->routine(
-		data->argument);
+	data->function(data->argument);
 
 	free(data);
 	return NULL;
 }
 #elif _WIN32
-DWORD mpmtThreadRoutine(
-	LPVOID argument)
+DWORD mpmtThreadRoutine(LPVOID argument)
 {
 	struct ThreadData* data =
 		(struct ThreadData*)argument;
 	
-	data->routine(
-		data->argument);
+	data->function(data->argument);
 
 	free(data);
 	return 0;
@@ -51,19 +47,17 @@ DWORD mpmtThreadRoutine(
 #endif
 
 struct Thread* createThread(
-	void (*routine)(void*),
+	void (*function)(void*),
 	void* argument)
 {
-	if (!routine)
-		return NULL;
+	if (!function)
+		abort();
 
 	struct Thread* thread =
 		malloc(sizeof(struct Thread));
 
 	if (!thread)
 		return NULL;
-
-	thread->detached = false;
 
 	struct ThreadData* data =
 		malloc(sizeof(struct ThreadData));
@@ -74,7 +68,7 @@ struct Thread* createThread(
 		return NULL;
 	}
 
-	data->routine = routine;
+	data->function = function;
 	data->argument = argument;
 
 	THREAD handle;
@@ -112,71 +106,60 @@ struct Thread* createThread(
 	thread->handle = handle;
 	return thread;
 }
-void destroyThread(
-	struct Thread* thread)
-{
-	if (thread)
-	{
-		if (!thread->detached) 
-		{
-#if __linux__ || __APPLE__
-			pthread_detach(
-				thread->handle);
-#elif _WIN32
-			CloseHandle(
-				thread->handle);
-#endif
-		}
-	}
 
+void destroyThread(struct Thread* thread)
+{
 	free(thread);
 }
 
-bool joinThread(
-	struct Thread* thread)
+void joinThread(struct Thread* thread)
 {
-	if (!thread || thread->detached)
-		return false;
+	if (!thread)
+		abort();
 
 #if __linux__ || __APPLE__
-	pthread_join(
+	int result = pthread_join(
 		thread->handle,
 		NULL);
 
-	thread->detached = true;
-	return true;
+	if(result != 0)
+		abort();
 #elif _WIN32
 	THREAD handle = thread->handle;
 
-	WaitForSingleObject(
+	DWORD waitResult = WaitForSingleObject(
 		handle,
 		INFINITE);
-	CloseHandle(
-		handle);
 
-	thread->detached = true;
-	return true;
+	if(waitResult != WAIT_OBJECT_0)
+		abort();
+
+	BOOL closeResult = CloseHandle(handle);
+
+	if(closeResult != TRUE)
+		abort();
 #endif
 }
-bool detachThread(
-	struct Thread* thread)
+
+void detachThread(struct Thread* thread)
 {
-	if (!thread || thread->detached)
-		return false;
+	if (!thread)
+		abort();
 
 #if __linux__ || __APPLE__
-	pthread_detach(
-		thread->handle);
-#elif _WIN32
-	CloseHandle(
-		thread->handle);
-#endif
+	int result = pthread_detach(thread->handle);
 
-	thread->detached = true;
-	return true;
+	if(result != 0)
+		abort();
+#elif _WIN32
+	BOOL result = CloseHandle(thread->handle);
+
+	if(result != TRUE)
+		abort();
+#endif
 }
-void sleepThread(
-	size_t milliseconds)
+
+void sleepThread(size_t milliseconds)
 {
 #if __linux__ || __APPLE__
 	struct timespec delay;
@@ -186,9 +169,12 @@ void sleepThread(
 	delay.tv_nsec =
 		(long)(milliseconds % 1000) * 1000000;
 
-	nanosleep(
+	int result = nanosleep(
 		&delay,
 		NULL);
+
+	if(result != 0)
+		abort();
 #elif _WIN32
 	Sleep(milliseconds);
 #endif

@@ -47,57 +47,68 @@ struct Mutex* createMutex()
 	return mutex;
 }
 
-void destroyMutex(
-	struct Mutex* mutex)
+void destroyMutex(struct Mutex* mutex)
 {
 	if (mutex)
 	{
 #if __linux__ || __APPLE__
-		pthread_mutex_destroy(
-			&mutex->handle);
+		int result = pthread_mutex_destroy(&mutex->handle);
+
+		if(result != 0)
+			abort();
 #elif _WIN32
-		CloseHandle(
-			mutex->handle);
+		BOOL result = CloseHandle(mutex->handle);
+
+		if(result != TRUE)
+			abort();
 #endif
 	}
 
 	free(mutex);
 }
 
-bool lockMutex(
-	struct Mutex* mutex)
+void lockMutex(struct Mutex* mutex)
 {
 	if (!mutex)
-		return false;
+		abort();
 
 #if __linux__ || __APPLE__
-	return pthread_mutex_lock(
-		&mutex->handle) == 0;
+	int result = pthread_mutex_lock(&mutex->handle);
+
+	if(result != 0)
+		abort();
 #elif _WIN32
-	return WaitForSingleObject(
+	DWORD result = WaitForSingleObject(
 		mutex->handle,
-		INFINITE) == WAIT_OBJECT_0;
+		INFINITE);
+
+	if(result != WAIT_OBJECT_0)
+		abort();
 #endif
 }
-bool unlockMutex(
-	struct Mutex* mutex)
+
+void unlockMutex(struct Mutex* mutex)
 {
 	if (!mutex)
-		return false;
+		abort();
 
 #if __linux__ || __APPLE__
-	return pthread_mutex_unlock(
-		&mutex->handle) == 0;
+	int result = pthread_mutex_unlock(&mutex->handle);
+
+	if(result != 0)
+		abort();
 #elif _WIN32
-	return ReleaseMutex(
-		mutex->handle) == TRUE;
+	BOOL result = ReleaseMutex(mutex->handle);
+
+	if(result != TRUE)
+		abort();
 #endif
 }
-bool tryLockMutex(
-	struct Mutex* mutex)
+
+bool tryLockMutex(struct Mutex* mutex)
 {
 	if (!mutex)
-		return false;
+		abort();
 
 #if __linux__ || __APPLE__
 	return pthread_mutex_trylock(
