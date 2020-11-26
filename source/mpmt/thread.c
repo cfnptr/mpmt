@@ -57,16 +57,13 @@ struct Thread* createThread(
 		malloc(sizeof(struct Thread));
 
 	if (!thread)
-		return NULL;
+		abort();
 
 	struct ThreadData* data =
 		malloc(sizeof(struct ThreadData));
 
 	if (!data)
-	{
-		free(thread);
-		return NULL;
-	}
+		abort();
 
 	data->function = function;
 	data->argument = argument;
@@ -81,11 +78,7 @@ struct Thread* createThread(
 		data);
 
 	if (result != 0)
-	{
-		free(data);
-		free(thread);
-		return NULL;
-	}
+		abort();
 #elif _WIN32
 	handle = CreateThread(
 		NULL, 
@@ -96,11 +89,7 @@ struct Thread* createThread(
 		NULL);
 
 	if (handle == NULL)
-	{
-		free(data);
-		free(thread);
-		return NULL;
-	}
+		abort();
 #endif
 
 	thread->handle = handle;

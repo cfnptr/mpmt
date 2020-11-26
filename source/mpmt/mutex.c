@@ -26,7 +26,7 @@ struct Mutex* createMutex()
 		NULL);
 
 	if (result != 0)
-		return NULL;
+		abort();
 #elif _WIN32
 	handle = CreateMutex(
 		NULL,
@@ -34,14 +34,14 @@ struct Mutex* createMutex()
 		NULL);
 
 	if (handle == NULL)
-		return NULL;
+		abort();
 #endif
 
 	struct Mutex* mutex =
 		malloc(sizeof(struct Mutex));
 
 	if (!mutex)
-		return NULL;
+		abort();
 
 	mutex->handle = handle;
 	return mutex;
