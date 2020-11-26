@@ -83,7 +83,7 @@ struct Thread* createThread(
 	handle = CreateThread(
 		NULL, 
 		0,
-		mpmtThreadRoutine,
+		mpmtThreadFunction,
 		data,
 		0,
 		NULL);
@@ -165,6 +165,6 @@ void sleepThread(size_t milliseconds)
 	if(result != 0)
 		abort();
 #elif _WIN32
-	Sleep(milliseconds);
+	Sleep((DWORD)milliseconds);
 #endif
 }
