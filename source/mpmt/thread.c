@@ -1,5 +1,7 @@
 #include "mpmt/thread.h"
+
 #include <stdlib.h>
+#include <assert.h>
 
 #if __linux__ || __APPLE__
 #include <pthread.h>
@@ -38,7 +40,7 @@ DWORD mpmtThreadFunction(LPVOID argument)
 {
 	struct ThreadData* data =
 		(struct ThreadData*)argument;
-	
+
 	data->function(data->argument);
 
 	free(data);
@@ -50,8 +52,7 @@ struct Thread* createThread(
 	void (*function)(void*),
 	void* argument)
 {
-	if (!function)
-		abort();
+	assert(function);
 
 	struct Thread* thread =
 		malloc(sizeof(struct Thread));
@@ -77,7 +78,7 @@ struct Thread* createThread(
 		abort();
 #elif _WIN32
 	handle = CreateThread(
-		NULL, 
+		NULL,
 		0,
 		mpmtThreadFunction,
 		data,
@@ -99,8 +100,7 @@ void destroyThread(struct Thread* thread)
 
 void joinThread(struct Thread* thread)
 {
-	if (!thread)
-		abort();
+	assert(thread);
 
 #if __linux__ || __APPLE__
 	int result = pthread_join(
@@ -128,8 +128,7 @@ void joinThread(struct Thread* thread)
 
 void detachThread(struct Thread* thread)
 {
-	if (!thread)
-		abort();
+	assert(thread);
 
 #if __linux__ || __APPLE__
 	int result = pthread_detach(thread->handle);

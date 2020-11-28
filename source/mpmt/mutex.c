@@ -1,5 +1,7 @@
 #include "mpmt/mutex.h"
+
 #include <stdlib.h>
+#include <assert.h>
 
 #if __linux__ || __APPLE__
 #include <pthread.h>
@@ -69,8 +71,7 @@ void destroyMutex(struct Mutex* mutex)
 
 void lockMutex(struct Mutex* mutex)
 {
-	if (!mutex)
-		abort();
+	assert(mutex);
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_lock(&mutex->handle);
@@ -89,8 +90,7 @@ void lockMutex(struct Mutex* mutex)
 
 void unlockMutex(struct Mutex* mutex)
 {
-	if (!mutex)
-		abort();
+	assert(mutex);
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_unlock(&mutex->handle);
@@ -107,8 +107,7 @@ void unlockMutex(struct Mutex* mutex)
 
 bool tryLockMutex(struct Mutex* mutex)
 {
-	if (!mutex)
-		abort();
+	assert(mutex);
 
 #if __linux__ || __APPLE__
 	return pthread_mutex_trylock(
