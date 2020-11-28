@@ -30,7 +30,8 @@ void* mpmtThreadFunction(void* argument)
 	struct ThreadData* data =
 		(struct ThreadData*)argument;
 
-	data->function(data->argument);
+	data->function(
+		data->argument);
 
 	free(data);
 	return NULL;
@@ -52,14 +53,14 @@ struct Thread* createThread(
 	void (*function)(void*),
 	void* argument)
 {
-	assert(function);
+	assert(function != NULL);
 
 	struct Thread* thread =
 		malloc(sizeof(struct Thread));
 	struct ThreadData* data =
 		malloc(sizeof(struct ThreadData));
 
-	if (!thread || !data)
+	if (thread == NULL || data == NULL)
 		abort();
 
 	data->function = function;
@@ -100,7 +101,7 @@ void destroyThread(struct Thread* thread)
 
 void joinThread(struct Thread* thread)
 {
-	assert(thread);
+	assert(thread != NULL);
 
 #if __linux__ || __APPLE__
 	int result = pthread_join(
@@ -128,7 +129,7 @@ void joinThread(struct Thread* thread)
 
 void detachThread(struct Thread* thread)
 {
-	assert(thread);
+	assert(thread != NULL);
 
 #if __linux__ || __APPLE__
 	int result = pthread_detach(thread->handle);

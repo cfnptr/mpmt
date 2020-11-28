@@ -8,7 +8,7 @@
 #define MUTEX pthread_mutex_t
 #elif _WIN32
 #include <windows.h>
-#define MUTEX HANDLE
+#define MUTEX CRITICAL_SECTION
 #else
 #error Unknown operating system
 #endif
@@ -23,29 +23,21 @@ struct Mutex* createMutex()
 	struct Mutex* mutex =
 		malloc(sizeof(struct Mutex));
 
-	if (!mutex)
+	if (mutex == NULL)
 		abort();
-
-	MUTEX handle;
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_init(
-		&handle,
+		&mutex->handle,
 		NULL);
 
 	if (result != 0)
 		abort();
 #elif _WIN32
-	handle = CreateMutex(
-		NULL,
-		FALSE,
-		NULL);
-
-	if (handle == NULL)
-		abort();
+	InitializeCriticalSection(
+		&mutex->handle);
 #endif
 
-	mutex->handle = handle;
 	return mutex;
 }
 
@@ -54,15 +46,14 @@ void destroyMutex(struct Mutex* mutex)
 	if (mutex)
 	{
 #if __linux__ || __APPLE__
-		int result = pthread_mutex_destroy(&mutex->handle);
+		int result = pthread_mutex_destroy(
+			&mutex->handle);
 
 		if (result != 0)
 			abort();
 #elif _WIN32
-		BOOL result = CloseHandle(mutex->handle);
-
-		if (result != TRUE)
-			abort();
+		DeleteCriticalSection(
+			&mutex->handle);
 #endif
 	}
 
@@ -71,50 +62,45 @@ void destroyMutex(struct Mutex* mutex)
 
 void lockMutex(struct Mutex* mutex)
 {
-	assert(mutex);
+	assert(mutex != NULL);
 
 #if __linux__ || __APPLE__
-	int result = pthread_mutex_lock(&mutex->handle);
+	int result = pthread_mutex_lock(
+		&mutex->handle);
 
 	if (result != 0)
 		abort();
 #elif _WIN32
-	DWORD result = WaitForSingleObject(
-		mutex->handle,
-		INFINITE);
-
-	if (result != WAIT_OBJECT_0)
-		abort();
+	EnterCriticalSection(
+		&mutex->handle);
 #endif
 }
 
 void unlockMutex(struct Mutex* mutex)
 {
-	assert(mutex);
+	assert(mutex != NULL);
 
 #if __linux__ || __APPLE__
-	int result = pthread_mutex_unlock(&mutex->handle);
+	int result = pthread_mutex_unlock(
+		&mutex->handle);
 
 	if (result != 0)
 		abort();
 #elif _WIN32
-	BOOL result = ReleaseMutex(mutex->handle);
-
-	if (result != TRUE)
-		abort();
+	LeaveCriticalSection(
+		&mutex->handle);
 #endif
 }
 
 bool tryLockMutex(struct Mutex* mutex)
 {
-	assert(mutex);
+	assert(mutex != NULL);
 
 #if __linux__ || __APPLE__
 	return pthread_mutex_trylock(
 		&mutex->handle) == 0;
 #elif _WIN32
-	return WaitForSingleObject(
-		mutex->handle,
-		0) == WAIT_OBJECT_0;
+	return TryEnterCriticalSection(
+		&mutex->handle) == TRUE;
 #endif
 }
