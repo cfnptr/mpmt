@@ -50,7 +50,7 @@ struct ConditionVariable* createConditionVariable()
 void destroyConditionVariable(
 	struct ConditionVariable* conditionVariable)
 {
-	if (conditionVariable)
+	if (conditionVariable != NULL)
 	{
 #if __linux__ || __APPLE__
 		int result = pthread_cond_destroy(

@@ -43,7 +43,7 @@ struct Mutex* createMutex()
 
 void destroyMutex(struct Mutex* mutex)
 {
-	if (mutex)
+	if (mutex != NULL)
 	{
 #if __linux__ || __APPLE__
 		int result = pthread_mutex_destroy(

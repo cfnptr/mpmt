@@ -27,6 +27,8 @@ struct ThreadData
 #if __linux__ || __APPLE__
 void* mpmtThreadFunction(void* argument)
 {
+	assert(argument != NULL);
+
 	struct ThreadData* data =
 		(struct ThreadData*)argument;
 
@@ -39,10 +41,13 @@ void* mpmtThreadFunction(void* argument)
 #elif _WIN32
 DWORD mpmtThreadFunction(LPVOID argument)
 {
+	assert(argument != NULL);
+
 	struct ThreadData* data =
 		(struct ThreadData*)argument;
 
-	data->function(data->argument);
+	data->function(
+		data->argument);
 
 	free(data);
 	return 0;
@@ -117,12 +122,12 @@ void joinThread(struct Thread* thread)
 		handle,
 		INFINITE);
 
-	if(waitResult != WAIT_OBJECT_0)
+	if (waitResult != WAIT_OBJECT_0)
 		abort();
 
 	BOOL closeResult = CloseHandle(handle);
 
-	if(closeResult != TRUE)
+	if (closeResult != TRUE)
 		abort();
 #endif
 }
@@ -158,7 +163,7 @@ void sleepThread(size_t milliseconds)
 		&delay,
 		NULL);
 
-	if(result != 0)
+	if (result != 0)
 		abort();
 #elif _WIN32
 	Sleep((DWORD)milliseconds);
