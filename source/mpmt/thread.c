@@ -24,7 +24,7 @@ struct ThreadData
 	void* argument;
 };
 
-void* xmalloc(size_t size)
+inline void* xmalloc(size_t size)
 {
 	void* p = malloc(size);
 	if (p == NULL) abort();

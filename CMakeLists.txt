@@ -18,7 +18,6 @@ configure_file(
 	mpmt/defines.h)
 
 add_library(mpmt STATIC
-	source/mpmt/condition_variable.c
 	source/mpmt/mutex.c
 	source/mpmt/thread.c)
 target_include_directories(mpmt PUBLIC
