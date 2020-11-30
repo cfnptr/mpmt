@@ -18,13 +18,17 @@ struct Mutex
 	MUTEX handle;
 };
 
+void* xmalloc(size_t size)
+{
+	void* p = malloc(size);
+	if (p == NULL) abort();
+	return p;
+}
+
 struct Mutex* createMutex()
 {
 	struct Mutex* mutex =
-		malloc(sizeof(struct Mutex));
-
-	if (mutex == NULL)
-		abort();
+		xmalloc(sizeof(struct Mutex));
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_init(

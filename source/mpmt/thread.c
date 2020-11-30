@@ -24,6 +24,13 @@ struct ThreadData
 	void* argument;
 };
 
+void* xmalloc(size_t size)
+{
+	void* p = malloc(size);
+	if (p == NULL) abort();
+	return p;
+}
+
 #if __linux__ || __APPLE__
 void* mpmtThreadFunction(void* argument)
 {
@@ -61,12 +68,9 @@ struct Thread* createThread(
 	assert(function != NULL);
 
 	struct Thread* thread =
-		malloc(sizeof(struct Thread));
+		xmalloc(sizeof(struct Thread));
 	struct ThreadData* data =
-		malloc(sizeof(struct ThreadData));
-
-	if (thread == NULL || data == NULL)
-		abort();
+		xmalloc(sizeof(struct ThreadData));
 
 	data->function = function;
 	data->argument = argument;

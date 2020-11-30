@@ -24,13 +24,17 @@ struct ConditionVariable
 	CONDITION_VARIABLE handle;
 };
 
+void* xmalloc(size_t size)
+{
+	void* p = malloc(size);
+	if (p == NULL) abort();
+	return p;
+}
+
 struct ConditionVariable* createConditionVariable()
 {
 	struct ConditionVariable* conditionVariable =
-		malloc(sizeof(struct ConditionVariable));
-
-	if (conditionVariable == NULL)
-		abort();
+		xmalloc(sizeof(struct ConditionVariable));
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_init(
