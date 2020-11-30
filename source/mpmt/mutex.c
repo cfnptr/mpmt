@@ -1,4 +1,5 @@
 #include "mpmt/mutex.h"
+#include "mpmt/xalloc.h"
 
 #include <stdlib.h>
 #include <assert.h>
@@ -23,13 +24,6 @@ struct ConditionVariable
 {
 	CONDITION_VARIABLE handle;
 };
-
-inline void* xmalloc(size_t size)
-{
-	void* p = malloc(size);
-	if (p == NULL) abort();
-	return p;
-}
 
 struct Mutex* createMutex()
 {

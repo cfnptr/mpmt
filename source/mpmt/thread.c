@@ -1,4 +1,5 @@
 #include "mpmt/thread.h"
+#include "mpmt/xalloc.h"
 
 #include <stdlib.h>
 #include <assert.h>
@@ -23,13 +24,6 @@ struct ThreadData
 	void (*function)(void*);
 	void* argument;
 };
-
-inline void* xmalloc(size_t size)
-{
-	void* p = malloc(size);
-	if (p == NULL) abort();
-	return p;
-}
 
 #if __linux__ || __APPLE__
 void* mpmtThreadFunction(void* argument)
