@@ -8,12 +8,15 @@
  *
  * Returns pointer to the beginning of the block.
  */
-#define xmalloc(size) \
-({ \
-	void* _pointer = malloc((size)); \
-	if (_pointer == NULL) abort(); \
-	_pointer; \
-})
+static inline void* xmalloc(size_t size)
+{
+	void* _pointer = malloc(size);
+
+	if (_pointer == NULL)
+		abort();
+
+	return _pointer;
+}
 
 /*
  *
@@ -23,12 +26,15 @@
  *
  * Returns pointer to the beginning of the block.
  */
-#define xcalloc(count, size) \
-({ \
-	void* _pointer = calloc((count), (size)); \
-	if (_pointer == NULL) abort(); \
-	_pointer; \
-})
+static inline void* xcalloc(size_t count, size_t size)
+{
+	void* _pointer = calloc(count, size);
+
+	if (_pointer == NULL)
+		abort();
+
+	return _pointer;
+}
 
 /*
  *
@@ -37,9 +43,12 @@
  *
  * Returns pointer to the beginning of the block.
  */
-#define xrealloc xrealloc(pointer, size) \
-({ \
-	void* _pointer = realloc(pointer, size); \
-	if (_pointer == NULL) abort(); \
-	_pointer; \
-})
+static inline void* xrealloc(void* pointer, size_t size)
+{
+	void* _pointer = realloc(pointer, size);
+
+	if (_pointer == NULL)
+		abort();
+
+	return _pointer;
+}
