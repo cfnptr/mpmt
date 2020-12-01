@@ -1,5 +1,4 @@
 #include "mpmt/thread.h"
-#include "mpmt/xalloc.h"
 
 #include <stdlib.h>
 #include <assert.h>
@@ -17,10 +16,7 @@
 struct Thread
 {
 	THREAD handle;
-};
-
-struct ThreadData
-{
+	bool joined;
 	void (*function)(void*);
 	void* argument;
 };
@@ -30,13 +26,12 @@ void* mpmtThreadFunction(void* argument)
 {
 	assert(argument != NULL);
 
-	struct ThreadData* data =
-		(struct ThreadData*)argument;
+	struct Thread* thread =
+		(struct Thread*)argument;
 
-	data->function(
-		data->argument);
+	thread->function(
+		thread->argument);
 
-	free(data);
 	return NULL;
 }
 #elif _WIN32
@@ -50,7 +45,6 @@ DWORD mpmtThreadFunction(LPVOID argument)
 	data->function(
 		data->argument);
 
-	free(data);
 	return 0;
 }
 #endif
@@ -61,11 +55,15 @@ struct Thread* createThread(
 {
 	assert(function != NULL);
 
-	struct ThreadData* data =
-		xmalloc(sizeof(struct ThreadData));
+	struct Thread* thread =
+		malloc(sizeof(struct Thread));
 
-	data->function = function;
-	data->argument = argument;
+	if(thread == NULL)
+		return NULL;
+
+	thread->joined = false;
+	thread->function = function;
+	thread->argument = argument;
 
 	THREAD handle;
 
@@ -74,11 +72,11 @@ struct Thread* createThread(
 		&handle,
 		NULL,
 		mpmtThreadFunction,
-		data);
+		thread);
 
 	if (result != 0)
 	{
-		free(data);
+		free(thread);
 		return NULL;
 	}
 #elif _WIN32
@@ -92,66 +90,68 @@ struct Thread* createThread(
 
 	if (handle == NULL)
 	{
-		free(data);
+		free(thread);
 		return NULL;
 	}
 #endif
 
-	struct Thread* thread =
-		xmalloc(sizeof(struct Thread));
 	thread->handle = handle;
-
 	return thread;
 }
 
 void destroyThread(struct Thread* thread)
 {
+	if(thread != NULL && thread->joined == false)
+	{
+#if __linux__ || __APPLE__
+		int result = pthread_detach(
+			thread->handle);
+
+		if (result != 0)
+			abort();
+#elif _WIN32
+		BOOL result = CloseHandle(
+			thread->handle);
+
+		if (result != TRUE)
+			abort();
+#endif
+	}
+
 	free(thread);
 }
 
-void joinThread(struct Thread* thread)
+bool joinThread(struct Thread* thread)
 {
 	assert(thread != NULL);
 
-#if __linux__ || __APPLE__
-	int result = pthread_join(
-		thread->handle,
-		NULL);
+	if(thread->joined)
+		return false;
 
-	if (result != 0)
-		abort();
+	thread->joined = true;
+
+#if __linux__ || __APPLE__
+	return pthread_join(
+		thread->handle,
+		NULL) == 0;
 #elif _WIN32
 	THREAD handle = thread->handle;
 
-	DWORD waitResult = WaitForSingleObject(
+	bool result = WaitForSingleObject(
 		handle,
-		INFINITE);
+		INFINITE) == WAIT_OBJECT_0;
 
-	if (waitResult != WAIT_OBJECT_0)
-		abort();
+	result &= CloseHandle(
+		handle) == TRUE;
 
-	BOOL closeResult = CloseHandle(handle);
-
-	if (closeResult != TRUE)
-		abort();
+	return result;
 #endif
 }
 
-void detachThread(struct Thread* thread)
+bool isThreadJoined(struct Thread* thread)
 {
 	assert(thread != NULL);
-
-#if __linux__ || __APPLE__
-	int result = pthread_detach(thread->handle);
-
-	if (result != 0)
-		abort();
-#elif _WIN32
-	BOOL result = CloseHandle(thread->handle);
-
-	if (result != TRUE)
-		abort();
-#endif
+	return thread->joined;
 }
 
 void sleepThread(size_t milliseconds)

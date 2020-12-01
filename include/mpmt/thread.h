@@ -8,6 +8,7 @@ struct Thread;
 /*
  * Creates a new thread executing the specified function.
  * Returns thread on success, otherwise null.
+ * Thread create function call is not thread safe.
  *
  * function - pointer to the valid function that should be invoked.
  * argument - argument that will be passed to the function.
@@ -18,27 +19,27 @@ struct Thread* createThread(
 
 /*
  * Destroys specified thread.
- * Thread should be joined or detached before destruction.
+ * Thread destroy function call is not thread safe.
  *
  * thread - pointer to the valid thread or null.
  */
 void destroyThread(struct Thread* thread);
 
 /*
- * Blocks the current thread until the specified thread finishes execution.
- * Should be called only once, otherwise undefined behavior.
+ * Blocks the current thread until the function execution end.
+ * Thread join function call is not thread safe.
  *
- * thread - pointer to the valid, not previously joined or detached thread.
+ * thread - pointer to the valid thread.
  */
-void joinThread(struct Thread* thread);
+bool joinThread(struct Thread* thread);
 
 /*
- * Detaches the specified thread from the current environment.
- * Should be called only once, otherwise undefined behavior.
+ * Returns true if thread was joined.
+ * Is thread joined function call is not thread safe.
  *
- * thread - pointer to the valid, not previously joined or detached thread.
+ * thread - pointer to the valid thread.
  */
-void detachThread(struct Thread* thread);
+bool isThreadJoined(struct Thread* thread);
 
 /*
  * Blocks the execution of the current thread for a specified time.
