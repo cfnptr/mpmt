@@ -27,20 +27,23 @@ struct ConditionVariable
 
 struct Mutex* createMutex()
 {
-	struct Mutex* mutex =
-		xmalloc(sizeof(struct Mutex));
+	MUTEX handle;
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_init(
-		&mutex->handle,
+		&handle,
 		NULL);
 
 	if (result != 0)
-		abort();
+		return NULL;
 #elif _WIN32
 	InitializeCriticalSection(
-		&mutex->handle);
+		&handle);
 #endif
+
+	struct Mutex* mutex =
+		xmalloc(sizeof(struct Mutex));
+	mutex->handle = handle;
 
 	return mutex;
 }
@@ -111,20 +114,23 @@ bool tryLockMutex(struct Mutex* mutex)
 
 struct ConditionVariable* createConditionVariable()
 {
-	struct ConditionVariable* conditionVariable =
-		xmalloc(sizeof(struct ConditionVariable));
+	CONDITION_VARIABLE handle;
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_init(
-		&conditionVariable->handle,
+		&handle,
 		NULL);
 
 	if (result != 0)
 		abort();
 #elif _WIN32
 	InitializeConditionVariable(
-		&conditionVariable->handle);
+		&handle);
 #endif
+
+	struct ConditionVariable* conditionVariable =
+		xmalloc(sizeof(struct ConditionVariable));
+	conditionVariable->handle = handle;
 
 	return conditionVariable;
 }

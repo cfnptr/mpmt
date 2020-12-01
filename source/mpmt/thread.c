@@ -61,8 +61,6 @@ struct Thread* createThread(
 {
 	assert(function != NULL);
 
-	struct Thread* thread =
-		xmalloc(sizeof(struct Thread));
 	struct ThreadData* data =
 		xmalloc(sizeof(struct ThreadData));
 
@@ -79,7 +77,10 @@ struct Thread* createThread(
 		data);
 
 	if (result != 0)
-		abort();
+	{
+		free(data);
+		return NULL;
+	}
 #elif _WIN32
 	handle = CreateThread(
 		NULL,
@@ -90,10 +91,16 @@ struct Thread* createThread(
 		NULL);
 
 	if (handle == NULL)
-		abort();
+	{
+		free(data);
+		return NULL;
+	}
 #endif
 
+	struct Thread* thread =
+		xmalloc(sizeof(struct Thread));
 	thread->handle = handle;
+
 	return thread;
 }
 

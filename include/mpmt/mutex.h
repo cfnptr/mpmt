@@ -9,7 +9,7 @@ struct ConditionVariable;
 
 /*
  * Creates a new mutex.
- * Returns pointer to the valid mutex.
+ * Returns mutex on success, otherwise null.
  */
 struct Mutex* createMutex();
 
@@ -48,7 +48,7 @@ bool tryLockMutex(struct Mutex* mutex);
 
 /*
  * Creates a new condition variable.
- * Returns pointer to the valid condition variable.
+ * Returns condition variable on success, otherwise null.
  */
 struct ConditionVariable* createConditionVariable();
 
