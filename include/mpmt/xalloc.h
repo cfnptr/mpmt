@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 /*
- *
  * Allocates a new memory block with specified size.
  * Raises abort if allocation result is null.
  *
@@ -19,7 +18,6 @@ static inline void* xmalloc(size_t size)
 }
 
 /*
- *
  * Allocates a new memory block with specified count and size.
  * And fills allocated memory with zero bytes.
  * Raises abort if allocation result is null.
@@ -37,7 +35,6 @@ static inline void* xcalloc(size_t count, size_t size)
 }
 
 /*
- *
  * Reallocates an existing memory block with specified size.
  * Raises abort if reallocation result is null.
  *

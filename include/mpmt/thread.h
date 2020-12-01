@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+/* Thread instance handle */
 struct Thread;
 
 /*
- *
  * Creates a new thread executing the specified function.
  * Returns pointer to the valid thread.
  *
@@ -17,7 +17,6 @@ struct Thread* createThread(
 	void* argument);
 
 /*
- *
  * Destroys specified thread.
  * Thread should be joined or detached before destruction.
  *
@@ -26,7 +25,6 @@ struct Thread* createThread(
 void destroyThread(struct Thread* thread);
 
 /*
- *
  * Blocks the current thread until the specified thread finishes execution.
  * Should be called only once, otherwise undefined behavior.
  *
@@ -35,7 +33,6 @@ void destroyThread(struct Thread* thread);
 void joinThread(struct Thread* thread);
 
 /*
- *
  * Detaches the specified thread from the current environment.
  * Should be called only once, otherwise undefined behavior.
  *
@@ -44,7 +41,6 @@ void joinThread(struct Thread* thread);
 void detachThread(struct Thread* thread);
 
 /*
- *
  * Blocks the execution of the current thread for a specified time.
  */
 void sleepThread(size_t milliseconds);
