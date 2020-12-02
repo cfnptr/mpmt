@@ -6,7 +6,6 @@
 #if __linux__ || __APPLE__
 #include <pthread.h>
 #define MUTEX pthread_mutex_t
-#define CONDITION_VARIABLE pthread_cond_t
 #elif _WIN32
 #include <windows.h>
 #define MUTEX CRITICAL_SECTION
@@ -19,17 +18,12 @@ struct Mutex
 	MUTEX handle;
 };
 
-struct ConditionVariable
-{
-	CONDITION_VARIABLE handle;
-};
-
 struct Mutex* createMutex()
 {
 	struct Mutex* mutex =
 		malloc(sizeof(struct Mutex));
 
-	if(mutex == NULL)
+	if (mutex == NULL)
 		return NULL;
 
 #if __linux__ || __APPLE__
