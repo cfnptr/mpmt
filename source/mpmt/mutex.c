@@ -113,7 +113,7 @@ bool tryLockMutex(
 	BOOL result = TryEnterCriticalSection(
 		&mutex->handle);
 
-	if (resutl != TRUE)
+	if (result != TRUE)
 		return false;
 #endif
 

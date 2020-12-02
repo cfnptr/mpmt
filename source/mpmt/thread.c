@@ -39,11 +39,11 @@ DWORD mpmtThreadFunction(LPVOID argument)
 {
 	assert(argument != NULL);
 
-	struct ThreadData* data =
-		(struct ThreadData*)argument;
+	struct Thread* thread =
+		(struct Thread*)argument;
 
-	data->function(
-		data->argument);
+	thread->function(
+		thread->argument);
 
 	return 0;
 }
@@ -84,7 +84,7 @@ struct Thread* createThread(
 		NULL,
 		0,
 		mpmtThreadFunction,
-		data,
+		thread,
 		0,
 		NULL);
 
