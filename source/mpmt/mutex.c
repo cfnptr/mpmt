@@ -46,16 +46,16 @@ struct Mutex* createMutex()
 
 void destroyMutex(struct Mutex* mutex)
 {
-	if (mutex != NULL)
-	{
+	if (mutex == NULL)
+		return;
+
 #if __linux__ || __APPLE__
-		pthread_mutex_destroy(
-			&mutex->handle);
+	pthread_mutex_destroy(
+		&mutex->handle);
 #elif _WIN32
-		DeleteCriticalSection(
-			&mutex->handle);
+	DeleteCriticalSection(
+		&mutex->handle);
 #endif
-	}
 
 	free(mutex);
 }

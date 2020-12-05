@@ -101,20 +101,17 @@ struct Thread* createThread(
 
 void destroyThread(struct Thread* thread)
 {
-	if(thread != NULL && thread->joined == false)
+	if (thread == NULL)
+		return;
+
+	if (thread->joined == false)
 	{
 #if __linux__ || __APPLE__
-		int result = pthread_detach(
+		pthread_detach(
 			thread->handle);
-
-		if (result != 0)
-			abort();
 #elif _WIN32
-		BOOL result = CloseHandle(
+		CloseHandle(
 			thread->handle);
-
-		if (result != TRUE)
-			abort();
 #endif
 	}
 
