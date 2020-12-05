@@ -24,6 +24,7 @@ struct Mutex* createMutex();
 void destroyMutex(struct Mutex* mutex);
 
 /*
+ * Locks mutex and executes function with blocking.
  * Returns true if mutex was successfully locked.
  *
  * mutex - pointer to the valid mutex.
