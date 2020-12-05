@@ -164,12 +164,9 @@ void sleepThread(size_t milliseconds)
 	delay.tv_nsec =
 		(long)(milliseconds % 1000) * 1000000;
 
-	int result = nanosleep(
+	nanosleep(
 		&delay,
 		NULL);
-
-	if (result != 0)
-		abort();
 #elif _WIN32
 	Sleep((DWORD)milliseconds);
 #endif

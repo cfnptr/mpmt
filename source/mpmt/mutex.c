@@ -49,11 +49,8 @@ void destroyMutex(struct Mutex* mutex)
 	if (mutex != NULL)
 	{
 #if __linux__ || __APPLE__
-		int result = pthread_mutex_destroy(
+		pthread_mutex_destroy(
 			&mutex->handle);
-
-		if (result != 0)
-			abort();
 #elif _WIN32
 		DeleteCriticalSection(
 			&mutex->handle);
