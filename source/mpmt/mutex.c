@@ -1,7 +1,5 @@
 #include "mpmt/mutex.h"
-
 #include <stdlib.h>
-#include <assert.h>
 
 #if __linux__ || __APPLE__
 #include <pthread.h>
@@ -68,7 +66,10 @@ bool lockMutex(
 	void (*function)(void*),
 	void* argument)
 {
-	assert(mutex != NULL);
+	if (mutex == NULL)
+		return false;
+	if (function == NULL)
+		return false;
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_lock(
@@ -101,7 +102,10 @@ bool tryLockMutex(
 	void (*function)(void*),
 	void* argument)
 {
-	assert(mutex != NULL);
+	if (mutex == NULL)
+		return false;
+	if (function == NULL)
+		return false;
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_trylock(

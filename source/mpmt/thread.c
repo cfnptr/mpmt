@@ -1,7 +1,5 @@
 #include "mpmt/thread.h"
-
 #include <stdlib.h>
-#include <assert.h>
 
 #if __linux__ || __APPLE__
 #include <pthread.h>
@@ -24,8 +22,6 @@ struct Thread
 #if __linux__ || __APPLE__
 void* mpmtThreadFunction(void* argument)
 {
-	assert(argument != NULL);
-
 	struct Thread* thread =
 		(struct Thread*)argument;
 
@@ -53,7 +49,8 @@ struct Thread* createThread(
 	void (*function)(void*),
 	void* argument)
 {
-	assert(function != NULL);
+	if (function == NULL)
+		return false;
 
 	struct Thread* thread =
 		malloc(sizeof(struct Thread));
@@ -123,9 +120,9 @@ void destroyThread(struct Thread* thread)
 
 bool joinThread(struct Thread* thread)
 {
-	assert(thread != NULL);
-
-	if(thread->joined)
+	if (thread == NULL)
+		return false;
+	if(thread->joined == true)
 		return false;
 
 	thread->joined = true;
@@ -148,13 +145,18 @@ bool joinThread(struct Thread* thread)
 #endif
 }
 
-bool isThreadJoined(struct Thread* thread)
+bool isThreadJoined(
+	struct Thread* thread,
+	bool* joined)
 {
-	assert(thread != NULL);
-	return thread->joined;
+	if (thread == NULL)
+		return false;
+
+	*joined = thread->joined;
+	return true;
 }
 
-void sleepThread(size_t milliseconds)
+bool sleepThread(size_t milliseconds)
 {
 #if __linux__ || __APPLE__
 	struct timespec delay;
@@ -164,12 +166,9 @@ void sleepThread(size_t milliseconds)
 	delay.tv_nsec =
 		(long)(milliseconds % 1000) * 1000000;
 
-	int result = nanosleep(
+	return nanosleep(
 		&delay,
-		NULL);
-
-	if (result != 0)
-		abort();
+		NULL) == 0;
 #elif _WIN32
 	Sleep((DWORD)milliseconds);
 #endif
