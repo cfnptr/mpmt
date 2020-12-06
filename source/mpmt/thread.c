@@ -120,10 +120,11 @@ void destroyThread(struct Thread* thread)
 
 bool joinThread(struct Thread* thread)
 {
-	if (thread == NULL)
+	if (thread == NULL ||
+		thread->joined == true)
+	{
 		return false;
-	if(thread->joined == true)
-		return false;
+	}
 
 	thread->joined = true;
 

@@ -66,10 +66,11 @@ bool lockMutex(
 	void (*function)(void*),
 	void* argument)
 {
-	if (mutex == NULL)
+	if (mutex == NULL ||
+		function == NULL)
+	{
 		return false;
-	if (function == NULL)
-		return false;
+	}
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_lock(
@@ -102,10 +103,11 @@ bool tryLockMutex(
 	void (*function)(void*),
 	void* argument)
 {
-	if (mutex == NULL)
+	if (mutex == NULL ||
+		function == NULL)
+	{
 		return false;
-	if (function == NULL)
-		return false;
+	}
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_trylock(
