@@ -146,12 +146,15 @@ bool joinThread(struct Thread* thread)
 #endif
 }
 
-bool isThreadJoined(
+bool getThreadJoined(
 	struct Thread* thread,
 	bool* joined)
 {
-	if (thread == NULL)
+	if (thread == NULL ||
+		joined == NULL)
+	{
 		return false;
+	}
 
 	*joined = thread->joined;
 	return true;
