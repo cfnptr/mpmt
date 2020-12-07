@@ -31,20 +31,15 @@ bool joinThread(
 	struct Thread* thread);
 
 /*
- * Gets thread current join status.
- * Returns true on successful get.
- *
+ * Returns thread current join status.
  * thread - pointer to the valid thread.
  */
 bool getThreadJoined(
-	struct Thread* thread,
-	bool* joined);
+	struct Thread* thread);
 
 /*
  * Blocks the execution of the current thread for a specified time.
- * Returns true on successful sleep.
- *
  * milliseconds - thread sleep delay time.
  */
-bool sleepThread(
+void sleepThread(
 	size_t milliseconds);

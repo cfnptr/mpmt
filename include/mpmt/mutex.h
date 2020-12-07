@@ -4,8 +4,6 @@
 
 /* Mutex instance handle */
 struct Mutex;
-/* Condition variable instance handle */
-struct ConditionVariable;
 
 /*
  * Creates a new mutex.
@@ -21,30 +19,32 @@ struct Mutex* createMutex();
  *
  * mutex - pointer to the valid mutex.
  */
-void destroyMutex(struct Mutex* mutex);
+void destroyMutex(
+	struct Mutex* mutex);
 
 /*
- * Locks mutex and executes function with blocking.
+ * Locks mutex with blocking.
  * Returns true if mutex was successfully locked.
  *
  * mutex - pointer to the valid mutex.
- * function - pointer to the valid function.
- * argument - pointer to the function argument.
  */
-bool lockMutex(
-	struct Mutex* mutex,
-	void (*function)(void*),
-	void* argument);
+void lockMutex(
+	struct Mutex* mutex);
+
+/*
+ * Unlocks locked mutex.
+ * Returns true if mutex was successfully locked.
+ *
+ * mutex - pointer to the valid mutex.
+ */
+void unlockMutex(
+	struct Mutex* mutex);
 
 /*
  * Tries to lock the specified mutex without blocking.
  * Returns true if mutex was successfully locked.
  *
  * mutex - pointer to the valid mutex.
- * function - pointer to the valid function.
- * argument - pointer to the function argument.
  */
 bool tryLockMutex(
-	struct Mutex* mutex,
-	void (*function)(void*),
-	void* argument);
+	struct Mutex* mutex);

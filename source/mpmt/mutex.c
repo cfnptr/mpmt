@@ -1,5 +1,7 @@
 #include "mpmt/mutex.h"
+
 #include <stdlib.h>
+#include <assert.h>
 
 #if __linux__ || __APPLE__
 #include <pthread.h>
@@ -61,80 +63,50 @@ void destroyMutex(struct Mutex* mutex)
 	free(mutex);
 }
 
-bool lockMutex(
-	struct Mutex* mutex,
-	void (*function)(void*),
-	void* argument)
+void lockMutex(
+	struct Mutex* mutex)
 {
-	if (mutex == NULL ||
-		function == NULL)
-	{
-		return false;
-	}
+	assert(mutex != NULL);
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_lock(
 		&mutex->handle);
 
 	if (result != 0)
-		return false;
+		abort();
 #elif _WIN32
 	EnterCriticalSection(
 		&mutex->handle);
 #endif
+}
 
-	function(argument);
+void unlockMutex(
+	struct Mutex* mutex)
+{
+	assert(mutex != NULL);
 
 #if __linux__ || __APPLE__
-	result = pthread_mutex_unlock(
+	int result = pthread_mutex_unlock(
 		&mutex->handle);
 
 	if (result != 0)
-		return false;
+		abort();
 #elif _WIN32
 	LeaveCriticalSection(
 		&mutex->handle);
 #endif
-	return true;
 }
 
 bool tryLockMutex(
-	struct Mutex* mutex,
-	void (*function)(void*),
-	void* argument)
+	struct Mutex* mutex)
 {
-	if (mutex == NULL ||
-		function == NULL)
-	{
-		return false;
-	}
+	assert(mutex != NULL);
 
 #if __linux__ || __APPLE__
-	int result = pthread_mutex_trylock(
-		&mutex->handle);
-
-	if (result != 0)
-		return false;
+	return pthread_mutex_trylock(
+		&mutex->handle) == 0;
 #elif _WIN32
-	BOOL result = TryEnterCriticalSection(
-		&mutex->handle);
-
-	if (result != TRUE)
-		return false;
+	return TryEnterCriticalSection(
+		&mutex->handle) == TRUE;
 #endif
-
-	function(argument);
-
-#if __linux__ || __APPLE__
-	result = pthread_mutex_unlock(
-		&mutex->handle);
-
-	if (result != 0)
-		return false;
-#elif _WIN32
-	LeaveCriticalSection(
-		&mutex->handle);
-#endif
-
-	return true;
 }
