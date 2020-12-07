@@ -27,7 +27,7 @@ void destroyThread(
  * Blocks the current thread until the function execution end.
  * thread - pointer to the valid thread.
  */
-bool joinThread(
+void joinThread(
 	struct Thread* thread);
 
 /*

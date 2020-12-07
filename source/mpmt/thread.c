@@ -24,8 +24,6 @@ struct Thread
 #if __linux__ || __APPLE__
 void* mpmtThreadFunction(void* argument)
 {
-	assert(argument != NULL);
-
 	struct Thread* thread =
 		(struct Thread*)argument;
 
@@ -37,8 +35,6 @@ void* mpmtThreadFunction(void* argument)
 #elif _WIN32
 DWORD mpmtThreadFunction(LPVOID argument)
 {
-	assert(argument != NULL);
-
 	struct Thread* thread =
 		(struct Thread*)argument;
 
@@ -59,28 +55,23 @@ struct Thread* createThread(
 		malloc(sizeof(struct Thread));
 
 	if(thread == NULL)
-		return NULL;
+		abort();;
 
 	thread->joined = false;
 	thread->function = function;
 	thread->argument = argument;
 
-	THREAD handle;
-
 #if __linux__ || __APPLE__
 	int result = pthread_create(
-		&handle,
+		&thread->handle,
 		NULL,
 		mpmtThreadFunction,
 		thread);
 
 	if (result != 0)
-	{
-		free(thread);
-		return NULL;
-	}
+		abort();
 #elif _WIN32
-	handle = CreateThread(
+	thread->handle = CreateThread(
 		NULL,
 		0,
 		mpmtThreadFunction,
@@ -88,14 +79,10 @@ struct Thread* createThread(
 		0,
 		NULL);
 
-	if (handle == NULL)
-	{
-		free(thread);
-		return NULL;
-	}
+	if (thread->handle == NULL)
+		abort();
 #endif
 
-	thread->handle = handle;
 	return thread;
 }
 
@@ -121,30 +108,37 @@ void destroyThread(struct Thread* thread)
 	free(thread);
 }
 
-bool joinThread(struct Thread* thread)
+void joinThread(struct Thread* thread)
 {
 	assert(thread != NULL);
 
 	if (thread->joined == true)
-		return false;
+		abort();
 
 	thread->joined = true;
 
 #if __linux__ || __APPLE__
-	return pthread_join(
+	int result = pthread_join(
 		thread->handle,
-		NULL) == 0;
+		NULL);
+
+	if (result != 0)
+		abort();
 #elif _WIN32
 	THREAD handle = thread->handle;
 
-	bool result = WaitForSingleObject(
+	DWORD waitResult = WaitForSingleObject(
 		handle,
 		INFINITE) == WAIT_OBJECT_0;
 
-	result &= CloseHandle(
-		handle) == TRUE;
+	if (waitResult != WAIT_OBJECT_0)
+		abort();
 
-	return result;
+	BOOL closeResult = CloseHandle(
+		handle);
+
+	if (closeResult != TRUE)
+		abort();
 #endif
 }
 
