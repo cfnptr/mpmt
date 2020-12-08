@@ -24,7 +24,7 @@ struct Mutex* createMutex()
 		malloc(sizeof(struct Mutex));
 
 	if (mutex == NULL)
-		abort();
+		return NULL;
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_init(
@@ -32,7 +32,10 @@ struct Mutex* createMutex()
 		NULL);
 
 	if (result != 0)
-		abort();
+	{
+		free(mutex);
+		return NULL;
+	}
 #elif _WIN32
 	InitializeCriticalSection(
 		&mutex->handle);

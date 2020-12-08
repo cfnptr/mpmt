@@ -55,7 +55,7 @@ struct Thread* createThread(
 		malloc(sizeof(struct Thread));
 
 	if(thread == NULL)
-		abort();;
+		return NULL;
 
 	thread->joined = false;
 	thread->function = function;
@@ -69,7 +69,10 @@ struct Thread* createThread(
 		thread);
 
 	if (result != 0)
-		abort();
+	{
+		free(thread);
+		return NULL;
+	}
 #elif _WIN32
 	thread->handle = CreateThread(
 		NULL,
@@ -80,7 +83,10 @@ struct Thread* createThread(
 		NULL);
 
 	if (thread->handle == NULL)
-		abort();
+	{
+		free(thread);
+		return NULL;
+	}
 #endif
 
 	return thread;
