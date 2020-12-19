@@ -106,8 +106,11 @@ void destroyThread(struct Thread* thread)
 		if (result != 0)
 			abort();
 #elif _WIN32
-		CloseHandle(
+		BOOL result = CloseHandle(
 			thread->handle);
+
+		if (result != TRUE)
+			abort();
 #endif
 	}
 
@@ -135,7 +138,7 @@ void joinThread(struct Thread* thread)
 
 	DWORD waitResult = WaitForSingleObject(
 		handle,
-		INFINITE) == WAIT_OBJECT_0;
+		INFINITE);
 
 	if (waitResult != WAIT_OBJECT_0)
 		abort();
