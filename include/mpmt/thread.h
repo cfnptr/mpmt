@@ -18,7 +18,7 @@ struct Thread* createThread(
 
 /*
  * Destroys specified thread.
- * thread - pointer to the valid thread or null.
+ * thread - pointer to the thread or NULL.
  */
 void destroyThread(
 	struct Thread* thread);

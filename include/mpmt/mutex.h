@@ -13,7 +13,7 @@ struct Mutex* createMutex();
 
 /*
  * Destroys the mutex.
- * mutex - pointer to the valid mutex.
+ * mutex - pointer to the mutex or NULL.
  */
 void destroyMutex(
 	struct Mutex* mutex);
