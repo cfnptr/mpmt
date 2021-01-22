@@ -7,7 +7,7 @@ struct Mutex;
 
 /*
  * Creates a new mutex.
- * Returns mutex on success, otherwise null.
+ * Returns mutex on success, otherwise NULL.
  */
 struct Mutex* createMutex();
 

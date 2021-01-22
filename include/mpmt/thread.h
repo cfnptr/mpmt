@@ -7,7 +7,7 @@ struct Thread;
 
 /*
  * Creates a new thread executing the specified function.
- * Returns thread on success, otherwise null.
+ * Returns thread on success, otherwise NULL.
  *
  * function - pointer to the valid function that should be invoked.
  * argument - argument that will be passed to the function.
