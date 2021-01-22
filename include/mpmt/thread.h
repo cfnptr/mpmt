@@ -34,7 +34,7 @@ void joinThread(
  * Returns thread current join status.
  * thread - pointer to the valid thread.
  */
-bool getThreadJoined(
+bool isThreadJoined(
 	struct Thread* thread);
 
 /*

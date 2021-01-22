@@ -151,7 +151,7 @@ void joinThread(struct Thread* thread)
 #endif
 }
 
-bool getThreadJoined(
+bool isThreadJoined(
 	struct Thread* thread)
 {
 	assert(thread != NULL);
