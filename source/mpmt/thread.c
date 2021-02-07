@@ -180,7 +180,7 @@ void sleepThread(
 #endif
 }
 
-uint64_t getCurrentClock()
+double getCurrentClock()
 {
 #if __linux__ || __APPLE__
 	struct timespec time;
@@ -192,11 +192,26 @@ uint64_t getCurrentClock()
 	if (result != 0)
 		abort();
 
-	return (time.tv_sec) * 1000 +
-		(time.tv_nsec) / 1000000;
+	return time.tv_sec +
+		(double)time.tv_nsec / 1000000000.0;
 #elif _WIN32
-	abort();
+	LARGE_INTEGER frequency;
 
-	// TODO: QueryPerformanceFrequency
+	BOOL result = QueryPerformanceFrequency(
+		&frequency);
+
+	if (result != TRUE)
+		abort();
+
+	LARGE_INTEGER counter;
+
+	result = QueryPerformanceCounter(
+		&counter);
+
+	if (result != TRUE)
+		abort();
+
+	return counter.QuadPart /
+		(double)frequency.QuadPart;
 #endif
 }

@@ -45,6 +45,6 @@ void sleepThread(
 	size_t milliseconds);
 
 /*
- * Returns current clock value (ms).
+ * Returns current clock value (s).
  */
-uint64_t getCurrentClock();
+double getCurrentClock();
