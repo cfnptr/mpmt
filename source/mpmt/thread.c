@@ -158,13 +158,14 @@ bool isThreadJoined(
 	return thread->joined;
 }
 
-void sleepThread(size_t milliseconds)
+void sleepThread(
+	size_t milliseconds)
 {
 #if __linux__ || __APPLE__
 	struct timespec delay;
 
 	delay.tv_sec =
-		(long)milliseconds / 1000;
+		milliseconds / 1000;
 	delay.tv_nsec =
 		(long)(milliseconds % 1000) * 1000000;
 
@@ -176,5 +177,26 @@ void sleepThread(size_t milliseconds)
 		abort();
 #elif _WIN32
 	Sleep((DWORD)milliseconds);
+#endif
+}
+
+uint64_t getCurrentClock()
+{
+#if __linux__ || __APPLE__
+	struct timespec time;
+
+	int result = clock_gettime(
+		CLOCK_MONOTONIC,
+		&time);
+
+	if (result != 0)
+		abort();
+
+	return (time.tv_sec) * 1000 +
+		(time.tv_nsec) / 1000000;
+#elif _WIN32
+	abort();
+
+	// TODO: QueryPerformanceFrequency
 #endif
 }
