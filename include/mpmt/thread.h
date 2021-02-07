@@ -43,3 +43,8 @@ bool isThreadJoined(
  */
 void sleepThread(
 	size_t milliseconds);
+
+/*
+ * Returns current clock value (ms).
+ */
+uint64_t getCurrentClock();
