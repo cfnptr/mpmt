@@ -159,15 +159,16 @@ bool isThreadJoined(
 }
 
 void sleepThread(
-	size_t milliseconds)
+	double _delay)
 {
 #if __linux__ || __APPLE__
 	struct timespec delay;
 
-	delay.tv_sec =
-		milliseconds / 1000;
-	delay.tv_nsec =
-		(long)(milliseconds % 1000) * 1000000;
+	delay.tv_sec = _delay;
+
+	delay.tv_nsec = (long)(
+		(_delay - (double)delay.tv_sec) *
+		1000000000.0);
 
 	int result = nanosleep(
 		&delay,
@@ -176,7 +177,7 @@ void sleepThread(
 	if (result != 0)
 		abort();
 #elif _WIN32
-	Sleep((DWORD)milliseconds);
+	Sleep((DWORD)(_delay * 1000.0));
 #endif
 }
 

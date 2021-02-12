@@ -39,10 +39,10 @@ bool isThreadJoined(
 
 /*
  * Blocks the execution of the current thread for a specified time.
- * milliseconds - thread sleep delay time.
+ * delay - thread sleep delay time (s).
  */
 void sleepThread(
-	size_t milliseconds);
+	double delay);
 
 /*
  * Returns current clock value (s).
