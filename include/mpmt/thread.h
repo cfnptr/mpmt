@@ -45,6 +45,11 @@ void sleepThread(
 	double delay);
 
 /*
+ * Causes the current thread to yield execution to another thread.
+ */
+bool yieldThread();
+
+/*
  * Returns current clock value (s).
  */
 double getCurrentClock();

@@ -181,6 +181,15 @@ void sleepThread(
 #endif
 }
 
+bool yieldThread()
+{
+#if __linux__ || __APPLE__
+	return sched_yield() == 0;
+#elif _WIN32
+	return SwitchToThread() == TRUE;
+#endif
+}
+
 double getCurrentClock()
 {
 #if __linux__ || __APPLE__

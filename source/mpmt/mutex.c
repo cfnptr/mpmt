@@ -20,8 +20,8 @@ struct Mutex
 
 struct Mutex* createMutex()
 {
-	struct Mutex* mutex =
-		malloc(sizeof(struct Mutex));
+	struct Mutex* mutex = malloc(
+		sizeof(struct Mutex));
 
 	if (mutex == NULL)
 		return NULL;
