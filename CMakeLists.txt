@@ -5,8 +5,8 @@ if(${CMAKE_SOURCE_DIR} MATCHES ${CMAKE_BINARY_DIR})
 endif()
 
 project(mpmt
-	VERSION 1.5.1
-	DESCRIPTION "An open-source multi-platform multi-threading library"
+	VERSION 1.6.0
+	DESCRIPTION "Multi-platform multi-threading library"
 	HOMEPAGE_URL "https://github.com/cfnptr/mpmt"
 	LANGUAGES C)
 
