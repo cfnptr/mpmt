@@ -16,6 +16,9 @@
 struct Mutex
 {
 	MUTEX handle;
+#ifndef NDEBUG
+	bool isLocked;
+#endif
 };
 
 struct Mutex* createMutex()
@@ -41,11 +44,18 @@ struct Mutex* createMutex()
 		&mutex->handle);
 #endif
 
+#ifndef NDEBUG
+	mutex->isLocked = false;
+#endif
 	return mutex;
 }
 
 void destroyMutex(struct Mutex* mutex)
 {
+#ifndef NDEBUG
+	assert(mutex->isLocked == false);
+#endif
+
 	if (mutex == NULL)
 		return;
 
@@ -78,6 +88,10 @@ void lockMutex(
 	EnterCriticalSection(
 		&mutex->handle);
 #endif
+
+#ifndef NDEBUG
+	mutex->isLocked = true;
+#endif
 }
 
 void unlockMutex(
@@ -95,6 +109,10 @@ void unlockMutex(
 	LeaveCriticalSection(
 		&mutex->handle);
 #endif
+
+#ifndef NDEBUG
+	mutex->isLocked = false;
+#endif
 }
 
 bool tryLockMutex(
@@ -103,10 +121,16 @@ bool tryLockMutex(
 	assert(mutex != NULL);
 
 #if __linux__ || __APPLE__
-	return pthread_mutex_trylock(
+	bool result = pthread_mutex_trylock(
 		&mutex->handle) == 0;
 #elif _WIN32
-	return TryEnterCriticalSection(
+	bool result = TryEnterCriticalSection(
 		&mutex->handle) == TRUE;
 #endif
+
+#ifndef NDEBUG
+	if (result == true)
+		mutex->isLocked = true;
+#endif
+	return result;
 }
