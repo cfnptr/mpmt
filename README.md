@@ -1,3 +1,7 @@
+## Features
+* Mutex
+* Thread
+
 ## Supported operating systems
 * Linux
 * MacOS
