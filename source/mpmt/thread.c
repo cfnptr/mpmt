@@ -77,7 +77,7 @@ struct Thread* createThread(
 	thread->handle = CreateThread(
 		NULL,
 		0,
-		mpmtThreadFunction,
+		threadFunction,
 		thread,
 		0,
 		NULL);
