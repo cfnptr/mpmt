@@ -22,7 +22,7 @@ struct Thread
 };
 
 #if __linux__ || __APPLE__
-void* mpmtThreadFunction(void* argument)
+void* threadFunction(void* argument)
 {
 	struct Thread* thread =
 		(struct Thread*)argument;
@@ -33,7 +33,7 @@ void* mpmtThreadFunction(void* argument)
 	return NULL;
 }
 #elif _WIN32
-DWORD mpmtThreadFunction(LPVOID argument)
+DWORD threadFunction(LPVOID argument)
 {
 	struct Thread* thread =
 		(struct Thread*)argument;
@@ -65,7 +65,7 @@ struct Thread* createThread(
 	int result = pthread_create(
 		&thread->handle,
 		NULL,
-		mpmtThreadFunction,
+		threadFunction,
 		thread);
 
 	if (result != 0)
