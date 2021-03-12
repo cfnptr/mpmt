@@ -34,10 +34,7 @@ int main()
 		sizeof(struct ThreadData));
 
 	if (firstThreadData == NULL)
-	{
-		destroyMutex(mutex);
 		return EXIT_FAILURE;
-	}
 
 	firstThreadData->mutex = mutex;
 	firstThreadData->threadIndex = 1;
@@ -46,11 +43,7 @@ int main()
 		sizeof(struct ThreadData));
 
 	if (secondThreadData == NULL)
-	{
-		free(firstThreadData);
-		destroyMutex(mutex);
 		return EXIT_FAILURE;
-	}
 
 	secondThreadData->mutex = mutex;
 	secondThreadData->threadIndex = 2;
@@ -60,25 +53,14 @@ int main()
 		firstThreadData);
 
 	if (firstThread == NULL)
-	{
-		free(secondThreadData);
-		free(firstThreadData);
-		destroyMutex(mutex);
 		return EXIT_FAILURE;
-	}
 
 	struct Thread* secondThread = createThread(
 		threadFunction,
 		secondThreadData);
 
 	if (secondThread == NULL)
-	{
-		destroyThread(firstThread);
-		free(secondThreadData);
-		free(firstThreadData);
-		destroyMutex(mutex);
 		return EXIT_FAILURE;
-	}
 
 	joinThread(secondThread);
 	destroyThread(secondThread);

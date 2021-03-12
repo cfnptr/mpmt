@@ -22,10 +22,7 @@ int main()
 		"2");
 
 	if (secondThread == NULL)
-	{
-		destroyThread(firstThread);
 		return EXIT_FAILURE;
-	}
 
 	joinThread(secondThread);
 	destroyThread(secondThread);
