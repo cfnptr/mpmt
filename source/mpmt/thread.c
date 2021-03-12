@@ -22,7 +22,7 @@ struct Thread
 };
 
 #if __linux__ || __APPLE__
-void* threadFunction(void* argument)
+static void* threadFunction(void* argument)
 {
 	struct Thread* thread =
 		(struct Thread*)argument;
