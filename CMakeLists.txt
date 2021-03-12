@@ -13,6 +13,8 @@ project(mpmt
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 
+option(MPMT_BUILD_EXAMPLES "Build MPMT examples" ON)
+
 find_package(Threads REQUIRED)
 
 configure_file(
@@ -28,3 +30,21 @@ target_include_directories(mpmt PUBLIC
 	${PROJECT_BINARY_DIR}
 	${PROJECT_SOURCE_DIR}/include
 	${CMAKE_THREAD_LIBS_INIT})
+
+if (MPMT_BUILD_EXAMPLES)
+	add_executable(mpmt-thread-example
+		examples/thread_example.c)
+	target_link_libraries(mpmt-thread-example PRIVATE
+		mpmt)
+	target_include_directories(mpmt-thread-example PRIVATE
+		${PROJECT_BINARY_DIR}
+		${PROJECT_SOURCE_DIR}/include)
+
+	add_executable(mpmt-mutex-example
+		examples/mutex_example.c)
+	target_link_libraries(mpmt-mutex-example PRIVATE
+		mpmt)
+	target_include_directories(mpmt-mutex-example PRIVATE
+		${PROJECT_BINARY_DIR}
+		${PROJECT_SOURCE_DIR}/include)
+endif()
