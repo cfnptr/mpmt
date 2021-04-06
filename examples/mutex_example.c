@@ -3,16 +3,15 @@
 
 #include <stdio.h>
 
-struct ThreadData
+typedef struct ThreadData
 {
-	struct Mutex* mutex;
+	Mutex* mutex;
 	int threadIndex;
-};
+} ThreadData;
 
 static void threadFunction(void* argument)
 {
-	struct ThreadData* threadData =
-		(struct ThreadData*)argument;
+	ThreadData* threadData = (ThreadData*)argument;
 
 	lockMutex(threadData->mutex);
 
@@ -25,13 +24,13 @@ static void threadFunction(void* argument)
 
 int main()
 {
-	struct Mutex* mutex = createMutex();
+	Mutex* mutex = createMutex();
 
 	if (mutex == NULL)
 		return EXIT_FAILURE;
 
-	struct ThreadData* firstThreadData = malloc(
-		sizeof(struct ThreadData));
+	ThreadData* firstThreadData = malloc(
+		sizeof(ThreadData));
 
 	if (firstThreadData == NULL)
 		return EXIT_FAILURE;
@@ -39,8 +38,8 @@ int main()
 	firstThreadData->mutex = mutex;
 	firstThreadData->threadIndex = 1;
 
-	struct ThreadData* secondThreadData = malloc(
-		sizeof(struct ThreadData));
+	ThreadData* secondThreadData = malloc(
+		sizeof(ThreadData));
 
 	if (secondThreadData == NULL)
 		return EXIT_FAILURE;
@@ -48,14 +47,14 @@ int main()
 	secondThreadData->mutex = mutex;
 	secondThreadData->threadIndex = 2;
 
-	struct Thread* firstThread = createThread(
+	Thread* firstThread = createThread(
 		threadFunction,
 		firstThreadData);
 
 	if (firstThread == NULL)
 		return EXIT_FAILURE;
 
-	struct Thread* secondThread = createThread(
+	Thread* secondThread = createThread(
 		threadFunction,
 		secondThreadData);
 
