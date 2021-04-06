@@ -21,10 +21,9 @@ struct Mutex
 #endif
 };
 
-struct Mutex* createMutex()
+Mutex* createMutex()
 {
-	struct Mutex* mutex = malloc(
-		sizeof(struct Mutex));
+	Mutex* mutex = malloc(sizeof(Mutex));
 
 	if (mutex == NULL)
 		return NULL;
@@ -50,7 +49,7 @@ struct Mutex* createMutex()
 	return mutex;
 }
 
-void destroyMutex(struct Mutex* mutex)
+void destroyMutex(Mutex* mutex)
 {
 #ifndef NDEBUG
 	assert(mutex->isLocked == false);
@@ -73,8 +72,7 @@ void destroyMutex(struct Mutex* mutex)
 	free(mutex);
 }
 
-void lockMutex(
-	struct Mutex* mutex)
+void lockMutex(Mutex* mutex)
 {
 	assert(mutex != NULL);
 
@@ -94,8 +92,7 @@ void lockMutex(
 #endif
 }
 
-void unlockMutex(
-	struct Mutex* mutex)
+void unlockMutex(Mutex* mutex)
 {
 	assert(mutex != NULL);
 
@@ -115,8 +112,7 @@ void unlockMutex(
 #endif
 }
 
-bool tryLockMutex(
-	struct Mutex* mutex)
+bool tryLockMutex(Mutex* mutex)
 {
 	assert(mutex != NULL);
 

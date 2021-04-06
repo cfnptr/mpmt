@@ -24,35 +24,26 @@ struct Thread
 #if __linux__ || __APPLE__
 static void* threadFunction(void* argument)
 {
-	struct Thread* thread =
-		(struct Thread*)argument;
-
-	thread->function(
-		thread->argument);
-
+	Thread* thread = (Thread*)argument;
+	thread->function(thread->argument);
 	return NULL;
 }
 #elif _WIN32
 DWORD threadFunction(LPVOID argument)
 {
-	struct Thread* thread =
-		(struct Thread*)argument;
-
-	thread->function(
-		thread->argument);
-
+	Thread* thread =(Thread*)argument;
+	thread->function(thread->argument);
 	return 0;
 }
 #endif
 
-struct Thread* createThread(
+Thread* createThread(
 	void (*function)(void*),
 	void* argument)
 {
 	assert(function != NULL);
 
-	struct Thread* thread =
-		malloc(sizeof(struct Thread));
+	Thread* thread = malloc(sizeof(Thread));
 
 	if(thread == NULL)
 		return NULL;
@@ -92,7 +83,7 @@ struct Thread* createThread(
 	return thread;
 }
 
-void destroyThread(struct Thread* thread)
+void destroyThread(Thread* thread)
 {
 	if (thread == NULL)
 		return;
@@ -117,7 +108,7 @@ void destroyThread(struct Thread* thread)
 	free(thread);
 }
 
-void joinThread(struct Thread* thread)
+void joinThread(Thread* thread)
 {
 	assert(thread != NULL);
 
@@ -151,15 +142,13 @@ void joinThread(struct Thread* thread)
 #endif
 }
 
-bool isThreadJoined(
-	struct Thread* thread)
+bool isThreadJoined(Thread* thread)
 {
 	assert(thread != NULL);
 	return thread->joined;
 }
 
-void sleepThread(
-	double _delay)
+void sleepThread(double _delay)
 {
 #if __linux__ || __APPLE__
 	struct timespec delay;

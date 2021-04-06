@@ -3,34 +3,31 @@
 #include <stdbool.h>
 
 /* Mutex instance handle */
-struct Mutex;
+typedef struct Mutex Mutex;
 
 /*
  * Creates a new mutex.
  * Returns mutex on success, otherwise NULL.
  */
-struct Mutex* createMutex();
+Mutex* createMutex();
 
 /*
  * Destroys the mutex.
  * mutex - pointer to the mutex or NULL.
  */
-void destroyMutex(
-	struct Mutex* mutex);
+void destroyMutex(Mutex* mutex);
 
 /*
  * Locks mutex with blocking.
  * mutex - pointer to the valid mutex.
  */
-void lockMutex(
-	struct Mutex* mutex);
+void lockMutex(Mutex* mutex);
 
 /*
  * Unlocks locked mutex.
  * mutex - pointer to the valid mutex.
  */
-void unlockMutex(
-	struct Mutex* mutex);
+void unlockMutex(Mutex* mutex);
 
 /*
  * Tries to lock the specified mutex without blocking.
@@ -38,5 +35,4 @@ void unlockMutex(
  *
  * mutex - pointer to the valid mutex.
  */
-bool tryLockMutex(
-	struct Mutex* mutex);
+bool tryLockMutex(Mutex* mutex);
