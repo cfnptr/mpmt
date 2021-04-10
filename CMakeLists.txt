@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
-if(${CMAKE_SOURCE_DIR} MATCHES ${CMAKE_BINARY_DIR})
+if (${CMAKE_SOURCE_DIR} MATCHES ${CMAKE_BINARY_DIR})
 	message(FATAL_ERROR "Prevented in-tree build")
-endif()
+endif ()
 
 project(mpmt
 	VERSION 0.7.2
@@ -47,4 +47,4 @@ if (MPMT_BUILD_EXAMPLES)
 	target_include_directories(mpmt-mutex-example PRIVATE
 		${PROJECT_BINARY_DIR}
 		${PROJECT_SOURCE_DIR}/include)
-endif()
+endif ()
