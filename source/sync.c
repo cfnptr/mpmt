@@ -6,11 +6,11 @@
 #if __linux__ || __APPLE__
 #include <pthread.h>
 #define MUTEX pthread_mutex_t
-#define CONDVAR pthread_cond_t
+#define COND pthread_cond_t
 #elif _WIN32
 #include <windows.h>
 #define MUTEX CRITICAL_SECTION
-#define CONDVAR CONDITION_VARIABLE
+#define COND CONDITION_VARIABLE
 #else
 #error Unknown operating system
 #endif
@@ -25,7 +25,7 @@ struct Mutex
 
 struct Cond
 {
-	CONDVAR handle;
+	COND handle;
 };
 
 Mutex* createMutex()
