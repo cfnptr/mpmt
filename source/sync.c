@@ -23,10 +23,9 @@ struct Mutex
 #endif
 };
 
-struct Condvar
+struct Cond
 {
 	CONDVAR handle;
-	// TODO: debug lock flag
 };
 
 Mutex* createMutex()
@@ -139,96 +138,96 @@ bool tryLockMutex(Mutex* mutex)
 	return result;
 }
 
-Condvar* createCondvar()
+Cond* createCond()
 {
-	Condvar* condvar = malloc(sizeof(Condvar));
+	Cond* cond = malloc(sizeof(Cond));
 
-	if (condvar == NULL)
+	if (cond == NULL)
 		return NULL;
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_init(
-		&condvar->handle,
+		&cond->handle,
 		NULL);
 
 	if (result != 0)
 	{
-		free(condvar);
+		free(cond);
 		return NULL;
 	}
 #elif _WIN32
 	InitializeConditionVariable(
-		&condvar->handle);
+		&cond->handle);
 #endif
-	return condvar;
+	return cond;
 }
 
-void destroyCondvar(Condvar* condvar)
+void destroyCondvar(Cond* cond)
 {
-	if (condvar == NULL)
+	if (cond == NULL)
 		return;
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_destroy(
-		&condvar->handle);
+		&cond->handle);
 
 	if (result != 0)
 		abort();
 #endif
 
-	free(condvar);
+	free(cond);
 }
 
-void signalCondvar(Condvar* condvar)
+void signalCond(Cond* cond)
 {
-	assert(condvar != NULL);
+	assert(cond != NULL);
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_signal(
-		&condvar->handle);
+		&cond->handle);
 
 	if (result != 0)
 		abort();
 #elif _WIN32
 	WakeConditionVariable(
-		&condvar->handle);
+		&cond->handle);
 #endif
 }
 
-void broadcastCondvar(Condvar* condvar)
+void broadcastCond(Cond* cond)
 {
-	assert(condvar != NULL);
+	assert(cond != NULL);
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_broadcast(
-		&condvar->handle);
+		&cond->handle);
 
 	if (result != 0)
 		abort();
 #elif _WIN32
 	WakeAllConditionVariable(
-		&condvar->handle);
+		&cond->handle);
 #endif
 }
 
-void waitCondvar(
-	Condvar* condvar,
+void waitCond(
+	Cond* cond,
 	Mutex* mutex)
 {
-	assert(condvar != NULL);
+	assert(cond != NULL);
 	assert(mutex != NULL);
 	assert(mutex->isLocked == true);
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_wait(
-		&condvar->handle,
+		&cond->handle,
 		&mutex->handle);
 
 	if (result != 0)
 		abort();
 #elif _WIN32
 	BOOL result = SleepConditionVariableCS(
-  		&condvar->handle,
+  		&cond->handle,
   		&mutex->handle,
   		INFINITE);
 
@@ -237,12 +236,12 @@ void waitCondvar(
 #endif
 }
 
-void waitCondvarFor(
-	Condvar* condvar,
+void waitCondFor(
+	Cond* cond,
 	Mutex* mutex,
 	double timeout)
 {
-	assert(condvar != NULL);
+	assert(cond != NULL);
 	assert(mutex != NULL);
 	assert(timeout >= 0.0);
 	assert(mutex->isLocked == true);
@@ -257,7 +256,7 @@ void waitCondvarFor(
 		1000000000.0);
 
 	int result = pthread_cond_timedwait(
-		&condvar->handle,
+		&cond->handle,
 		&mutex->handle,
 		&delay);
 
@@ -265,12 +264,11 @@ void waitCondvarFor(
 		abort();
 #elif _WIN32
 	BOOL result = SleepConditionVariableCS(
-  		&condvar->handle,
+  		&cond->handle,
   		&mutex->handle,
   		(DWORD)(timeout * 1000.0));
 
 	if (result != TRUE)
 		abort();
-
 #endif
 }

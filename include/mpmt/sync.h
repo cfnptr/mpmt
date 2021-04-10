@@ -5,7 +5,7 @@
 /* Mutual exclusion instance handle */
 typedef struct Mutex Mutex;
 /* Condition variable instance handle */
-typedef struct Condvar Condvar;
+typedef struct Cond Cond;
 
 /*
  * Creates a new mutex.
@@ -40,39 +40,39 @@ void unlockMutex(Mutex* mutex);
 bool tryLockMutex(Mutex* mutex);
 
 /*
- * Creates a new condvar.
- * Returns condvar on success, otherwise NULL.
+ * Creates a new cond.
+ * Returns cond on success, otherwise NULL.
  */
-Condvar* createCondvar();
+Cond* createCond();
 
 /*
- * Destroys the condvar.
- * condvar - pointer to the condvar or NULL.
+ * Destroys the cond.
+ * cond - pointer to the cond or NULL.
  */
-void destroyCondvar(Condvar* condvar);
+void destroyCondvar(Cond* condvar);
 
 /*
  * Unblocks one of the waiting threads.
- * condvar - pointer to the valid condvar.
+ * cond - pointer to the valid cond.
  */
-void signalCondvar(Condvar* condvar);
+void signalCond(Cond* cond);
 
 /*
  * Unblocks all of the waiting threads.
- * condvar - pointer to the valid condvar.
+ * cond - pointer to the valid cond.
  */
-void broadcastCondvar(Condvar* condvar);
+void broadcastCond(Cond* cond);
 
 /*
  * Blocks the current thread until the
  * condition variable is woken up or
  * a spurious wakeup occurs.
  *
- * condvar - pointer to the valid condvar.
+ * cond - pointer to the valid cond.
  * mutex - pointer to the valid mutex.
  */
-void waitCondvar(
-	Condvar* condvar,
+void waitCond(
+	Cond* cond,
 	Mutex* mutex);
 
 /*
@@ -81,11 +81,11 @@ void waitCondvar(
  * after the specified timeout or
  * a spurious wakeup occurred.
  *
- * condvar - pointer to the valid condvar.
+ * cond - pointer to the valid cond.
  * mutex - pointer to the valid mutex.
  * timeout - condvar timeout delay time.
  */
-void waitCondvarFor(
-	Condvar* condvar,
+void waitCondFor(
+	Cond* cond,
 	Mutex* mutex,
 	double timeout);
