@@ -22,7 +22,7 @@ configure_file(
 	mpmt/defines.h)
 
 add_library(mpmt STATIC
-	source/mutex.c
+	source/sync.c
 	source/thread.c)
 target_link_libraries(mpmt PUBLIC
 	Threads::Threads)

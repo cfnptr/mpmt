@@ -150,10 +150,12 @@ bool isThreadJoined(Thread* thread)
 
 void sleepThread(double _delay)
 {
+	assert(_delay >= 0.0);
+
 #if __linux__ || __APPLE__
 	struct timespec delay;
 
-	delay.tv_sec = _delay;
+	delay.tv_sec = (time_t)_delay;
 
 	delay.tv_nsec = (long)(
 		(_delay - (double)delay.tv_sec) *
@@ -191,7 +193,7 @@ double getCurrentClock()
 	if (result != 0)
 		abort();
 
-	return time.tv_sec +
+	return (double)time.tv_sec +
 		(double)time.tv_nsec / 1000000000.0;
 #elif _WIN32
 	LARGE_INTEGER frequency;
@@ -210,7 +212,7 @@ double getCurrentClock()
 	if (result != TRUE)
 		abort();
 
-	return counter.QuadPart /
+	return (double)counter.QuadPart /
 		(double)frequency.QuadPart;
 #endif
 }

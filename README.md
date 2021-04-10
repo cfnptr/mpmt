@@ -1,6 +1,7 @@
 ## Features
-* Mutex
 * Thread
+* Mutex (Mutual exclusion)
+* Condvar (Condition variable)
 
 ## Supported operating systems
 * Linux

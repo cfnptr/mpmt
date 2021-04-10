@@ -1,4 +1,4 @@
-#include "mpmt/mutex.h"
+#include "mpmt/sync.h"
 #include "mpmt/thread.h"
 
 #include <stdio.h>
