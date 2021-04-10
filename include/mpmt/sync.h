@@ -49,7 +49,7 @@ Cond* createCond();
  * Destroys the cond.
  * cond - pointer to the cond or NULL.
  */
-void destroyCondvar(Cond* condvar);
+void destroyCond(Cond* cond);
 
 /*
  * Unblocks one of the waiting threads.

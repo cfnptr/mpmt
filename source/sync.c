@@ -162,7 +162,7 @@ Cond* createCond()
 	return cond;
 }
 
-void destroyCondvar(Cond* cond)
+void destroyCond(Cond* cond)
 {
 	if (cond == NULL)
 		return;
