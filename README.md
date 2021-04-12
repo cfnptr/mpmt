@@ -4,7 +4,7 @@
 * Cond (Condition variable)
 
 ## Supported operating systems
-* Linux
+* Ubuntu
 * MacOS
 * Windows
 
