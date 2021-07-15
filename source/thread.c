@@ -31,7 +31,7 @@ static void* threadFunction(void* argument)
 #elif _WIN32
 DWORD threadFunction(LPVOID argument)
 {
-	Thread* thread =(Thread*)argument;
+	Thread thread = (Thread)argument;
 	thread->function(thread->argument);
 	return 0;
 }
