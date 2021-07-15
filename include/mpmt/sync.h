@@ -3,33 +3,33 @@
 #include <stdbool.h>
 
 /* Mutual exclusion instance handle */
-typedef struct Mutex Mutex;
+typedef struct Mutex* Mutex;
 /* Condition variable instance handle */
-typedef struct Cond Cond;
+typedef struct Cond* Cond;
 
 /*
  * Creates a new mutex.
  * Returns mutex on success, otherwise NULL.
  */
-Mutex* createMutex();
+Mutex createMutex();
 
 /*
  * Destroys the mutex.
  * mutex - pointer to the mutex or NULL.
  */
-void destroyMutex(Mutex* mutex);
+void destroyMutex(Mutex mutex);
 
 /*
  * Locks mutex with blocking.
  * mutex - pointer to the valid mutex.
  */
-void lockMutex(Mutex* mutex);
+void lockMutex(Mutex mutex);
 
 /*
  * Unlocks locked mutex.
  * mutex - pointer to the valid mutex.
  */
-void unlockMutex(Mutex* mutex);
+void unlockMutex(Mutex mutex);
 
 /*
  * Tries to lock the specified mutex without blocking.
@@ -37,31 +37,31 @@ void unlockMutex(Mutex* mutex);
  *
  * mutex - pointer to the valid mutex.
  */
-bool tryLockMutex(Mutex* mutex);
+bool tryLockMutex(Mutex mutex);
 
 /*
  * Creates a new cond.
  * Returns cond on success, otherwise NULL.
  */
-Cond* createCond();
+Cond createCond();
 
 /*
  * Destroys the cond.
  * cond - pointer to the cond or NULL.
  */
-void destroyCond(Cond* cond);
+void destroyCond(Cond cond);
 
 /*
  * Unblocks one of the waiting threads.
  * cond - pointer to the valid cond.
  */
-void signalCond(Cond* cond);
+void signalCond(Cond cond);
 
 /*
  * Unblocks all of the waiting threads.
  * cond - pointer to the valid cond.
  */
-void broadcastCond(Cond* cond);
+void broadcastCond(Cond cond);
 
 /*
  * Blocks the current thread until the
@@ -72,8 +72,8 @@ void broadcastCond(Cond* cond);
  * mutex - pointer to the valid mutex.
  */
 void waitCond(
-	Cond* cond,
-	Mutex* mutex);
+	Cond cond,
+	Mutex mutex);
 
 /*
  * Blocks the current thread until the
@@ -86,6 +86,6 @@ void waitCond(
  * timeout - condvar timeout delay time.
  */
 void waitCondFor(
-	Cond* cond,
-	Mutex* mutex,
+	Cond cond,
+	Mutex mutex,
 	double timeout);

@@ -5,7 +5,7 @@
 
 typedef struct ThreadData
 {
-	Mutex* mutex;
+	Mutex mutex;
 	int threadIndex;
 } ThreadData;
 
@@ -24,7 +24,7 @@ static void threadFunction(void* argument)
 
 int main()
 {
-	Mutex* mutex = createMutex();
+	Mutex mutex = createMutex();
 
 	if (mutex == NULL)
 		return EXIT_FAILURE;
@@ -47,14 +47,14 @@ int main()
 	secondThreadData->mutex = mutex;
 	secondThreadData->threadIndex = 2;
 
-	Thread* firstThread = createThread(
+	Thread firstThread = createThread(
 		threadFunction,
 		firstThreadData);
 
 	if (firstThread == NULL)
 		return EXIT_FAILURE;
 
-	Thread* secondThread = createThread(
+	Thread secondThread = createThread(
 		threadFunction,
 		secondThreadData);
 

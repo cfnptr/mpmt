@@ -10,14 +10,14 @@ static void threadFunction(void* argument)
 
 int main()
 {
-	Thread* firstThread = createThread(
+	Thread firstThread = createThread(
 		threadFunction,
 		"1");
 
 	if (firstThread == NULL)
 		return EXIT_FAILURE;
 
-	Thread* secondThread = createThread(
+	Thread secondThread = createThread(
 		threadFunction,
 		"2");
 

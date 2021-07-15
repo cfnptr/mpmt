@@ -24,7 +24,7 @@ struct Thread
 #if __linux__ || __APPLE__
 static void* threadFunction(void* argument)
 {
-	Thread* thread = (Thread*)argument;
+	Thread thread = (Thread)argument;
 	thread->function(thread->argument);
 	return NULL;
 }
@@ -37,13 +37,14 @@ DWORD threadFunction(LPVOID argument)
 }
 #endif
 
-Thread* createThread(
+Thread createThread(
 	void (*function)(void*),
 	void* argument)
 {
 	assert(function != NULL);
 
-	Thread* thread = malloc(sizeof(Thread));
+	Thread thread = malloc(
+		sizeof(struct Thread));
 
 	if(thread == NULL)
 		return NULL;
@@ -83,7 +84,7 @@ Thread* createThread(
 	return thread;
 }
 
-void destroyThread(Thread* thread)
+void destroyThread(Thread thread)
 {
 	if (thread == NULL)
 		return;
@@ -108,7 +109,7 @@ void destroyThread(Thread* thread)
 	free(thread);
 }
 
-void joinThread(Thread* thread)
+void joinThread(Thread thread)
 {
 	assert(thread != NULL);
 
@@ -142,7 +143,7 @@ void joinThread(Thread* thread)
 #endif
 }
 
-bool isThreadJoined(Thread* thread)
+bool isThreadJoined(Thread thread)
 {
 	assert(thread != NULL);
 	return thread->joined;

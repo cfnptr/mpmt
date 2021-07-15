@@ -28,9 +28,10 @@ struct Cond
 	COND handle;
 };
 
-Mutex* createMutex()
+Mutex createMutex()
 {
-	Mutex* mutex = malloc(sizeof(Mutex));
+	Mutex mutex = malloc(
+		sizeof(struct Mutex));
 
 	if (mutex == NULL)
 		return NULL;
@@ -56,7 +57,7 @@ Mutex* createMutex()
 	return mutex;
 }
 
-void destroyMutex(Mutex* mutex)
+void destroyMutex(Mutex mutex)
 {
 	if (mutex == NULL)
 		return;
@@ -79,7 +80,7 @@ void destroyMutex(Mutex* mutex)
 	free(mutex);
 }
 
-void lockMutex(Mutex* mutex)
+void lockMutex(Mutex mutex)
 {
 	assert(mutex != NULL);
 
@@ -99,7 +100,7 @@ void lockMutex(Mutex* mutex)
 #endif
 }
 
-void unlockMutex(Mutex* mutex)
+void unlockMutex(Mutex mutex)
 {
 	assert(mutex != NULL);
 
@@ -119,7 +120,7 @@ void unlockMutex(Mutex* mutex)
 #endif
 }
 
-bool tryLockMutex(Mutex* mutex)
+bool tryLockMutex(Mutex mutex)
 {
 	assert(mutex != NULL);
 
@@ -138,9 +139,10 @@ bool tryLockMutex(Mutex* mutex)
 	return result;
 }
 
-Cond* createCond()
+Cond createCond()
 {
-	Cond* cond = malloc(sizeof(Cond));
+	Cond cond = malloc(
+		sizeof(struct Cond));
 
 	if (cond == NULL)
 		return NULL;
@@ -162,7 +164,7 @@ Cond* createCond()
 	return cond;
 }
 
-void destroyCond(Cond* cond)
+void destroyCond(Cond cond)
 {
 	if (cond == NULL)
 		return;
@@ -178,7 +180,7 @@ void destroyCond(Cond* cond)
 	free(cond);
 }
 
-void signalCond(Cond* cond)
+void signalCond(Cond cond)
 {
 	assert(cond != NULL);
 
@@ -194,7 +196,7 @@ void signalCond(Cond* cond)
 #endif
 }
 
-void broadcastCond(Cond* cond)
+void broadcastCond(Cond cond)
 {
 	assert(cond != NULL);
 
@@ -211,8 +213,8 @@ void broadcastCond(Cond* cond)
 }
 
 void waitCond(
-	Cond* cond,
-	Mutex* mutex)
+	Cond cond,
+	Mutex mutex)
 {
 	assert(cond != NULL);
 	assert(mutex != NULL);
@@ -237,8 +239,8 @@ void waitCond(
 }
 
 void waitCondFor(
-	Cond* cond,
-	Mutex* mutex,
+	Cond cond,
+	Mutex mutex,
 	double timeout)
 {
 	assert(cond != NULL);

@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 /* Thread instance handle */
-typedef struct Thread Thread;
+typedef struct Thread* Thread;
 
 /*
  * Creates a new thread executing the specified function.
@@ -12,7 +12,7 @@ typedef struct Thread Thread;
  * function - pointer to the valid function that should be invoked.
  * argument - argument that will be passed to the function.
  */
-Thread* createThread(
+Thread createThread(
 	void (*function)(void*),
 	void* argument);
 
@@ -20,19 +20,19 @@ Thread* createThread(
  * Destroys specified thread.
  * thread - pointer to the thread or NULL.
  */
-void destroyThread(Thread* thread);
+void destroyThread(Thread thread);
 
 /*
  * Blocks the current thread until the function execution end.
  * thread - pointer to the valid thread.
  */
-void joinThread(Thread* thread);
+void joinThread(Thread thread);
 
 /*
  * Returns thread current join status.
  * thread - pointer to the valid thread.
  */
-bool isThreadJoined(Thread* thread);
+bool isThreadJoined(Thread thread);
 
 /*
  * Blocks the execution of the current thread for a specified time.
