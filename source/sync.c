@@ -218,7 +218,6 @@ void waitCond(
 {
 	assert(cond != NULL);
 	assert(mutex != NULL);
-	assert(mutex->isLocked == true);
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_wait(
