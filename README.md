@@ -16,7 +16,6 @@
 ```
 git clone https://github.com/cfnptr/mpmt
 cd mpmt
-git submodule update --init --recursive
 ```
 
 ## Building
