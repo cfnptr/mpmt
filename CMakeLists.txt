@@ -13,7 +13,7 @@ project(mpmt
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 
-option(MPMT_BUILD_EXAMPLES "Build MPMT examples" ON)
+option(MPMT_BUILD_EXAMPLES "Build MPMT usage examples" ON)
 
 find_package(Threads REQUIRED)
 

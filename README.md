@@ -23,3 +23,8 @@ cd mpmt
 cmake -DCMAKE_BUILD_TYPE=Release -S . -B build/
 cmake --build build/
 ```
+
+### CMake options
+| Name                | Description               | Default value |
+| ------------------- | ------------------------- | ------------- |
+| MPMT_BUILD_EXAMPLES | Build MPMT usage examples | ON            |
