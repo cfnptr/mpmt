@@ -8,82 +8,82 @@ typedef struct Mutex* Mutex;
 typedef struct Cond* Cond;
 
 /*
- * Creates a new mutex.
+ * Create a new mutex instance.
  * Returns mutex on success, otherwise NULL.
  */
 Mutex createMutex();
 
 /*
- * Destroys the mutex.
- * mutex - pointer to the mutex or NULL.
+ * Destroy mutex instance.
+ * mutex - mutex instance or NULL.
  */
 void destroyMutex(Mutex mutex);
 
 /*
- * Locks mutex with blocking.
- * mutex - pointer to the valid mutex.
+ * Lock mutex with blocking.
+ * mutex - mutex instance.
  */
 void lockMutex(Mutex mutex);
 
 /*
- * Unlocks locked mutex.
- * mutex - pointer to the valid mutex.
+ * Unlock locked mutex.
+ * mutex - mutex instance.
  */
 void unlockMutex(Mutex mutex);
 
 /*
- * Tries to lock the specified mutex without blocking.
+ * Try to lock the specified mutex without blocking.
  * Returns true if mutex was successfully locked.
  *
- * mutex - pointer to the valid mutex.
+ * mutex - mutex instance.
  */
 bool tryLockMutex(Mutex mutex);
 
 /*
- * Creates a new cond.
+ * Create a new condition variable instance.
  * Returns cond on success, otherwise NULL.
  */
 Cond createCond();
 
 /*
- * Destroys the cond.
- * cond - pointer to the cond or NULL.
+ * Destroy condition variable instance.
+ * cond - cond instance or NULL.
  */
 void destroyCond(Cond cond);
 
 /*
- * Unblocks one of the waiting threads.
- * cond - pointer to the valid cond.
+ * Unblock one of the waiting threads.
+ * cond - cond instance.
  */
 void signalCond(Cond cond);
 
 /*
- * Unblocks all of the waiting threads.
- * cond - pointer to the valid cond.
+ * Unblock all waiting threads.
+ * cond - cond instance.
  */
 void broadcastCond(Cond cond);
 
 /*
- * Blocks the current thread until the
+ * Block the current thread until the
  * condition variable is woken up or
  * a spurious wakeup occurs.
  *
- * cond - pointer to the valid cond.
- * mutex - pointer to the valid mutex.
+ * cond - cond instance.
+ * mutex - mutex instance.
  */
 void waitCond(
 	Cond cond,
 	Mutex mutex);
 
 /*
- * Blocks the current thread until the
+ * Block the current thread until the
  * condition variable is woken up or
  * after the specified timeout or
  * a spurious wakeup occurred.
  *
- * cond - pointer to the valid cond.
- * mutex - pointer to the valid mutex.
- * timeout - condvar timeout delay time.
+ * cond - cond instance.
+ * mutex - mutex instance.
+ * timeout - timeout time.
  */
 void waitCondFor(
 	Cond cond,

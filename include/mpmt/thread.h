@@ -9,7 +9,7 @@ typedef struct Thread* Thread;
  * Creates a new thread executing the specified function.
  * Returns thread on success, otherwise NULL.
  *
- * function - pointer to the valid function that should be invoked.
+ * function - pointer to the function that should be invoked.
  * argument - argument that will be passed to the function.
  */
 Thread createThread(
@@ -17,20 +17,20 @@ Thread createThread(
 	void* argument);
 
 /*
- * Destroys specified thread.
- * thread - pointer to the thread or NULL.
+ * Destroy thread instance.
+ * thread - thread instance or NULL.
  */
 void destroyThread(Thread thread);
 
 /*
- * Blocks the current thread until the function execution end.
- * thread - pointer to the valid thread.
+ * Block the current thread until the function execution end.
+ * thread - thread instance.
  */
 void joinThread(Thread thread);
 
 /*
  * Returns thread current join status.
- * thread - pointer to the valid thread.
+ * thread - thread instance.
  */
 bool isThreadJoined(Thread thread);
 
