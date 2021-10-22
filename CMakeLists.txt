@@ -4,6 +4,10 @@ if (${CMAKE_SOURCE_DIR} MATCHES ${CMAKE_BINARY_DIR})
 	message(FATAL_ERROR "Prevented in-tree build")
 endif ()
 
+if (TARGET mpmt)
+	return()
+endif ()
+
 project(mpmt
 	VERSION 1.0.2
 	DESCRIPTION "Multi-platform multi-threading library"
