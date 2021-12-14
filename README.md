@@ -1,5 +1,5 @@
 # MPMT 
-A small library providing a generic interface for multithreading across different platforms.<br>
+A small library providing generic interface for multithreading across different platforms.<br>
 Created due to the fact that MacOS does not support <threads.h> in C11.
 
 ![CI](https://github.com/cfnptr/mpmt/actions/workflows/cmake.yml/badge.svg)
