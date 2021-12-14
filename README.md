@@ -2,7 +2,7 @@
 A small library providing a generic interface for multithreading across different platforms.<br>
 Created due to the fact that MacOS does not support <threads.h> in C11.
 
-![example workflow](https://github.com/cfnptr/mpmt/actions/workflows/cmake.yml/badge.svg)
+![CI](https://github.com/cfnptr/mpmt/actions/workflows/cmake.yml/badge.svg)
 
 ## Features
 * Thread
