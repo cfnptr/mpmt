@@ -18,6 +18,7 @@
 #include <assert.h>
 
 #if __linux__ || __APPLE__
+#include <errno.h>
 #include <pthread.h>
 #define THREAD pthread_t
 #elif _WIN32
@@ -176,12 +177,24 @@ void sleepThread(double _delay)
 		(_delay - (double)delay.tv_sec) *
 		1000000000.0);
 
-	int result = nanosleep(
-		&delay,
-		NULL);
+	while (true)
+	{
+		int result = nanosleep(
+			&delay,
+			&delay);
 
-	if (result != 0)
-		abort();
+		if (result != 0)
+		{
+			int error = errno;
+
+			if (error == EINTR)
+				continue;
+			else
+				abort();
+		}
+
+		return;
+	}
 #elif _WIN32
 	Sleep((DWORD)(_delay * 1000.0));
 #endif
