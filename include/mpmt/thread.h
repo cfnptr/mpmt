@@ -16,12 +16,18 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-/* Thread instance handle */
-typedef struct Thread* Thread;
+/*
+ * Thread structure.
+ */
+typedef struct Thread_T Thread_T;
+/*
+ * Thread instance.
+ */
+typedef Thread_T* Thread;
 
 /*
  * Creates a new thread executing the specified function.
- * Returns thread on success, otherwise NULL.
+ * Returns thread instance on success, otherwise NULL.
  *
  * function - pointer to the function that should be invoked.
  * argument - argument that will be passed to the function.
@@ -31,13 +37,13 @@ Thread createThread(
 	void* argument);
 
 /*
- * Destroy thread instance.
+ * Destroys thread instance.
  * thread - thread instance or NULL.
  */
 void destroyThread(Thread thread);
 
 /*
- * Block the current thread until the function execution end.
+ * Blocks the current thread until the function execution end.
  * thread - thread instance.
  */
 void joinThread(Thread thread);

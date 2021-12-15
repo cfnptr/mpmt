@@ -16,10 +16,23 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-/* Mutual exclusion instance handle */
-typedef struct Mutex* Mutex;
-/* Condition variable instance handle */
-typedef struct Cond* Cond;
+/*
+ * Mutual exclusion structure.
+ */
+typedef struct Mutex_T Mutex_T;
+/*
+ * Mutual exclusion instance.
+ */
+typedef Mutex_T* Mutex;
+
+/*
+ * Condition variable structure.
+ */
+typedef struct Cond_T Cond_T;
+/*
+ * Condition variable instance.
+ */
+typedef Cond_T* Cond;
 
 /*
  * Create a new mutex instance.
@@ -28,19 +41,19 @@ typedef struct Cond* Cond;
 Mutex createMutex();
 
 /*
- * Destroy mutex instance.
+ * Destroys mutex instance.
  * mutex - mutex instance or NULL.
  */
 void destroyMutex(Mutex mutex);
 
 /*
- * Lock mutex with blocking.
+ * Locks mutex with blocking.
  * mutex - mutex instance.
  */
 void lockMutex(Mutex mutex);
 
 /*
- * Unlock locked mutex.
+ * Unlocks locked mutex.
  * mutex - mutex instance.
  */
 void unlockMutex(Mutex mutex);
@@ -60,25 +73,25 @@ bool tryLockMutex(Mutex mutex);
 Cond createCond();
 
 /*
- * Destroy condition variable instance.
+ * Destroys condition variable instance.
  * cond - cond instance or NULL.
  */
 void destroyCond(Cond cond);
 
 /*
- * Unblock one of the waiting threads.
+ * Unblocks one of the waiting threads.
  * cond - cond instance.
  */
 void signalCond(Cond cond);
 
 /*
- * Unblock all waiting threads.
+ * Unblocks all waiting threads.
  * cond - cond instance.
  */
 void broadcastCond(Cond cond);
 
 /*
- * Block the current thread until the
+ * Blocks the current thread until the
  * condition variable is woken up or
  * a spurious wakeup occurs.
  *
@@ -90,7 +103,7 @@ void waitCond(
 	Mutex mutex);
 
 /*
- * Block the current thread until the
+ * Blocks the current thread until the
  * condition variable is woken up or
  * after the specified timeout or
  * a spurious wakeup occurred.

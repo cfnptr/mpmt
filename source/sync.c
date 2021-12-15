@@ -29,7 +29,7 @@
 #error Unknown operating system
 #endif
 
-struct Mutex
+struct Mutex_T
 {
 	MUTEX handle;
 #ifndef NDEBUG
@@ -37,7 +37,7 @@ struct Mutex
 #endif
 };
 
-struct Cond
+struct Cond_T
 {
 	COND handle;
 };
@@ -45,7 +45,7 @@ struct Cond
 Mutex createMutex()
 {
 	Mutex mutex = malloc(
-		sizeof(struct Mutex));
+		sizeof(Mutex_T));
 
 	if (mutex == NULL)
 		return NULL;
@@ -156,7 +156,7 @@ bool tryLockMutex(Mutex mutex)
 Cond createCond()
 {
 	Cond cond = malloc(
-		sizeof(struct Cond));
+		sizeof(Cond_T));
 
 	if (cond == NULL)
 		return NULL;

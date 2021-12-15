@@ -28,7 +28,7 @@
 #error Unknown operating system
 #endif
 
-struct Thread
+struct Thread_T
 {
 	THREAD handle;
 	bool joined;
@@ -59,7 +59,7 @@ Thread createThread(
 	assert(function != NULL);
 
 	Thread thread = malloc(
-		sizeof(struct Thread));
+		sizeof(Thread_T));
 
 	if(thread == NULL)
 		return NULL;
