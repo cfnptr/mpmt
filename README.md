@@ -1,14 +1,13 @@
 # MPMT  ![CI](https://github.com/cfnptr/mpmt/actions/workflows/cmake.yml/badge.svg)
 
-A small library providing generic interface for multithreading across different platforms.<br>
-Created due to the fact that macOS does not support <threads.h> in C11.
+A small library providing generic interface for **multithreading** across different platforms.<br>
+Created due to the fact that macOS does not support `<threads.h>` in C11.
 
 ## Features
 
-* Thread
 * Mutex (Mutual exclusion)
 * Cond (Condition variable)
-* (sleep, yield, getTime, etc.)
+* Thread (and sleep, yield, etc.)
 
 ## Supported operating systems
 
@@ -32,7 +31,7 @@ git clone --recursive https://github.com/cfnptr/mpmt
 
 | Name                | Description               | Default value |
 |---------------------|---------------------------|---------------|
-| MPMT_BUILD_EXAMPLES | Build MPMT usage examples | ON            |
+| MPMT_BUILD_EXAMPLES | Build MPMT usage examples | `ON`          |
 
 ## Usage
 
