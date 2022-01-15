@@ -47,7 +47,7 @@ Mutex createMutex()
 	Mutex mutex = malloc(
 		sizeof(Mutex_T));
 
-	if (mutex == NULL)
+	if (!mutex)
 		return NULL;
 
 #if __linux__ || __APPLE__
@@ -73,11 +73,11 @@ Mutex createMutex()
 
 void destroyMutex(Mutex mutex)
 {
-	if (mutex == NULL)
+	if (!mutex)
 		return;
 
 #ifndef NDEBUG
-	assert(mutex->isLocked == false);
+	assert(!mutex->isLocked);
 #endif
 
 #if __linux__ || __APPLE__
@@ -96,7 +96,7 @@ void destroyMutex(Mutex mutex)
 
 void lockMutex(Mutex mutex)
 {
-	assert(mutex != NULL);
+	assert(mutex);
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_lock(
@@ -116,7 +116,7 @@ void lockMutex(Mutex mutex)
 
 void unlockMutex(Mutex mutex)
 {
-	assert(mutex != NULL);
+	assert(mutex);
 
 #if __linux__ || __APPLE__
 	int result = pthread_mutex_unlock(
@@ -136,7 +136,7 @@ void unlockMutex(Mutex mutex)
 
 bool tryLockMutex(Mutex mutex)
 {
-	assert(mutex != NULL);
+	assert(mutex);
 
 #if __linux__ || __APPLE__
 	bool result = pthread_mutex_trylock(
@@ -147,7 +147,7 @@ bool tryLockMutex(Mutex mutex)
 #endif
 
 #ifndef NDEBUG
-	if (result == true)
+	if (result)
 		mutex->isLocked = true;
 #endif
 	return result;
@@ -158,7 +158,7 @@ Cond createCond()
 	Cond cond = malloc(
 		sizeof(Cond_T));
 
-	if (cond == NULL)
+	if (!cond)
 		return NULL;
 
 #if __linux__ || __APPLE__
@@ -180,7 +180,7 @@ Cond createCond()
 
 void destroyCond(Cond cond)
 {
-	if (cond == NULL)
+	if (!cond )
 		return;
 
 #if __linux__ || __APPLE__
@@ -196,7 +196,7 @@ void destroyCond(Cond cond)
 
 void signalCond(Cond cond)
 {
-	assert(cond != NULL);
+	assert(cond);
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_signal(
@@ -212,7 +212,7 @@ void signalCond(Cond cond)
 
 void broadcastCond(Cond cond)
 {
-	assert(cond != NULL);
+	assert(cond);
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_broadcast(
@@ -230,8 +230,8 @@ void waitCond(
 	Cond cond,
 	Mutex mutex)
 {
-	assert(cond != NULL);
-	assert(mutex != NULL);
+	assert(cond);
+	assert(mutex);
 
 #if __linux__ || __APPLE__
 	int result = pthread_cond_wait(
@@ -256,10 +256,10 @@ void waitCondFor(
 	Mutex mutex,
 	double timeout)
 {
-	assert(cond != NULL);
-	assert(mutex != NULL);
+	assert(cond);
+	assert(mutex);
 	assert(timeout >= 0.0);
-	assert(mutex->isLocked == true);
+	assert(mutex->isLocked);
 
 #if __linux__ || __APPLE__
 	struct timespec delay;

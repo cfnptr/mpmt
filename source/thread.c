@@ -56,12 +56,12 @@ Thread createThread(
 	void (*function)(void*),
 	void* argument)
 {
-	assert(function != NULL);
+	assert(function);
 
 	Thread thread = malloc(
 		sizeof(Thread_T));
 
-	if(thread == NULL)
+	if(!thread)
 		return NULL;
 
 	thread->joined = false;
@@ -101,10 +101,10 @@ Thread createThread(
 
 void destroyThread(Thread thread)
 {
-	if (thread == NULL)
+	if (!thread)
 		return;
 
-	if (thread->joined == false)
+	if (!thread->joined)
 	{
 #if __linux__ || __APPLE__
 		int result = pthread_detach(
@@ -126,9 +126,9 @@ void destroyThread(Thread thread)
 
 void joinThread(Thread thread)
 {
-	assert(thread != NULL);
+	assert(thread);
 
-	if (thread->joined == true)
+	if (thread->joined)
 		abort();
 
 	thread->joined = true;
@@ -160,7 +160,7 @@ void joinThread(Thread thread)
 
 bool isThreadJoined(Thread thread)
 {
-	assert(thread != NULL);
+	assert(thread);
 	return thread->joined;
 }
 
