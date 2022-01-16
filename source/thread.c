@@ -30,10 +30,10 @@
 
 struct Thread_T
 {
-	THREAD handle;
-	bool joined;
 	void (*function)(void*);
 	void* argument;
+	THREAD handle;
+	bool joined;
 };
 
 #if __linux__ || __APPLE__
@@ -64,9 +64,9 @@ Thread createThread(
 	if(!thread)
 		return NULL;
 
-	thread->joined = false;
 	thread->function = function;
 	thread->argument = argument;
+	thread->joined = false;
 
 #if __linux__ || __APPLE__
 	int result = pthread_create(
