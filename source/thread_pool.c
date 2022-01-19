@@ -45,8 +45,6 @@ static void onThreadUpdate(void* argument)
 	Cond workingCond = threadPool->workingCond;
 	PoolTask* tasks = threadPool->tasks;
 
-	lockMutex(mutex);
-
 	while (true)
 	{
 		lockMutex(mutex);
@@ -92,6 +90,7 @@ ThreadPool createThreadPool(
 {
 	assert(threadCount);
 	assert(taskCapacity);
+	assert(taskCapacity >= threadCount);
 
 	ThreadPool threadPool = calloc(1,
 		sizeof(ThreadPool_T));
@@ -209,6 +208,19 @@ void destroyThreadPool(ThreadPool threadPool)
 	destroyCond(threadPool->workCond);
 	destroyMutex(threadPool->mutex);
 	free(threadPool);
+}
+
+size_t getThreadPoolThreadCount(
+	ThreadPool threadPool)
+{
+	assert(threadPool);
+	return threadPool->threadCount;
+}
+size_t getThreadPoolTaskCapacity(
+	ThreadPool threadPool)
+{
+	assert(threadPool);
+	return threadPool->taskCapacity;
 }
 
 bool addThreadPoolTask(

@@ -42,6 +42,19 @@ ThreadPool createThreadPool(
 void destroyThreadPool(ThreadPool threadPool);
 
 /*
+ * Returns thread pool thread count.
+ * threadPool - thread pool instance.
+ */
+size_t getThreadPoolThreadCount(
+	ThreadPool threadPool);
+/*
+ * Returns thread pool task capacity.
+ * threadPool - thread pool instance.
+ */
+size_t getThreadPoolTaskCapacity(
+	ThreadPool threadPool);
+
+/*
  * Add a new task to the thread pool.
  * Returns true if task successfully added.
  *
