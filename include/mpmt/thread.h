@@ -30,12 +30,11 @@ typedef Thread_T* Thread;
  * Returns thread instance on success, otherwise NULL.
  *
  * function - pointer to the function that should be invoked.
- * argument - argument that will be passed to the function.
+ * argument - argument that will be passed to the function or NULL.
  */
 Thread createThread(
 	void (*function)(void*),
 	void* argument);
-
 /*
  * Destroys thread instance.
  * thread - thread instance or NULL.

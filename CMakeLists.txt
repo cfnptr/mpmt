@@ -41,7 +41,8 @@ configure_file(
 
 add_library(mpmt STATIC
 	source/sync.c
-	source/thread.c)
+	source/thread.c
+	source/thread_pool.c)
 target_link_libraries(mpmt PUBLIC
 	Threads::Threads)
 target_include_directories(mpmt PUBLIC

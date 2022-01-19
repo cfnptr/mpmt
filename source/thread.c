@@ -98,7 +98,6 @@ Thread createThread(
 
 	return thread;
 }
-
 void destroyThread(Thread thread)
 {
 	if (!thread)
