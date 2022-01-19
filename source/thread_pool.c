@@ -252,8 +252,13 @@ void waitThreadPool(ThreadPool threadPool)
 
 	lockMutex(mutex);
 
-	while (threadPool->taskCount || threadPool->workingCount)
+	while (true)
+	{
+		if (!threadPool->taskCount && !threadPool->workingCount)
+			break;
+
 		waitCond(workingCond, mutex);
+	}
 
 	unlockMutex(mutex);
 }
