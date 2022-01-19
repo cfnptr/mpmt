@@ -60,6 +60,8 @@
 #define atomicFetchAnd16(memory, value) InterlockedAdd16(memory, value)
 #define atomicFetchAnd32(memory, value) InterlockedAdd(memory, value)
 #define atomicFetchAnd64(memory, value) InterlockedAdd64(memory, value)
+#else
+#error Unknown operating system
 #endif
 
 // TODO: add exchange, compare swap, max, min, increment, decrement

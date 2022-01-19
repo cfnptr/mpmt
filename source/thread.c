@@ -18,11 +18,8 @@
 #include <assert.h>
 
 #if __linux__ || __APPLE__
-#include <errno.h>
-#include <pthread.h>
 #define THREAD pthread_t
 #elif _WIN32
-#include <windows.h>
 #define THREAD HANDLE
 #else
 #error Unknown operating system
@@ -161,85 +158,4 @@ bool isThreadJoined(Thread thread)
 {
 	assert(thread);
 	return thread->joined;
-}
-
-void sleepThread(double _delay)
-{
-	assert(_delay >= 0.0);
-
-#if __linux__ || __APPLE__
-	struct timespec delay;
-
-	delay.tv_sec = (time_t)_delay;
-
-	delay.tv_nsec = (long)(
-		(_delay - (double)delay.tv_sec) *
-		1000000000.0);
-
-	while (true)
-	{
-		int result = nanosleep(
-			&delay,
-			&delay);
-
-		if (result != 0)
-		{
-			int error = errno;
-
-			if (error == EINTR)
-				continue;
-			else
-				abort();
-		}
-
-		return;
-	}
-#elif _WIN32
-	Sleep((DWORD)(_delay * 1000.0));
-#endif
-}
-
-bool yieldThread()
-{
-#if __linux__ || __APPLE__
-	return sched_yield() == 0;
-#elif _WIN32
-	return SwitchToThread() == TRUE;
-#endif
-}
-
-double getCurrentClock()
-{
-#if __linux__ || __APPLE__
-	struct timespec time;
-
-	int result = clock_gettime(
-		CLOCK_MONOTONIC,
-		&time);
-
-	if (result != 0)
-		abort();
-
-	return (double)time.tv_sec +
-		(double)time.tv_nsec / 1000000000.0;
-#elif _WIN32
-	LARGE_INTEGER frequency;
-
-	BOOL result = QueryPerformanceFrequency(
-		&frequency);
-
-	if (result != TRUE)
-		abort();
-
-	LARGE_INTEGER counter;
-
-	result = QueryPerformanceCounter(
-		&counter);
-
-	if (result != TRUE)
-		abort();
-
-	return (double)counter.QuadPart /
-		(double)frequency.QuadPart;
-#endif
 }
