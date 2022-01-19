@@ -14,9 +14,6 @@
 
 #include "mpmt/thread.h"
 
-#include <stdlib.h>
-#include <assert.h>
-
 #if __linux__ || __APPLE__
 #define THREAD pthread_t
 #elif _WIN32

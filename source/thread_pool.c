@@ -17,8 +17,6 @@
 #include "mpmt/thread.h"
 #include "mpmt/atomic.h"
 
-#include <assert.h>
-
 typedef struct PoolTask
 {
 	void (*function)(void*);

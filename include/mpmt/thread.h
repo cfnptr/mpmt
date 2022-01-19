@@ -99,7 +99,7 @@ inline static void sleepThread(double delay)
 		return;
 	}
 #elif _WIN32
-	Sleep((DWORD)(_delay * 1000.0));
+	Sleep((DWORD)(delay * 1000.0));
 #endif
 }
 

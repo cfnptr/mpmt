@@ -13,8 +13,6 @@
 // limitations under the License.
 
 #include "mpmt/sync.h"
-
-#include <stdlib.h>
 #include <assert.h>
 
 #if __linux__ || __APPLE__
