@@ -39,7 +39,7 @@
 #define atomicFetchAnd32(memory, value) __sync_fetch_and_and(memory, value)
 #define atomicFetchAnd64(memory, value) __sync_fetch_and_and(memory, value)
 #elif _WIN32
-#include <winnt.h>
+#include <windows.h>
 
 #define atomicFetchAdd8(memory, value) InterlockedAdd8(memory, value)
 #define atomicFetchAdd16(memory, value) InterlockedAdd16(memory, value)
