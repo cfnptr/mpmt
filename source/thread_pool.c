@@ -15,7 +15,6 @@
 #include "mpmt/thread_pool.h"
 #include "mpmt/sync.h"
 #include "mpmt/thread.h"
-#include "mpmt/atomic.h"
 
 typedef struct PoolTask
 {
