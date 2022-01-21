@@ -31,7 +31,7 @@ struct Mutex_T
 {
 	MUTEX handle;
 #ifndef NDEBUG
-	bool isLocked;
+	volatile bool isLocked;
 #endif
 };
 
