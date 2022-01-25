@@ -19,49 +19,14 @@
 #define atomic_int64 volatile int64_t
 
 #if __linux__ || __APPLE__
-#define atomicFetchAdd8(memory, value) __sync_fetch_and_add(memory, value)
-#define atomicFetchAdd16(memory, value) __sync_fetch_and_add(memory, value)
 #define atomicFetchAdd32(memory, value) __sync_fetch_and_add(memory, value)
 #define atomicFetchAdd64(memory, value) __sync_fetch_and_add(memory, value)
-
-#define atomicFetchOr8(memory, value) __sync_fetch_and_or(memory, value)
-#define atomicFetchOr16(memory, value) __sync_fetch_and_or(memory, value)
-#define atomicFetchOr32(memory, value) __sync_fetch_and_or(memory, value)
-#define atomicFetchOr64(memory, value) __sync_fetch_and_or(memory, value)
-
-#define atomicFetchXor8(memory, value) __sync_fetch_and_xor(memory, value)
-#define atomicFetchXor16(memory, value) __sync_fetch_and_xor(memory, value)
-#define atomicFetchXor32(memory, value) __sync_fetch_and_xor(memory, value)
-#define atomicFetchXor64(memory, value) __sync_fetch_and_xor(memory, value)
-
-#define atomicFetchAnd8(memory, value) __sync_fetch_and_and(memory, value)
-#define atomicFetchAnd16(memory, value) __sync_fetch_and_and(memory, value)
-#define atomicFetchAnd32(memory, value) __sync_fetch_and_and(memory, value)
-#define atomicFetchAnd64(memory, value) __sync_fetch_and_and(memory, value)
 #elif _WIN32
 #include <windows.h>
-
-#define atomicFetchAdd8(memory, value) InterlockedAdd8(memory, value)
-#define atomicFetchAdd16(memory, value) InterlockedAdd16(memory, value)
-#define atomicFetchAdd32(memory, value) InterlockedAdd(memory, value)
-#define atomicFetchAdd64(memory, value) InterlockedAdd64(memory, value)
-
-#define atomicFetchOr8(memory, value) InterlockedAdd8(memory, value)
-#define atomicFetchOr16(memory, value) InterlockedAdd16(memory, value)
-#define atomicFetchOr32(memory, value) InterlockedAdd(memory, value)
-#define atomicFetchOr64(memory, value) InterlockedAdd64(memory, value)
-
-#define atomicFetchXor8(memory, value) InterlockedAdd8(memory, value)
-#define atomicFetchXor16(memory, value) InterlockedAdd16(memory, value)
-#define atomicFetchXor32(memory, value) InterlockedAdd(memory, value)
-#define atomicFetchXor64(memory, value) InterlockedAdd64(memory, value)
-
-#define atomicFetchAnd8(memory, value) InterlockedAdd8(memory, value)
-#define atomicFetchAnd16(memory, value) InterlockedAdd16(memory, value)
-#define atomicFetchAnd32(memory, value) InterlockedAdd(memory, value)
-#define atomicFetchAnd64(memory, value) InterlockedAdd64(memory, value)
+#define atomicFetchAdd32(memory, value) InterlockedExchangeAdd(memory, value)
+#define atomicFetchAdd64(memory, value) InterlockedExchangeAdd64(memory, value)
 #else
 #error Unknown operating system
 #endif
 
-// TODO: add exchange, compare swap, max, min, increment, decrement
+// TODO: add exchange, or, xor, compare swap, max, min, increment, decrement
