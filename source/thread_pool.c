@@ -143,8 +143,9 @@ ThreadPool createThreadPool(
 	threadPool->taskCapacity = taskCapacity;
 	threadPool->taskCount = 0;
 
-	Thread* threads = calloc(1,
-		threadCount * sizeof(Thread));
+	Thread* threads = calloc(
+		threadCount,
+		sizeof(Thread));
 
 	if (!threads)
 	{
