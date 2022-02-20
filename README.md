@@ -8,7 +8,8 @@ Created due to the fact that macOS does not support `<threads.h>` in C11.
 * Mutex (Mutual exclusion)
 * Cond (Condition variable)
 * Thread (sleep, yield, etc.)
-* Thread pool
+* Thread pool (tasks)
+* Atomics
 
 ## Supported operating systems
 
