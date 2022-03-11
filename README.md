@@ -27,6 +27,8 @@ Created due to the fact that macOS does not support `<threads.h>` in C11.
 
 | Name                | Description               | Default value |
 |---------------------|---------------------------|---------------|
+| MPMT_BUILD_SHARED   | Build MPMT shared library | `ON`          |
+| MPMT_BUILD_TESTS    | Build MPMT library tests  | `ON`          |
 | MPMT_BUILD_EXAMPLES | Build MPMT usage examples | `ON`          |
 
 ## Cloning

@@ -31,6 +31,8 @@ project(mpmt
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 
+option(MPMT_BUILD_SHARED "Build MPMT shared library" ON)
+option(MPMT_BUILD_TESTS "Build MPMT library tests" ON)
 option(MPMT_BUILD_EXAMPLES "Build MPMT usage examples" ON)
 
 find_package(Threads REQUIRED)
@@ -39,22 +41,39 @@ configure_file(
 	cmake/defines.h.in
 	mpmt/defines.h)
 
-add_library(mpmt STATIC
+set(MPMT_SOURCES
 	source/sync.c
 	source/thread.c
 	source/thread_pool.c)
-target_link_libraries(mpmt PUBLIC
+
+add_library(mpmt-static STATIC
+	${MPMT_SOURCES})
+target_link_libraries(mpmt-static PUBLIC
 	Threads::Threads)
-target_include_directories(mpmt PUBLIC
+target_include_directories(mpmt-static PUBLIC
 	${PROJECT_BINARY_DIR}
 	${PROJECT_SOURCE_DIR}/include
 	${CMAKE_THREAD_LIBS_INIT})
+
+if (MPMT_BUILD_SHARED)
+	add_library(mpmt-shared SHARED
+		${MPMT_SOURCES})
+	set_target_properties(mpmt-shared PROPERTIES
+		OUTPUT_NAME "mpmt"
+		WINDOWS_EXPORT_ALL_SYMBOLS ON)
+	target_link_libraries(mpmt-shared PUBLIC
+		Threads::Threads)
+	target_include_directories(mpmt-shared PUBLIC
+		${PROJECT_BINARY_DIR}
+		${PROJECT_SOURCE_DIR}/include
+		${CMAKE_THREAD_LIBS_INIT})
+endif ()
 
 if (MPMT_BUILD_EXAMPLES)
 	add_executable(mpmt-thread-example
 		examples/thread_example.c)
 	target_link_libraries(mpmt-thread-example PRIVATE
-		mpmt)
+		mpmt-static)
 	target_include_directories(mpmt-thread-example PRIVATE
 		${PROJECT_BINARY_DIR}
 		${PROJECT_SOURCE_DIR}/include)
@@ -62,8 +81,22 @@ if (MPMT_BUILD_EXAMPLES)
 	add_executable(mpmt-mutex-example
 		examples/mutex_example.c)
 	target_link_libraries(mpmt-mutex-example PRIVATE
-		mpmt)
+		mpmt-static)
 	target_include_directories(mpmt-mutex-example PRIVATE
 		${PROJECT_BINARY_DIR}
 		${PROJECT_SOURCE_DIR}/include)
+endif ()
+
+if (MPMT_BUILD_TESTS)
+	enable_testing()
+
+	add_executable(TestMpmtSync tests/test_sync.c)
+	target_link_libraries(TestMpmtSync PUBLIC mpmt-static)
+	add_test(NAME TestMpmtSync COMMAND TestMpmtSync)
+
+	add_executable(TestMpmtThreadPool tests/test_thread_pool.c)
+	target_link_libraries(TestMpmtThreadPool PUBLIC mpmt-static)
+	add_test(NAME TestMpmtThreadPool COMMAND TestMpmtThreadPool)
+
+	# TODO: test atomics
 endif ()

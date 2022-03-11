@@ -55,20 +55,31 @@ size_t getThreadPoolTaskCapacity(
 	ThreadPool threadPool);
 
 /*
- * Add a new task to the thread pool.
+ * Try to add a new task to the thread pool.
  * Returns true if task successfully added.
  *
  * threadPool - thread pool instance.
  * function - pointer to the function that should be invoked.
  * argument - argument that will be passed to the function.
  */
-bool addThreadPoolTask(
+bool tryAddThreadPoolTask(
+	ThreadPool threadPool,
+	void (*function)(void*),
+	void* argument);
+/*
+ * Add a new task to the thread pool. (Blocking)
+ *
+ * threadPool - thread pool instance.
+ * function - pointer to the function that should be invoked.
+ * argument - argument that will be passed to the function.
+ */
+void addThreadPoolTask(
 	ThreadPool threadPool,
 	void (*function)(void*),
 	void* argument);
 
 /*
- * wait until thread pool has completed all tasks.
- * threadPool - pointer to the thread pool.
+ * Wait until thread pool has completed all tasks.
+ * threadPool - thread pool instance.
  */
 void waitThreadPool(ThreadPool threadPool);

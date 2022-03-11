@@ -64,9 +64,7 @@ static void onThreadUpdate(void* argument)
 		PoolTask task = tasks[threadPool->taskCount];
 
 		unlockMutex(mutex);
-
 		task.function(task.argument);
-
 		lockMutex(mutex);
 
 		threadPool->workingCount--;
@@ -77,9 +75,7 @@ static void onThreadUpdate(void* argument)
 			return;
 		}
 
-		if (threadPool->workingCount == 0)
-			broadcastCond(workingCond);
-
+		broadcastCond(workingCond);
 		unlockMutex(mutex);
 	}
 }
@@ -223,13 +219,18 @@ size_t getThreadPoolTaskCapacity(
 	return threadPool->taskCapacity;
 }
 
-bool addThreadPoolTask(
+bool tryAddThreadPoolTask(
 	ThreadPool threadPool,
 	void (*function)(void*),
 	void* argument)
 {
 	assert(threadPool);
 	assert(function);
+
+	PoolTask task = {
+		function,
+		argument,
+	};
 
 	Mutex mutex = threadPool->mutex;
 	lockMutex(mutex);
@@ -242,17 +243,38 @@ bool addThreadPoolTask(
 		return false;
 	}
 
+	threadPool->tasks[taskCount] = task;
+	threadPool->taskCount++;
+	signalCond(threadPool->workCond);
+
+	unlockMutex(mutex);
+	return true;
+}
+void addThreadPoolTask(
+	ThreadPool threadPool,
+	void (*function)(void*),
+	void* argument)
+{
+	assert(threadPool);
+	assert(function);
+
 	PoolTask task = {
 		function,
 		argument,
 	};
 
-	threadPool->tasks[taskCount] = task;
-	threadPool->taskCount++;
+	Mutex mutex = threadPool->mutex;
+	Cond workingCond = threadPool->workingCond;
 
+	lockMutex(mutex);
+
+	while (threadPool->taskCount == threadPool->taskCapacity)
+		waitCond(workingCond, mutex);
+
+	threadPool->tasks[threadPool->taskCount++] = task;
 	signalCond(threadPool->workCond);
+
 	unlockMutex(mutex);
-	return true;
 }
 
 void waitThreadPool(ThreadPool threadPool)
@@ -264,13 +286,8 @@ void waitThreadPool(ThreadPool threadPool)
 
 	lockMutex(mutex);
 
-	while (true)
-	{
-		if (!threadPool->taskCount && !threadPool->workingCount)
-			break;
-
+	while (threadPool->taskCount || threadPool->workingCount)
 		waitCond(workingCond, mutex);
-	}
 
 	unlockMutex(mutex);
 }
