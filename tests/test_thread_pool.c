@@ -66,6 +66,7 @@ inline static bool testTryAdd()
 	if (!result)
 	{
 		printf("testTryAdd: failed to try add thread pool task.");
+		destroyThreadPool(threadPool);
 		return false;
 	}
 
@@ -74,13 +75,14 @@ inline static bool testTryAdd()
 		onBlockingTest,
 		NULL);
 
+	destroyThreadPool(threadPool);
+
 	if (result)
 	{
 		printf("testTryAdd: added task to already full thread pool.");
 		return false;
 	}
 
-	destroyThreadPool(threadPool);
 	return true;
 }
 

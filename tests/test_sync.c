@@ -104,6 +104,7 @@ inline static bool testLocking()
 			if (data->buffer[j] != value)
 			{
 				printf("testLocking: incorrect buffer value. (index: %zu)", j);
+				free(data);
 				return false;
 			}
 
@@ -129,14 +130,7 @@ inline static bool testTryLock()
 	if (!result)
 	{
 		printf("testTryLock: failed to try lock mutex.");
-		return false;
-	}
-
-	result = tryLockMutex(mutex);
-
-	if (result)
-	{
-		printf("testTryLock: locked already locked mutex.");
+		destroyMutex(mutex);
 		return false;
 	}
 
