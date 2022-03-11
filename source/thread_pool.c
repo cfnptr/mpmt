@@ -219,6 +219,27 @@ size_t getThreadPoolTaskCapacity(
 	return threadPool->taskCapacity;
 }
 
+bool resizeThreadPoolTasks(
+	ThreadPool threadPool,
+	size_t taskCapacity)
+{
+	assert(threadPool);
+	assert(taskCapacity > 0);
+
+	waitThreadPool(threadPool);
+
+	PoolTask* tasks = realloc(
+		threadPool->tasks,
+		taskCapacity * sizeof(PoolTask));
+
+	if (!tasks)
+		return false;
+
+	threadPool->tasks = tasks;
+	threadPool->taskCapacity = taskCapacity;
+	return true;
+}
+
 bool tryAddThreadPoolTask(
 	ThreadPool threadPool,
 	void (*function)(void*),

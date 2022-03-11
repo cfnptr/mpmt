@@ -30,7 +30,7 @@ typedef ThreadPool_T* ThreadPool;
  * Returns thread pool instance on success, otherwise NULL.
  *
  * threadCount - thread count in the pool.
- * taskCapacity - task pool capacity.
+ * taskCapacity - task array size.
  */
 ThreadPool createThreadPool(
 	size_t threadCount,
@@ -55,6 +55,17 @@ size_t getThreadPoolTaskCapacity(
 	ThreadPool threadPool);
 
 /*
+ * Resize thread pool task array. (Blocking)
+ * Returns true on success.
+ *
+ * threadPool - thread pool instance.
+ * taskCapacity - task array size.
+ */
+bool resizeThreadPoolTasks(
+	ThreadPool threadPool,
+	size_t taskCapacity);
+
+/*
  * Try to add a new task to the thread pool.
  * Returns true if task successfully added.
  *
@@ -67,7 +78,7 @@ bool tryAddThreadPoolTask(
 	void (*function)(void*),
 	void* argument);
 /*
- * Add a new task to the thread pool. (Blocking)
+ * Adds a new task to the thread pool. (Blocking)
  *
  * threadPool - thread pool instance.
  * function - pointer to the function that should be invoked.
