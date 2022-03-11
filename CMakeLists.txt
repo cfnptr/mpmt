@@ -23,7 +23,7 @@ if (TARGET mpmt)
 endif ()
 
 project(mpmt
-	VERSION 1.1.0
+	VERSION 1.2.0
 	DESCRIPTION "Multi-platform multi-threading library"
 	HOMEPAGE_URL "https://github.com/cfnptr/mpmt"
 	LANGUAGES C)
