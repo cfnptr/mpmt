@@ -22,6 +22,7 @@
  */
 typedef enum TaskOrder_T
 {
+	// Faster than queue
 	STACK_TASK_ORDER_TYPE = 0,
 	QUEUE_TASK_ORDER_TYPE = 1,
 	TASK_ORDER_TYPE_COUNT = 2,
