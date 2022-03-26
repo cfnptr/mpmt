@@ -136,6 +136,16 @@ void addThreadPoolTasks(
 	ThreadPool threadPool,
 	ThreadPoolTask* tasks,
 	size_t taskCount);
+/*
+ * Adds a new task number to the thread pool. (Blocking)
+ * threadPool - thread pool instance.
+ * task - thread pool task.
+ * taskCount - task count.
+ */
+void addThreadPoolTaskNumber(
+	ThreadPool threadPool,
+	ThreadPoolTask task,
+	size_t taskCount);
 
 /*
  * Wait until thread pool has completed all tasks.

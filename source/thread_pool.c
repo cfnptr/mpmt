@@ -355,6 +355,41 @@ void addThreadPoolTasks(
 
 	unlockMutex(mutex);
 }
+void addThreadPoolTaskNumber(
+	ThreadPool threadPool,
+	ThreadPoolTask task,
+	size_t taskCount)
+{
+	assert(threadPool);
+	assert(task.function);
+	assert(taskCount > 0);
+
+	Mutex mutex = threadPool->mutex;
+	Cond workingCond = threadPool->workingCond;
+	ThreadPoolTask* taskArray = threadPool->tasks;
+	size_t taskCapacity = threadPool->taskCapacity;
+
+	lockMutex(mutex);
+
+	for (size_t i = 0; i < taskCount; i++)
+	{
+		while (threadPool->taskCount == taskCapacity)
+			waitCond(workingCond, mutex);
+
+		size_t taskArrayCount = threadPool->taskCount;
+
+		while(taskArrayCount < taskCapacity && i < taskCount)
+		{
+			taskArray[taskArrayCount++] = task;
+			i++;
+		}
+
+		threadPool->taskCount = taskArrayCount;
+		signalCond(threadPool->workCond);
+	}
+
+	unlockMutex(mutex);
+}
 
 void waitThreadPool(ThreadPool threadPool)
 {
