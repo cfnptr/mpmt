@@ -16,23 +16,18 @@
 #include "mpmt/sync.h"
 #include "mpmt/thread.h"
 
-typedef struct PoolTask
-{
-	void (*function)(void*);
-	void* argument;
-} PoolTask;
-
 struct ThreadPool_T
 {
 	Mutex mutex;
 	Cond workCond;
 	Cond workingCond;
-	PoolTask* tasks;
+	ThreadPoolTask* tasks;
 	size_t taskCapacity;
 	size_t taskCount;
 	Thread* threads;
 	size_t threadCount;
 	size_t workingCount;
+	TaskOrder taskOrder;
 	bool isRunning;
 };
 
@@ -42,13 +37,14 @@ static void onThreadUpdate(void* argument)
 	Mutex mutex = threadPool->mutex;
 	Cond workCond = threadPool->workCond;
 	Cond workingCond = threadPool->workingCond;
-	PoolTask* tasks = threadPool->tasks;
 
 	while (true)
 	{
 		lockMutex(mutex);
 
-		while (!threadPool->taskCount)
+		size_t taskCount = threadPool->taskCount;
+
+		while (taskCount == 0)
 		{
 			if (!threadPool->isRunning)
 			{
@@ -57,11 +53,32 @@ static void onThreadUpdate(void* argument)
 			}
 
 			waitCond(workCond, mutex);
+			taskCount = threadPool->taskCount;
 		}
 
-		threadPool->taskCount--;
 		threadPool->workingCount++;
-		PoolTask task = tasks[threadPool->taskCount];
+		threadPool->taskCount--;
+
+		ThreadPoolTask* tasks = threadPool->tasks;
+		TaskOrder taskOrder = threadPool->taskOrder;
+
+		ThreadPoolTask task;
+
+		if (taskOrder == STACK_TASK_ORDER_TYPE)
+		{
+			task = tasks[taskCount - 1];
+		}
+		else if (taskOrder == QUEUE_TASK_ORDER_TYPE)
+		{
+			task = tasks[0];
+
+			for (size_t i = 1; i < taskCount; i++)
+				tasks[i - 1] = tasks[i];
+		}
+		else
+		{
+			abort();
+		}
 
 		unlockMutex(mutex);
 		task.function(task.argument);
@@ -81,10 +98,11 @@ static void onThreadUpdate(void* argument)
 }
 ThreadPool createThreadPool(
 	size_t threadCount,
-	size_t taskCapacity)
+	size_t taskCapacity,
+	TaskOrder taskOrder)
 {
 	assert(threadCount);
-	assert(taskCapacity);
+	assert(taskOrder < TASK_ORDER_TYPE_COUNT);
 	assert(taskCapacity >= threadCount);
 
 	ThreadPool threadPool = calloc(1,
@@ -94,6 +112,7 @@ ThreadPool createThreadPool(
 		return NULL;
 
 	threadPool->workingCount = 0;
+	threadPool->taskOrder = taskOrder;
 	threadPool->isRunning = true;
 
 	Mutex mutex = createMutex();
@@ -126,8 +145,8 @@ ThreadPool createThreadPool(
 
 	threadPool->workingCond = workingCond;
 
-	PoolTask* tasks = malloc(
-		taskCapacity * sizeof(PoolTask));
+	ThreadPoolTask* tasks = malloc(
+		taskCapacity * sizeof(ThreadPoolTask));
 
 	if (!tasks)
 	{
@@ -206,17 +225,30 @@ void destroyThreadPool(ThreadPool threadPool)
 	free(threadPool);
 }
 
-size_t getThreadPoolThreadCount(
-	ThreadPool threadPool)
+size_t getThreadPoolThreadCount(ThreadPool threadPool)
 {
 	assert(threadPool);
 	return threadPool->threadCount;
 }
-size_t getThreadPoolTaskCapacity(
-	ThreadPool threadPool)
+size_t getThreadPoolTaskCapacity(ThreadPool threadPool)
 {
 	assert(threadPool);
 	return threadPool->taskCapacity;
+}
+
+TaskOrder getThreadPoolTaskOrder(
+	ThreadPool threadPool)
+{
+	assert(threadPool);
+	return threadPool->taskOrder;
+}
+void setThreadPoolTaskOrder(
+	ThreadPool threadPool,
+	TaskOrder taskOrder)
+{
+	assert(threadPool);
+	waitThreadPool(threadPool);
+	threadPool->taskOrder = taskOrder;
 }
 
 bool resizeThreadPoolTasks(
@@ -228,9 +260,9 @@ bool resizeThreadPoolTasks(
 
 	waitThreadPool(threadPool);
 
-	PoolTask* tasks = realloc(
+	ThreadPoolTask* tasks = realloc(
 		threadPool->tasks,
-		taskCapacity * sizeof(PoolTask));
+		taskCapacity * sizeof(ThreadPoolTask));
 
 	if (!tasks)
 		return false;
@@ -242,16 +274,10 @@ bool resizeThreadPoolTasks(
 
 bool tryAddThreadPoolTask(
 	ThreadPool threadPool,
-	void (*function)(void*),
-	void* argument)
+	ThreadPoolTask task)
 {
 	assert(threadPool);
-	assert(function);
-
-	PoolTask task = {
-		function,
-		argument,
-	};
+	assert(task.function);
 
 	Mutex mutex = threadPool->mutex;
 	lockMutex(mutex);
@@ -273,27 +299,54 @@ bool tryAddThreadPoolTask(
 }
 void addThreadPoolTask(
 	ThreadPool threadPool,
-	void (*function)(void*),
-	void* argument)
+	ThreadPoolTask task)
 {
 	assert(threadPool);
-	assert(function);
-
-	PoolTask task = {
-		function,
-		argument,
-	};
+	assert(task.function);
 
 	Mutex mutex = threadPool->mutex;
 	Cond workingCond = threadPool->workingCond;
+	size_t taskCapacity = threadPool->taskCapacity;
 
 	lockMutex(mutex);
 
-	while (threadPool->taskCount == threadPool->taskCapacity)
+	while (threadPool->taskCount == taskCapacity)
 		waitCond(workingCond, mutex);
 
 	threadPool->tasks[threadPool->taskCount++] = task;
 	signalCond(threadPool->workCond);
+
+	unlockMutex(mutex);
+}
+void addThreadPoolTasks(
+	ThreadPool threadPool,
+	ThreadPoolTask* tasks,
+	size_t taskCount)
+{
+	assert(threadPool);
+	assert(tasks);
+	assert(taskCount > 0);
+
+#ifndef NDEBUG
+	for (size_t i = 0; i < taskCount; i++)
+		assert(tasks[i].function);
+#endif
+
+	Mutex mutex = threadPool->mutex;
+	Cond workingCond = threadPool->workingCond;
+	ThreadPoolTask* taskArray = threadPool->tasks;
+	size_t taskCapacity = threadPool->taskCapacity;
+
+	lockMutex(mutex);
+
+	for (size_t i = 0; i < taskCount; i++)
+	{
+		while (threadPool->taskCount == taskCapacity)
+			waitCond(workingCond, mutex);
+
+		taskArray[threadPool->taskCount++] = tasks[i];
+		signalCond(threadPool->workCond);
+	}
 
 	unlockMutex(mutex);
 }

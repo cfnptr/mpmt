@@ -28,7 +28,8 @@ inline static bool testAddBlocking()
 {
 	ThreadPool threadPool = createThreadPool(
 		TEST_THREAD_COUNT,
-		TEST_THREAD_COUNT);
+		TEST_THREAD_COUNT,
+		STACK_TASK_ORDER_TYPE);
 
 	if (!threadPool)
 	{
@@ -36,12 +37,13 @@ inline static bool testAddBlocking()
 		return false;
 	}
 
+	ThreadPoolTask task;
+	task.argument = NULL;
+
 	for (size_t i = 0; i < TEST_THREAD_COUNT * 2; i++)
 	{
-		addThreadPoolTask(
-			threadPool,
-			onBlockingTest,
-			NULL);
+		task.function = onBlockingTest;
+		addThreadPoolTask(threadPool, task);
 	}
 
 	destroyThreadPool(threadPool);
@@ -50,7 +52,7 @@ inline static bool testAddBlocking()
 inline static bool testTryAdd()
 {
 	ThreadPool threadPool = createThreadPool(
-		1, 1);
+		1, 1, STACK_TASK_ORDER_TYPE);
 
 	if (!threadPool)
 	{
@@ -58,10 +60,12 @@ inline static bool testTryAdd()
 		return false;
 	}
 
-	bool result = tryAddThreadPoolTask(
-		threadPool,
+	ThreadPoolTask task = {
 		onBlockingTest,
-		NULL);
+		NULL
+	};
+
+	bool result = tryAddThreadPoolTask(threadPool, task);
 
 	if (!result)
 	{
@@ -70,11 +74,7 @@ inline static bool testTryAdd()
 		return false;
 	}
 
-	result = tryAddThreadPoolTask(
-		threadPool,
-		onBlockingTest,
-		NULL);
-
+	result = tryAddThreadPoolTask(threadPool, task);
 	destroyThreadPool(threadPool);
 
 	if (result)
