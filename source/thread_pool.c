@@ -344,7 +344,12 @@ void addThreadPoolTasks(
 		while (threadPool->taskCount == taskCapacity)
 			waitCond(workingCond, mutex);
 
-		taskArray[threadPool->taskCount++] = tasks[i];
+		size_t taskArrayCount = threadPool->taskCount;
+
+		while(taskArrayCount < taskCapacity && i < taskCount)
+			taskArray[taskArrayCount++] = tasks[i++];
+
+		threadPool->taskCount = taskArrayCount;
 		signalCond(threadPool->workCond);
 	}
 
