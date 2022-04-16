@@ -19,12 +19,18 @@
 #if __linux__ || __APPLE__
 #include <time.h>
 #include <unistd.h>
+#if __x86_64__ || __i386__
 #include <cpuid.h>
+#endif
 #elif _WIN32
 #include <windows.h>
 #include <intrin.h>
 #else
 #error Unknown operating system
+#endif
+
+#if !__x86_64__ && !__i386__
+#include <stdio.h>
 #endif
 
 /*
@@ -84,13 +90,14 @@ inline static int getCpuCount()
  * CPU brand string.
  * Use getCpuName to get CPU name!
  */
-static char cpuBrand[0x40];
+static char cpuBrand[65];
 
 /*
  * Returns running system CPU name string.
  */
 inline static const char* getCpuName()
 {
+#if __x86_64__ || __i386__
 	unsigned int cpuInfo[4] = { 0, 0, 0, };
 
 #if __linux__ || __APPLE__
@@ -117,6 +124,50 @@ inline static const char* getCpuName()
 		else if (i == 0x80000004)
 			memcpy(cpuBrand + 32, cpuInfo, sizeof(cpuInfo));
 	}
+#else
+	memcpy(cpuBrand, "Unknown\0", 8);
+	FILE* file = fopen("/proc/cpuinfo", "r");
 
+	if (!file)
+		return cpuBrand;
+
+	char buffer[256];
+
+	while (fgets(buffer, 256, file))
+	{
+		if (memcmp(buffer, "model name", 10) != 0 &&
+			memcmp(buffer, "Model", 5) != 0)
+		{
+			continue;
+		}
+
+		char* pointer = memchr(buffer, ':', 256);
+
+		if (!pointer)
+			continue;
+
+		size_t index = (pointer - buffer) + 2;
+
+		if (index >= 256)
+			continue;
+
+		for (size_t i = index; i < 256; i++)
+		{
+			char value = buffer[i];
+
+			if (value != '\n' && value != '\0')
+				continue;
+
+			size_t count = i - index;
+
+			if (i > 64)
+				return cpuBrand;
+
+			memcpy(cpuBrand, buffer + index, count);
+			cpuBrand[count] = '\0';
+			break;
+		}
+	}
+#endif
 	return cpuBrand;
 }
