@@ -29,7 +29,7 @@
 #error Unknown operating system
 #endif
 
-#if !__x86_64__ && !__i386__
+#if !__x86_64__ && !_M_X64 && !__i386__
 #include <stdio.h>
 #endif
 
@@ -97,7 +97,7 @@ static char cpuBrand[65];
  */
 inline static const char* getCpuName()
 {
-#if __x86_64__ || __i386__
+#if __x86_64__ || _M_X64 || __i386__
 	unsigned int cpuInfo[4] = { 0, 0, 0, };
 
 #if __linux__ || __APPLE__
