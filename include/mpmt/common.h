@@ -103,7 +103,7 @@ inline static const char* getCpuName()
 #if __linux__ || __APPLE__
 	__cpuid(0x80000000, cpuInfo[0], cpuInfo[1], cpuInfo[2], cpuInfo[3]);
 #elif _WIN32
-	__cpuid(cpuInfo, 0x80000000);
+	__cpuid((int*)cpuInfo, 0x80000000);
 #endif
 
 	unsigned int nExIds = cpuInfo[0];
@@ -114,7 +114,7 @@ inline static const char* getCpuName()
 #if __linux__ || __APPLE__
 		__cpuid(i, cpuInfo[0], cpuInfo[1], cpuInfo[2], cpuInfo[3]);
 #elif _WIN32
-		__cpuid(cpuInfo, i);
+		__cpuid((int*)cpuInfo, i);
 #endif
 
 		if (i == 0x80000002)
