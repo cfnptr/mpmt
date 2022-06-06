@@ -11,6 +11,48 @@ Created due to the fact that macOS does not support `<threads.h>` in C11.
 * Thread pool (tasks)
 * Atomics
 
+## Example
+
+```c
+// ============ Mutex ============
+
+Mutex mutex = createMutex();
+
+if (!mutex)
+    abort();
+
+lockMutex(mutex);
+// Do some synchronized work...
+unlockMutex(mutex);
+
+destroyMutex(mutex);
+
+// ============ Thread ============
+
+static void onUpdate(void* arument)
+{
+    volatile bool* isRunning = argument;
+    
+    while(*isRunning)
+    {
+        // Do some parallel work...
+        sleepThread(0.001);
+    }
+}
+
+volatile bool isRunning = true;
+
+Thread thread = createThread(
+    onUpdate, &isRunning);
+
+if (!thread)
+    abort();
+
+isRunning = false;
+joinThread(thread);
+destroyThread(thread);
+```
+
 ## Supported operating systems
 
 * Ubuntu
