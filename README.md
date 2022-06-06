@@ -11,7 +11,7 @@ Created due to the fact that macOS does not support `<threads.h>` in C11.
 * Thread pool (tasks)
 * Atomics
 
-## Example
+## Usage example
 
 ```c
 // ============ Mutex ============
