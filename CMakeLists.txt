@@ -39,21 +39,23 @@ find_package(Threads REQUIRED)
 
 configure_file(
 	cmake/defines.h.in
-	mpmt/defines.h)
+	include/mpmt/defines.h)
 
 set(MPMT_SOURCES
 	source/sync.c
 	source/thread.c
 	source/thread_pool.c)
+set(MPMT_INCLUDE_DIRECTORIES
+	${PROJECT_BINARY_DIR}/include
+	${PROJECT_SOURCE_DIR}/include
+	${CMAKE_THREAD_LIBS_INIT})
 
 add_library(mpmt-static STATIC
 	${MPMT_SOURCES})
 target_link_libraries(mpmt-static PUBLIC
 	Threads::Threads)
 target_include_directories(mpmt-static PUBLIC
-	${PROJECT_BINARY_DIR}
-	${PROJECT_SOURCE_DIR}/include
-	${CMAKE_THREAD_LIBS_INIT})
+	${MPMT_INCLUDE_DIRECTORIES})
 
 if (MPMT_BUILD_SHARED)
 	add_library(mpmt-shared SHARED
@@ -64,9 +66,7 @@ if (MPMT_BUILD_SHARED)
 	target_link_libraries(mpmt-shared PUBLIC
 		Threads::Threads)
 	target_include_directories(mpmt-shared PUBLIC
-		${PROJECT_BINARY_DIR}
-		${PROJECT_SOURCE_DIR}/include
-		${CMAKE_THREAD_LIBS_INIT})
+		${MPMT_INCLUDE_DIRECTORIES})
 endif ()
 
 if (MPMT_BUILD_EXAMPLES)
@@ -75,7 +75,7 @@ if (MPMT_BUILD_EXAMPLES)
 	target_link_libraries(mpmt-thread-example PRIVATE
 		mpmt-static)
 	target_include_directories(mpmt-thread-example PRIVATE
-		${PROJECT_BINARY_DIR}
+		${PROJECT_BINARY_DIR}/include
 		${PROJECT_SOURCE_DIR}/include)
 
 	add_executable(mpmt-mutex-example
@@ -83,7 +83,7 @@ if (MPMT_BUILD_EXAMPLES)
 	target_link_libraries(mpmt-mutex-example PRIVATE
 		mpmt-static)
 	target_include_directories(mpmt-mutex-example PRIVATE
-		${PROJECT_BINARY_DIR}
+		${PROJECT_BINARY_DIR}/include
 		${PROJECT_SOURCE_DIR}/include)
 endif ()
 
