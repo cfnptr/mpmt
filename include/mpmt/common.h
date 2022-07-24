@@ -29,6 +29,12 @@
 #error Unknown operating system
 #endif
 
+#if __linux__
+#include <sys/sysinfo.h>
+#elif __APPLE__
+#include <sys/sysctl.h>
+#endif
+
 #if !__x86_64__ && !_M_X64 && !__i386__
 #include <stdio.h>
 #endif
@@ -83,6 +89,41 @@ inline static int getCpuCount()
 	SYSTEM_INFO systemInfo;
 	GetSystemInfo(&systemInfo);
 	return (int)systemInfo.dwNumberOfProcessors;
+#endif
+}
+/*
+ * Returns running system total RAM size.
+ */
+inline static int64_t getRamSize()
+{
+#if __linux__
+	struct sysinfo info;
+	int result = sysinfo(&info);
+
+	if (result != 0)
+		return 0;
+
+	return info.totalram;
+#elif __APPLE__
+	int mib [] = { CTL_HW, HW_MEMSIZE };
+	int64_t value = 0;
+	size_t length = sizeof(int64_t);
+
+	int result = sysctl(
+		mib, 2, &value, &length, NULL, 0);
+
+	if(result != 0)
+		return 0;
+
+	return value;
+#elif _WIN32
+	ULONGLONG value = 0;
+	BOOL result = GetPhysicallyInstalledSystemMemory(&value);
+
+	if (result != TRUE)
+		return 0;
+
+	return value * 1024;
 #endif
 }
 
