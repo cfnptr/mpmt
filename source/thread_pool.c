@@ -235,6 +235,14 @@ size_t getThreadPoolTaskCapacity(ThreadPool threadPool)
 	assert(threadPool);
 	return threadPool->taskCapacity;
 }
+bool isThreadPoolRunning(ThreadPool threadPool)
+{
+	Mutex mutex = threadPool->mutex;
+	lockMutex(mutex);
+	bool isRunning = threadPool->taskCount || threadPool->workingCount;
+	unlockMutex(mutex);
+	return isRunning;
+}
 
 TaskOrder getThreadPoolTaskOrder(
 	ThreadPool threadPool)

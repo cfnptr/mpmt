@@ -63,7 +63,7 @@ ThreadPool createThreadPool(
 	size_t taskCapacity,
 	TaskOrder taskOrder);
 /*
- * Destroys thread pool instance.
+ * Destroys thread pool instance. (Blocking)
  * threadPool - thread pool instance or NULL.
  */
 void destroyThreadPool(ThreadPool threadPool);
@@ -78,6 +78,11 @@ size_t getThreadPoolThreadCount(ThreadPool threadPool);
  * threadPool - thread pool instance.
  */
 size_t getThreadPoolTaskCapacity(ThreadPool threadPool);
+/*
+ * Returns true if thread is running tasks.
+ * threadPool - thread pool instance.
+ */
+bool isThreadPoolRunning(ThreadPool threadPool);
 
 /*
  * Returns thread pool task order type.
@@ -138,6 +143,7 @@ void addThreadPoolTasks(
 	size_t taskCount);
 /*
  * Adds a new task number to the thread pool. (Blocking)
+ *
  * threadPool - thread pool instance.
  * task - thread pool task.
  * taskCount - task count.
@@ -148,7 +154,7 @@ void addThreadPoolTaskNumber(
 	size_t taskCount);
 
 /*
- * Wait until thread pool has completed all tasks.
+ * Wait until thread pool has completed all tasks. (Blocking)
  * threadPool - thread pool instance.
  */
 void waitThreadPool(ThreadPool threadPool);
