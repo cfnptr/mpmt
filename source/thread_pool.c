@@ -38,10 +38,10 @@ static void onThreadUpdate(void* argument)
 	Cond workCond = threadPool->workCond;
 	Cond workingCond = threadPool->workingCond;
 
+	lockMutex(mutex);
+
 	while (true)
 	{
-		lockMutex(mutex);
-
 		size_t taskCount = threadPool->taskCount;
 
 		while (taskCount == 0)
@@ -85,15 +85,7 @@ static void onThreadUpdate(void* argument)
 		lockMutex(mutex);
 
 		threadPool->workingCount--;
-
-		if (!threadPool->isRunning)
-		{
-			unlockMutex(mutex);
-			return;
-		}
-
 		broadcastCond(workingCond);
-		unlockMutex(mutex);
 	}
 }
 ThreadPool createThreadPool(
@@ -358,7 +350,7 @@ void addThreadPoolTasks(
 			taskArray[taskArrayCount++] = tasks[i++];
 
 		threadPool->taskCount = taskArrayCount;
-		signalCond(threadPool->workCond);
+		broadcastCond(threadPool->workCond);
 	}
 
 	unlockMutex(mutex);
@@ -386,14 +378,14 @@ void addThreadPoolTaskNumber(
 
 		size_t taskArrayCount = threadPool->taskCount;
 
-		while(taskArrayCount < taskCapacity && i < taskCount)
+		while (taskArrayCount < taskCapacity && i < taskCount)
 		{
 			taskArray[taskArrayCount++] = task;
 			i++;
 		}
 
 		threadPool->taskCount = taskArrayCount;
-		signalCond(threadPool->workCond);
+		broadcastCond(threadPool->workCond);
 	}
 
 	unlockMutex(mutex);
