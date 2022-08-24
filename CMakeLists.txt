@@ -23,7 +23,7 @@ if (TARGET mpmt-static)
 endif ()
 
 project(mpmt
-	VERSION 1.4.0
+	VERSION 1.5.0
 	DESCRIPTION "Multi-platform multi-threading library"
 	HOMEPAGE_URL "https://github.com/cfnptr/mpmt"
 	LANGUAGES C)
