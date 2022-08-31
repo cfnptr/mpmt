@@ -71,7 +71,7 @@ void setMainThread();
 /*
  * Returns true if current thread is main.
  */
-bool isCurrentThreadMain()
+bool isCurrentThreadMain();
 /*
  * Returns true if thread is main.
  */
