@@ -31,9 +31,7 @@ typedef Thread_T* Thread;
  * function - pointer to the function that should be invoked.
  * argument - argument that will be passed to the function or NULL.
  */
-Thread createThread(
-	void (*function)(void*),
-	void* argument);
+Thread createThread(void (*function)(void*), void* argument);
 /*
  * Destroys thread instance.
  * thread - thread instance or NULL.
@@ -70,6 +68,10 @@ bool isThreadCurrent(Thread thread);
  * Sets current thread as main.
  */
 void setMainThread();
+/*
+ * Returns true if current thread is main.
+ */
+bool isCurrentThreadMain()
 /*
  * Returns true if thread is main.
  */

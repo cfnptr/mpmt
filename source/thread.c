@@ -57,9 +57,7 @@ DWORD threadFunction(LPVOID argument)
 }
 #endif
 
-Thread createThread(
-	void (*function)(void*),
-	void* argument)
+Thread createThread(void(*function)(void*), void* argument)
 {
 	assert(function);
 
@@ -199,6 +197,15 @@ void setMainThread()
 	mainThread = GetCurrentThreadId();
 #endif
 	isMainThreadSet = true;
+}
+bool isCurrentThreadMain()
+{
+	if (!isMainThreadSet) abort();
+#if __linux__ || __APPLE__
+	return pthread_equal(mainThread, pthread_self()) ? true : false;
+#elif _WIN32
+	return mainThread == GetCurrentThreadId();
+#endif
 }
 bool isThreadMain(Thread thread)
 {
