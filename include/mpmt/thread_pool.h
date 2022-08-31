@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #pragma once
-#include <stdlib.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -22,10 +22,9 @@
  */
 typedef enum TaskOrder_T
 {
-	// Faster than queue
-	STACK_TASK_ORDER_TYPE = 0,
-	QUEUE_TASK_ORDER_TYPE = 1,
-	TASK_ORDER_TYPE_COUNT = 2,
+	STACK_TASK_ORDER = 0, // Faster than queue
+	QUEUE_TASK_ORDER = 1,
+	TASK_ORDER_COUNT = 2,
 } TaskOrder_T;
 /*
  * Task order type.

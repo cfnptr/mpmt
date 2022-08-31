@@ -14,6 +14,7 @@
 
 #include "mpmt/thread.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 static void threadFunction(void* argument)
 {
@@ -24,16 +25,12 @@ static void threadFunction(void* argument)
 
 int main()
 {
-	Thread firstThread = createThread(
-		threadFunction,
-		"1");
+	Thread firstThread = createThread(threadFunction, "1");
 
 	if (firstThread == NULL)
 		return EXIT_FAILURE;
 
-	Thread secondThread = createThread(
-		threadFunction,
-		"2");
+	Thread secondThread = createThread(threadFunction, "2");
 
 	if (secondThread == NULL)
 		return EXIT_FAILURE;

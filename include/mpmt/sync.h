@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #pragma once
-#include <stdlib.h>
 #include <stdbool.h>
 
 /*
@@ -98,9 +97,7 @@ void broadcastCond(Cond cond);
  * cond - cond instance.
  * mutex - mutex instance.
  */
-void waitCond(
-	Cond cond,
-	Mutex mutex);
+void waitCond(Cond cond, Mutex mutex);
 
 /*
  * Blocks the current thread until the
@@ -112,7 +109,4 @@ void waitCond(
  * mutex - mutex instance.
  * timeout - timeout time.
  */
-void waitCondFor(
-	Cond cond,
-	Mutex mutex,
-	double timeout);
+void waitCondFor(Cond cond, Mutex mutex, double timeout);

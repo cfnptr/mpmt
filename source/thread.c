@@ -13,6 +13,17 @@
 // limitations under the License.
 
 #include "mpmt/thread.h"
+#include <stdlib.h>
+#include <assert.h>
+
+#if __linux__ || __APPLE__
+#include <errno.h>
+#include <pthread.h>
+#elif _WIN32
+#include <windows.h>
+#else
+#error Unknown operating system
+#endif
 
 #if __linux__ || __APPLE__
 #define THREAD pthread_t
@@ -52,8 +63,7 @@ Thread createThread(
 {
 	assert(function);
 
-	Thread thread = malloc(
-		sizeof(Thread_T));
+	Thread thread = malloc(sizeof(Thread_T));
 
 	if(!thread)
 		return NULL;
@@ -64,10 +74,7 @@ Thread createThread(
 
 #if __linux__ || __APPLE__
 	int result = pthread_create(
-		&thread->handle,
-		NULL,
-		threadFunction,
-		thread);
+		&thread->handle, NULL, threadFunction, thread);
 
 	if (result != 0)
 	{
@@ -76,12 +83,7 @@ Thread createThread(
 	}
 #elif _WIN32
 	thread->handle = CreateThread(
-		NULL,
-		0,
-		threadFunction,
-		thread,
-		0,
-		NULL);
+		NULL, 0, threadFunction, thread, 0, NULL);
 
 	if (thread->handle == NULL)
 	{
@@ -100,16 +102,10 @@ void destroyThread(Thread thread)
 	if (!thread->joined)
 	{
 #if __linux__ || __APPLE__
-		int result = pthread_detach(
-			thread->handle);
-
-		if (result != 0)
+		if (pthread_detach(thread->handle) != 0)
 			abort();
 #elif _WIN32
-		BOOL result = CloseHandle(
-			thread->handle);
-
-		if (result != TRUE)
+		if (CloseHandle(thread->handle) != TRUE)
 			abort();
 #endif
 	}
@@ -127,27 +123,47 @@ void joinThread(Thread thread)
 	thread->joined = true;
 
 #if __linux__ || __APPLE__
-	int result = pthread_join(
-		thread->handle,
-		NULL);
-
-	if (result != 0)
+	if (pthread_join(thread->handle, NULL) != 0)
 		abort();
 #elif _WIN32
 	THREAD handle = thread->handle;
 
-	DWORD waitResult = WaitForSingleObject(
-		handle,
-		INFINITE);
-
-	if (waitResult != WAIT_OBJECT_0)
+	if (WaitForSingleObject(handle, INFINITE) != WAIT_OBJECT_0)
 		abort();
-
-	BOOL closeResult = CloseHandle(
-		handle);
-
-	if (closeResult != TRUE)
+	if (CloseHandle(handle) != TRUE)
 		abort();
+#endif
+}
+void sleepThread(double delay)
+{
+	assert(delay >= 0.0);
+
+#if __linux__ || __APPLE__
+	struct timespec spec;
+	spec.tv_sec = (time_t)delay;
+	spec.tv_nsec = (long)((delay - (double)spec.tv_sec) * 1000000000.0);
+
+	while (true)
+	{
+		if (nanosleep(&spec, &spec) != 0)
+		{
+			int error = errno;
+			if (error == EINTR) continue;
+			else abort();
+		}
+
+		return;
+	}
+#elif _WIN32
+	Sleep((DWORD)(delay * 1000.0));
+#endif
+}
+bool yieldThread()
+{
+#if __linux__ || __APPLE__
+	return sched_yield() == 0;
+#elif _WIN32
+	return SwitchToThread() == TRUE;
 #endif
 }
 
@@ -155,4 +171,41 @@ bool isThreadJoined(Thread thread)
 {
 	assert(thread);
 	return thread->joined;
+}
+bool isThreadCurrent(Thread thread)
+{
+	assert(thread);
+#if __linux__ || __APPLE__
+	return pthread_equal(pthread_self(), thread->handle) ? true : false;
+#elif _WIN32
+	return GetCurrentThreadId() == GetThreadId(thread->handle);
+#endif
+}
+
+static bool isMainThreadSet = false;
+
+#if __linux__ || __APPLE__
+static THREAD mainThread;
+#elif _WIN32
+static DWORD mainThread;
+#endif
+
+void setMainThread()
+{
+	if (isMainThreadSet) abort();
+#if __linux__ || __APPLE__
+	mainThread = pthread_self();
+#elif _WIN32
+	mainThread = GetCurrentThreadId();
+#endif
+	isMainThreadSet = true;
+}
+bool isThreadMain(Thread thread)
+{
+	if (!isMainThreadSet) abort();
+#if __linux__ || __APPLE__
+	return pthread_equal(mainThread, thread->handle) ? true : false;
+#elif _WIN32
+	return mainThread == GetThreadId(thread->handle);
+#endif
 }

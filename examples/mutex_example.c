@@ -16,6 +16,7 @@
 #include "mpmt/thread.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct ThreadData
 {
@@ -43,8 +44,7 @@ int main()
 	if (mutex == NULL)
 		return EXIT_FAILURE;
 
-	ThreadData* firstThreadData = malloc(
-		sizeof(ThreadData));
+	ThreadData* firstThreadData = malloc(sizeof(ThreadData));
 
 	if (firstThreadData == NULL)
 		return EXIT_FAILURE;
@@ -52,8 +52,7 @@ int main()
 	firstThreadData->mutex = mutex;
 	firstThreadData->threadIndex = 1;
 
-	ThreadData* secondThreadData = malloc(
-		sizeof(ThreadData));
+	ThreadData* secondThreadData = malloc(sizeof(ThreadData));
 
 	if (secondThreadData == NULL)
 		return EXIT_FAILURE;
@@ -61,16 +60,12 @@ int main()
 	secondThreadData->mutex = mutex;
 	secondThreadData->threadIndex = 2;
 
-	Thread firstThread = createThread(
-		threadFunction,
-		firstThreadData);
+	Thread firstThread = createThread(threadFunction, firstThreadData);
 
 	if (firstThread == NULL)
 		return EXIT_FAILURE;
 
-	Thread secondThread = createThread(
-		threadFunction,
-		secondThreadData);
+	Thread secondThread = createThread(threadFunction, secondThreadData);
 
 	if (secondThread == NULL)
 		return EXIT_FAILURE;

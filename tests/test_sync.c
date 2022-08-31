@@ -16,6 +16,7 @@
 #include "mpmt/thread.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define TEST_BUFFER_SIZE 100000
 
@@ -63,9 +64,7 @@ inline static bool testLocking()
 
 	data->mutex = mutex;
 
-	Thread firstThread = createThread(
-		onLockingTest,
-		data);
+	Thread firstThread = createThread(onLockingTest, data);
 
 	if (!firstThread)
 	{
@@ -75,9 +74,7 @@ inline static bool testLocking()
 		return false;
 	}
 
-	Thread secondThread = createThread(
-		onLockingTest,
-		data);
+	Thread secondThread = createThread(onLockingTest, data);
 
 	if (!secondThread)
 	{

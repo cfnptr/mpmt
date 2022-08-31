@@ -16,6 +16,7 @@
 #include "mpmt/thread_pool.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define TEST_THREAD_COUNT 4
 
@@ -27,9 +28,7 @@ static void onBlockingTest(void* argument)
 inline static bool testAddBlocking()
 {
 	ThreadPool threadPool = createThreadPool(
-		TEST_THREAD_COUNT,
-		TEST_THREAD_COUNT,
-		STACK_TASK_ORDER_TYPE);
+		TEST_THREAD_COUNT, TEST_THREAD_COUNT, STACK_TASK_ORDER);
 
 	if (!threadPool)
 	{
@@ -51,8 +50,7 @@ inline static bool testAddBlocking()
 }
 inline static bool testTryAdd()
 {
-	ThreadPool threadPool = createThreadPool(
-		1, 1, STACK_TASK_ORDER_TYPE);
+	ThreadPool threadPool = createThreadPool(1, 1, STACK_TASK_ORDER);
 
 	if (!threadPool)
 	{
@@ -60,11 +58,7 @@ inline static bool testTryAdd()
 		return false;
 	}
 
-	ThreadPoolTask task = {
-		onBlockingTest,
-		NULL
-	};
-
+	ThreadPoolTask task = { onBlockingTest, NULL };
 	bool result = tryAddThreadPoolTask(threadPool, task);
 
 	if (!result)

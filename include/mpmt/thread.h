@@ -13,18 +13,7 @@
 // limitations under the License.
 
 #pragma once
-#include <stdlib.h>
-#include <assert.h>
 #include <stdbool.h>
-
-#if __linux__ || __APPLE__
-#include <errno.h>
-#include <pthread.h>
-#elif _WIN32
-#include <windows.h>
-#else
-#error Unknown operating system
-#endif
 
 /*
  * Thread structure.
@@ -56,61 +45,32 @@ void destroyThread(Thread thread);
  * thread - thread instance.
  */
 void joinThread(Thread thread);
+/*
+ * Blocks the execution of the current thread for a specified time.
+ * delay - thread sleep delay time (s).
+ */
+void sleepThread(double delay);
+/*
+ * Causes the current thread to yield execution to another thread.
+ */
+bool yieldThread();
 
 /*
  * Returns thread current join status.
  * thread - thread instance.
  */
 bool isThreadJoined(Thread thread);
+/*
+ * Returns true if thread is currently running one.
+ * thread - thread instance.
+ */
+bool isThreadCurrent(Thread thread);
 
 /*
- * Blocks the execution of the current thread for a specified time.
- * delay - thread sleep delay time (s).
+ * Sets current thread as main.
  */
-inline static void sleepThread(double delay)
-{
-	assert(delay >= 0.0);
-
-#if __linux__ || __APPLE__
-	struct timespec spec;
-
-	spec.tv_sec = (time_t)delay;
-
-	spec.tv_nsec = (long)(
-		(delay - (double)spec.tv_sec) *
-		1000000000.0);
-
-	while (true)
-	{
-		int result = nanosleep(
-			&spec,
-			&spec);
-
-		if (result != 0)
-		{
-			int error = errno;
-
-			if (error == EINTR)
-				continue;
-			else
-				abort();
-		}
-
-		return;
-	}
-#elif _WIN32
-	Sleep((DWORD)(delay * 1000.0));
-#endif
-}
-
+void setMainThread();
 /*
- * Causes the current thread to yield execution to another thread.
+ * Returns true if thread is main.
  */
-inline static bool yieldThread()
-{
-#if __linux__ || __APPLE__
-	return sched_yield() == 0;
-#elif _WIN32
-	return SwitchToThread() == TRUE;
-#endif
-}
+bool isThreadMain(Thread thread);

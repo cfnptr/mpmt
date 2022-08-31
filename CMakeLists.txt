@@ -42,6 +42,7 @@ configure_file(
 	include/mpmt/defines.h)
 
 set(MPMT_SOURCES
+	source/common.c
 	source/sync.c
 	source/thread.c
 	source/thread_pool.c)

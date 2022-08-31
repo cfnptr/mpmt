@@ -16,6 +16,9 @@
 #include "mpmt/sync.h"
 #include "mpmt/thread.h"
 
+#include <assert.h>
+#include <stdlib.h>
+
 struct ThreadPool_T
 {
 	Mutex mutex;
@@ -64,11 +67,11 @@ static void onThreadUpdate(void* argument)
 
 		ThreadPoolTask task;
 
-		if (taskOrder == STACK_TASK_ORDER_TYPE)
+		if (taskOrder == STACK_TASK_ORDER)
 		{
 			task = tasks[taskCount - 1];
 		}
-		else if (taskOrder == QUEUE_TASK_ORDER_TYPE)
+		else if (taskOrder == QUEUE_TASK_ORDER)
 		{
 			task = tasks[0];
 
@@ -94,11 +97,10 @@ ThreadPool createThreadPool(
 	TaskOrder taskOrder)
 {
 	assert(threadCount);
-	assert(taskOrder < TASK_ORDER_TYPE_COUNT);
+	assert(taskOrder < TASK_ORDER_COUNT);
 	assert(taskCapacity >= threadCount);
 
-	ThreadPool threadPool = calloc(1,
-		sizeof(ThreadPool_T));
+	ThreadPool threadPool = calloc(1, sizeof(ThreadPool_T));
 
 	if (!threadPool)
 		return NULL;
@@ -137,8 +139,7 @@ ThreadPool createThreadPool(
 
 	threadPool->workingCond = workingCond;
 
-	ThreadPoolTask* tasks = malloc(
-		taskCapacity * sizeof(ThreadPoolTask));
+	ThreadPoolTask* tasks = malloc(taskCapacity * sizeof(ThreadPoolTask));
 
 	if (!tasks)
 	{
@@ -150,9 +151,7 @@ ThreadPool createThreadPool(
 	threadPool->taskCapacity = taskCapacity;
 	threadPool->taskCount = 0;
 
-	Thread* threads = calloc(
-		threadCount,
-		sizeof(Thread));
+	Thread* threads = calloc(threadCount, sizeof(Thread));
 
 	if (!threads)
 	{
@@ -165,9 +164,7 @@ ThreadPool createThreadPool(
 
 	for (size_t i = 0; i < threadCount; i++)
 	{
-		Thread thread = createThread(
-			onThreadUpdate,
-			threadPool);
+		Thread thread = createThread(onThreadUpdate, threadPool);
 
 		if (!thread)
 		{
@@ -260,8 +257,7 @@ bool resizeThreadPoolTasks(
 
 	waitThreadPool(threadPool);
 
-	ThreadPoolTask* tasks = realloc(
-		threadPool->tasks,
+	ThreadPoolTask* tasks = realloc(threadPool->tasks,
 		taskCapacity * sizeof(ThreadPoolTask));
 
 	if (!tasks)
