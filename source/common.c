@@ -44,9 +44,7 @@ double getCurrentClock()
 #if __linux__ || __APPLE__
 	struct timespec time;
 
-	int result = clock_gettime(CLOCK_MONOTONIC, &time);
-
-	if (result != 0)
+	if (clock_gettime(CLOCK_MONOTONIC, &time) != 0)
 		abort();
 
 	return (double)time.tv_sec + (double)time.tv_nsec / 1000000000.0;
@@ -58,9 +56,8 @@ double getCurrentClock()
 		abort();
 
 	LARGE_INTEGER counter;
-	result = QueryPerformanceCounter(&counter);
 
-	if (result != TRUE)
+	if (QueryPerformanceCounter(&counter) != TRUE)
 		abort();
 
 	return (double)counter.QuadPart / (double)frequency.QuadPart;
@@ -82,9 +79,8 @@ int64_t getRamSize()
 {
 #if __linux__
 	struct sysinfo info;
-	int result = sysinfo(&info);
 
-	if (result != 0)
+	if (sysinfo(&info) != 0)
 		return 0;
 
 	return info.totalram;
@@ -93,17 +89,14 @@ int64_t getRamSize()
 	int64_t value = 0;
 	size_t length = sizeof(int64_t);
 
-	int result = sysctl(mib, 2, &value, &length, NULL, 0);
-
-	if(result != 0)
+	if(sysctl(mib, 2, &value, &length, NULL, 0) != 0)
 		return 0;
 
 	return value;
 #elif _WIN32
 	ULONGLONG value = 0;
-	BOOL result = GetPhysicallyInstalledSystemMemory(&value);
 
-	if (result != TRUE)
+	if (GetPhysicallyInstalledSystemMemory(&value) != TRUE)
 		return 0;
 
 	return value * 1024;
