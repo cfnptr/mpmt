@@ -1,4 +1,4 @@
-# Copyright 2020-2022 Nikita Fediuchin. All rights reserved.
+# Copyright 2020-2023 Nikita Fediuchin. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,55 +37,34 @@ option(MPMT_BUILD_EXAMPLES "Build MPMT usage examples" ON)
 
 find_package(Threads REQUIRED)
 
-configure_file(
-	cmake/defines.h.in
-	include/mpmt/defines.h)
+configure_file(cmake/defines.h.in include/mpmt/defines.h)
 
-set(MPMT_SOURCES
-	source/common.c
-	source/sync.c
-	source/thread.c
-	source/thread_pool.c)
-set(MPMT_INCLUDE_DIRECTORIES
-	${PROJECT_BINARY_DIR}/include
-	${PROJECT_SOURCE_DIR}/include
-	${CMAKE_THREAD_LIBS_INIT})
+set(MPMT_SOURCES source/sync.c source/thread.c source/thread_pool.c)
+set(MPMT_INCLUDE_DIRECTORIES ${PROJECT_BINARY_DIR}/include
+	${PROJECT_SOURCE_DIR}/include {CMAKE_THREAD_LIBS_INIT})
 
-add_library(mpmt-static STATIC
-	${MPMT_SOURCES})
-target_link_libraries(mpmt-static PUBLIC
-	Threads::Threads)
-target_include_directories(mpmt-static PUBLIC
-	${MPMT_INCLUDE_DIRECTORIES})
+add_library(mpmt-static STATIC ${MPMT_SOURCES})
+target_link_libraries(mpmt-static PUBLIC Threads::Threads)
+target_include_directories(mpmt-static PUBLIC ${MPMT_INCLUDE_DIRECTORIES})
 
 if (MPMT_BUILD_SHARED)
-	add_library(mpmt-shared SHARED
-		${MPMT_SOURCES})
-	set_target_properties(mpmt-shared PROPERTIES
-		OUTPUT_NAME "mpmt"
-		WINDOWS_EXPORT_ALL_SYMBOLS ON)
-	target_link_libraries(mpmt-shared PUBLIC
-		Threads::Threads)
-	target_include_directories(mpmt-shared PUBLIC
-		${MPMT_INCLUDE_DIRECTORIES})
+	add_library(mpmt-shared SHARED ${MPMT_SOURCES})
+	set_target_properties(mpmt-shared PROPERTIES OUTPUT_NAME
+		"mpmt" WINDOWS_EXPORT_ALL_SYMBOLS ON)
+	target_link_libraries(mpmt-shared PUBLIC Threads::Threads)
+	target_include_directories(mpmt-shared PUBLIC ${MPMT_INCLUDE_DIRECTORIES})
 endif ()
 
 if (MPMT_BUILD_EXAMPLES)
-	add_executable(mpmt-thread-example
-		examples/thread_example.c)
-	target_link_libraries(mpmt-thread-example PRIVATE
-		mpmt-static)
+	add_executable(mpmt-thread-example examples/thread_example.c)
+	target_link_libraries(mpmt-thread-example PRIVATE mpmt-static)
 	target_include_directories(mpmt-thread-example PRIVATE
-		${PROJECT_BINARY_DIR}/include
-		${PROJECT_SOURCE_DIR}/include)
+		${PROJECT_BINARY_DIR}/include ${PROJECT_SOURCE_DIR}/include)
 
-	add_executable(mpmt-mutex-example
-		examples/mutex_example.c)
-	target_link_libraries(mpmt-mutex-example PRIVATE
-		mpmt-static)
+	add_executable(mpmt-mutex-example examples/mutex_example.c)
+	target_link_libraries(mpmt-mutex-example PRIVATE mpmt-static)
 	target_include_directories(mpmt-mutex-example PRIVATE
-		${PROJECT_BINARY_DIR}/include
-		${PROJECT_SOURCE_DIR}/include)
+		${PROJECT_BINARY_DIR}/include ${PROJECT_SOURCE_DIR}/include)
 endif ()
 
 if (MPMT_BUILD_TESTS)
