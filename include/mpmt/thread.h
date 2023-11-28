@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #pragma once
+#include <stddef.h>
 #include <stdbool.h>
 
 /*
@@ -76,3 +77,24 @@ bool isCurrentThreadMain();
  * Returns true if thread is main.
  */
 bool isThreadMain(Thread thread);
+
+/*
+ * Sets current thread name.
+ * name - thread name string.
+ * size - name buffer size.
+ */
+void getThreadName(char* name, size_t size);
+/*
+ * Returns current thread name.
+ * name - thread name string.
+ */
+void setThreadName(const char* name);
+
+/*
+ * Sets current thread priority to foreground.
+ */
+void setThreadForegroundPriority();
+/*
+ * Sets current thread priority to background.
+ */
+void setThreadBackgroundPriority();

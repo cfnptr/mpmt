@@ -62,9 +62,7 @@ Thread createThread(void(*function)(void*), void* argument)
 	assert(function);
 
 	Thread thread = malloc(sizeof(Thread_T));
-
-	if(!thread)
-		return NULL;
+	if(!thread) return NULL;
 
 	thread->function = function;
 	thread->argument = argument;
@@ -94,17 +92,14 @@ Thread createThread(void(*function)(void*), void* argument)
 }
 void destroyThread(Thread thread)
 {
-	if (!thread)
-		return;
+	if (!thread) return;
 
 	if (!thread->joined)
 	{
 #if __linux__ || __APPLE__
-		if (pthread_detach(thread->handle) != 0)
-			abort();
+		if (pthread_detach(thread->handle) != 0) abort();
 #elif _WIN32
-		if (CloseHandle(thread->handle) != TRUE)
-			abort();
+		if (CloseHandle(thread->handle) != TRUE) abort();
 #endif
 	}
 
@@ -114,22 +109,16 @@ void destroyThread(Thread thread)
 void joinThread(Thread thread)
 {
 	assert(thread);
-
-	if (thread->joined)
-		abort();
+	if (thread->joined) abort();
 
 	thread->joined = true;
 
 #if __linux__ || __APPLE__
-	if (pthread_join(thread->handle, NULL) != 0)
-		abort();
+	if (pthread_join(thread->handle, NULL) != 0) abort();
 #elif _WIN32
 	THREAD handle = thread->handle;
-
-	if (WaitForSingleObject(handle, INFINITE) != WAIT_OBJECT_0)
-		abort();
-	if (CloseHandle(handle) != TRUE)
-		abort();
+	if (WaitForSingleObject(handle, INFINITE) != WAIT_OBJECT_0) abort();
+	if (CloseHandle(handle) != TRUE) abort();
 #endif
 }
 void sleepThread(double delay)
@@ -214,5 +203,72 @@ bool isThreadMain(Thread thread)
 	return pthread_equal(mainThread, thread->handle) ? true : false;
 #elif _WIN32
 	return mainThread == GetThreadId(thread->handle);
+#endif
+}
+
+// TODO: non unicode name support
+
+void getThreadName(char* name, size_t size)
+{
+	assert(name);
+	assert(size > 0);
+
+#if __linux__ || __APPLE__
+	if (pthread_getname_np(pthread_self(), name, size) != 0) abort();
+#elif _WIN32
+	PWSTR wideName = NULL;
+	if (FAILED(GetThreadDescription(GetCurrentThread(), &wideName))) abort();
+
+	for (size_t i = 0; i < size; i++)
+	{
+		name[i] = (char)wideName[i];
+		if (name[i] == '\0') break;
+	}
+
+	name[size - 1] = '\0';
+#endif
+}
+void setThreadName(const char* name)
+{
+	assert(name);
+	assert(strlen(name) < 16);
+
+#if __linux__
+	if (pthread_setname_np(pthread_self(), name) != 0) abort();
+#elif __APPLE__
+	if (pthread_setname_np(name) != 0) abort();
+#elif _WIN32
+	size_t nameLength = strlen(name);
+	WCHAR* wideName = malloc((nameLength + 1) * sizeof(WCHAR));
+	if (!wideName) abort();
+
+	for (size_t i = 0; i < nameLength; i++)
+		wideName[i] = (WCHAR)name[i];
+	wideName[nameLength] = (WCHAR)'\0';
+
+	if (FAILED(SetThreadDescription(GetCurrentThread(), wideName))) abort();
+#endif
+}
+
+void setThreadForegroundPriority()
+{
+#if __linux__ || __APPLE__
+	struct sched_param param; int policy;
+	if (pthread_getschedparam(pthread_self(), &policy, &param) != 0) abort();
+	if (param.sched_priority + 1 < sched_get_priority_max(policy)) param.sched_priority++;
+	if (pthread_setschedparam(pthread_self(), policy, &param) != 0) abort();
+#elif _WIN32
+	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL)) abort();
+#endif
+}
+void setThreadBackgroundPriority()
+{
+#if __linux__ || __APPLE__
+	struct sched_param param; int policy;
+	if (pthread_getschedparam(pthread_self(), &policy, &param) != 0) abort();
+	if (param.sched_priority - 1 > sched_get_priority_min(policy)) param.sched_priority--;
+	if (pthread_setschedparam(pthread_self(), policy, &param) != 0) abort();
+#elif _WIN32
+	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL)) abort();
 #endif
 }

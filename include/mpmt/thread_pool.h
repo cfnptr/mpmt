@@ -57,10 +57,8 @@ typedef ThreadPool_T* ThreadPool;
  * taskCapacity - task array size.
  * taskOrder - task order type.
  */
-ThreadPool createThreadPool(
-	size_t threadCount,
-	size_t taskCapacity,
-	TaskOrder taskOrder);
+ThreadPool createThreadPool(size_t threadCount,
+	size_t taskCapacity, TaskOrder taskOrder);
 /*
  * Destroys thread pool instance. (Blocking)
  * threadPool - thread pool instance or NULL.
@@ -87,17 +85,14 @@ bool isThreadPoolRunning(ThreadPool threadPool);
  * Returns thread pool task order type.
  * threadPool - thread pool instance.
  */
-TaskOrder getThreadPoolTaskOrder(
-	ThreadPool threadPool);
+TaskOrder getThreadPoolTaskOrder(ThreadPool threadPool);
 /*
  * Sets thread pool task order type. (Blocking)
  *
  * threadPool - thread pool instance.
  * taskOrder - task order type.
  */
-void setThreadPoolTaskOrder(
-	ThreadPool threadPool,
-	TaskOrder taskOrder);
+void setThreadPoolTaskOrder(ThreadPool threadPool, TaskOrder taskOrder);
 
 /*
  * Resize thread pool task array. (Blocking)
@@ -106,9 +101,7 @@ void setThreadPoolTaskOrder(
  * threadPool - thread pool instance.
  * taskCapacity - task array size.
  */
-bool resizeThreadPoolTasks(
-	ThreadPool threadPool,
-	size_t taskCapacity);
+bool resizeThreadPoolTasks(ThreadPool threadPool, size_t taskCapacity);
 
 /*
  * Try to add a new task to the thread pool.
@@ -117,18 +110,14 @@ bool resizeThreadPoolTasks(
  * threadPool - thread pool instance.
  * task - thread pool task.
  */
-bool tryAddThreadPoolTask(
-	ThreadPool threadPool,
-	ThreadPoolTask task);
+bool tryAddThreadPoolTask(ThreadPool threadPool, ThreadPoolTask task);
 /*
  * Adds a new task to the thread pool. (Blocking)
  *
  * threadPool - thread pool instance.
  * task - thread pool task.
  */
-void addThreadPoolTask(
-	ThreadPool threadPool,
-	ThreadPoolTask task);
+void addThreadPoolTask(ThreadPool threadPool, ThreadPoolTask task);
 /*
  * Adds a new tasks to the thread pool. (Blocking)
  *
@@ -136,10 +125,8 @@ void addThreadPoolTask(
  * task - thread pool task array.
  * taskCount - task array size.
  */
-void addThreadPoolTasks(
-	ThreadPool threadPool,
-	ThreadPoolTask* tasks,
-	size_t taskCount);
+void addThreadPoolTasks(ThreadPool threadPool,
+	ThreadPoolTask* tasks, size_t taskCount);
 /*
  * Adds a new task number to the thread pool. (Blocking)
  *
@@ -147,10 +134,8 @@ void addThreadPoolTasks(
  * task - thread pool task.
  * taskCount - task count.
  */
-void addThreadPoolTaskNumber(
-	ThreadPool threadPool,
-	ThreadPoolTask task,
-	size_t taskCount);
+void addThreadPoolTaskNumber(ThreadPool threadPool,
+	ThreadPoolTask task, size_t taskCount);
 
 /*
  * Wait until thread pool has completed all tasks. (Blocking)

@@ -46,7 +46,6 @@ static void onThreadUpdate(void* argument)
 	while (true)
 	{
 		size_t taskCount = threadPool->taskCount;
-
 		while (taskCount == 0)
 		{
 			if (!threadPool->isRunning)
@@ -66,7 +65,6 @@ static void onThreadUpdate(void* argument)
 		TaskOrder taskOrder = threadPool->taskOrder;
 
 		ThreadPoolTask task;
-
 		if (taskOrder == STACK_TASK_ORDER)
 		{
 			task = tasks[taskCount - 1];
@@ -91,87 +89,71 @@ static void onThreadUpdate(void* argument)
 		broadcastCond(workingCond);
 	}
 }
-ThreadPool createThreadPool(
-	size_t threadCount,
-	size_t taskCapacity,
-	TaskOrder taskOrder)
+ThreadPool createThreadPool(size_t threadCount,
+	size_t taskCapacity, TaskOrder taskOrder)
 {
 	assert(threadCount);
 	assert(taskOrder < TASK_ORDER_COUNT);
 	assert(taskCapacity >= threadCount);
 
 	ThreadPool threadPool = calloc(1, sizeof(ThreadPool_T));
-
-	if (!threadPool)
-		return NULL;
+	if (!threadPool) return NULL;
 
 	threadPool->workingCount = 0;
 	threadPool->taskOrder = taskOrder;
 	threadPool->isRunning = true;
 
 	Mutex mutex = createMutex();
-
 	if (!mutex)
 	{
 		destroyThreadPool(threadPool);
 		return NULL;
 	}
-
 	threadPool->mutex = mutex;
 
 	Cond workCond = createCond();
-
 	if (!workCond)
 	{
 		destroyThreadPool(threadPool);
 		return NULL;
 	}
-
 	threadPool->workCond = workCond;
 
 	Cond workingCond = createCond();
-
 	if (!workingCond)
 	{
 		destroyThreadPool(threadPool);
 		return NULL;
 	}
-
 	threadPool->workingCond = workingCond;
 
 	ThreadPoolTask* tasks = malloc(taskCapacity * sizeof(ThreadPoolTask));
-
 	if (!tasks)
 	{
 		destroyThreadPool(threadPool);
 		return NULL;
 	}
-
 	threadPool->tasks = tasks;
 	threadPool->taskCapacity = taskCapacity;
 	threadPool->taskCount = 0;
 
 	Thread* threads = calloc(threadCount, sizeof(Thread));
-
 	if (!threads)
 	{
 		destroyThreadPool(threadPool);
 		return NULL;
 	}
-
 	threadPool->threads = threads;
 	threadPool->threadCount = threadCount;
 
 	for (size_t i = 0; i < threadCount; i++)
 	{
 		Thread thread = createThread(onThreadUpdate, threadPool);
-
 		if (!thread)
 		{
 			destroyThreadPool(threadPool);
 			return NULL;
 		}
-
 		threads[i] = thread;
 	}
 
@@ -179,8 +161,7 @@ ThreadPool createThreadPool(
 }
 void destroyThreadPool(ThreadPool threadPool)
 {
-	if (!threadPool)
-		return;
+	if (!threadPool) return;
 
 	Thread* threads = threadPool->threads;
 	size_t threadCount = threadPool->threadCount;
@@ -196,10 +177,7 @@ void destroyThreadPool(ThreadPool threadPool)
 		for (size_t i = 0; i < threadCount; i++)
 		{
 			Thread thread = threads[i];
-
-			if (!thread)
-				continue;
-
+			if (!thread) continue;
 			joinThread(thread);
 			destroyThread(thread);
 		}
@@ -233,24 +211,19 @@ bool isThreadPoolRunning(ThreadPool threadPool)
 	return isRunning;
 }
 
-TaskOrder getThreadPoolTaskOrder(
-	ThreadPool threadPool)
+TaskOrder getThreadPoolTaskOrder(ThreadPool threadPool)
 {
 	assert(threadPool);
 	return threadPool->taskOrder;
 }
-void setThreadPoolTaskOrder(
-	ThreadPool threadPool,
-	TaskOrder taskOrder)
+void setThreadPoolTaskOrder(ThreadPool threadPool, TaskOrder taskOrder)
 {
 	assert(threadPool);
 	waitThreadPool(threadPool);
 	threadPool->taskOrder = taskOrder;
 }
 
-bool resizeThreadPoolTasks(
-	ThreadPool threadPool,
-	size_t taskCapacity)
+bool resizeThreadPoolTasks(ThreadPool threadPool, size_t taskCapacity)
 {
 	assert(threadPool);
 	assert(taskCapacity > 0);
@@ -259,18 +232,14 @@ bool resizeThreadPoolTasks(
 
 	ThreadPoolTask* tasks = realloc(threadPool->tasks,
 		taskCapacity * sizeof(ThreadPoolTask));
-
-	if (!tasks)
-		return false;
+	if (!tasks) return false;
 
 	threadPool->tasks = tasks;
 	threadPool->taskCapacity = taskCapacity;
 	return true;
 }
 
-bool tryAddThreadPoolTask(
-	ThreadPool threadPool,
-	ThreadPoolTask task)
+bool tryAddThreadPoolTask(ThreadPool threadPool, ThreadPoolTask task)
 {
 	assert(threadPool);
 	assert(task.function);
@@ -279,7 +248,6 @@ bool tryAddThreadPoolTask(
 	lockMutex(mutex);
 
 	size_t taskCount = threadPool->taskCount;
-
 	if (taskCount == threadPool->taskCapacity)
 	{
 		unlockMutex(mutex);
@@ -293,9 +261,7 @@ bool tryAddThreadPoolTask(
 	unlockMutex(mutex);
 	return true;
 }
-void addThreadPoolTask(
-	ThreadPool threadPool,
-	ThreadPoolTask task)
+void addThreadPoolTask(ThreadPool threadPool, ThreadPoolTask task)
 {
 	assert(threadPool);
 	assert(task.function);
@@ -314,10 +280,8 @@ void addThreadPoolTask(
 
 	unlockMutex(mutex);
 }
-void addThreadPoolTasks(
-	ThreadPool threadPool,
-	ThreadPoolTask* tasks,
-	size_t taskCount)
+void addThreadPoolTasks(ThreadPool threadPool,
+	ThreadPoolTask* tasks, size_t taskCount)
 {
 	assert(threadPool);
 	assert(tasks);
@@ -351,10 +315,8 @@ void addThreadPoolTasks(
 
 	unlockMutex(mutex);
 }
-void addThreadPoolTaskNumber(
-	ThreadPool threadPool,
-	ThreadPoolTask task,
-	size_t taskCount)
+void addThreadPoolTaskNumber(ThreadPool threadPool,
+	ThreadPoolTask task, size_t taskCount)
 {
 	assert(threadPool);
 	assert(task.function);

@@ -44,9 +44,7 @@ struct Cond_T
 Mutex createMutex()
 {
 	Mutex mutex = malloc(sizeof(Mutex_T));
-
-	if (!mutex)
-		return NULL;
+	if (!mutex) return NULL;
 
 #if __linux__ || __APPLE__
 	if (pthread_mutex_init(&mutex->handle, NULL) != 0)
@@ -66,16 +64,14 @@ Mutex createMutex()
 
 void destroyMutex(Mutex mutex)
 {
-	if (!mutex)
-		return;
+	if (!mutex) return;
 
 #ifndef NDEBUG
 	assert(!mutex->isLocked);
 #endif
 
 #if __linux__ || __APPLE__
-	if (pthread_mutex_destroy(&mutex->handle) != 0)
-		abort();
+	if (pthread_mutex_destroy(&mutex->handle) != 0) abort();
 #elif _WIN32
 	DeleteCriticalSection(&mutex->handle);
 #endif
@@ -88,8 +84,7 @@ void lockMutex(Mutex mutex)
 	assert(mutex);
 
 #if __linux__ || __APPLE__
-	if (pthread_mutex_lock(&mutex->handle) != 0)
-		abort();
+	if (pthread_mutex_lock(&mutex->handle) != 0) abort();
 #elif _WIN32
 	EnterCriticalSection(&mutex->handle);
 #endif
@@ -104,8 +99,7 @@ void unlockMutex(Mutex mutex)
 	assert(mutex);
 
 #if __linux__ || __APPLE__
-	if (pthread_mutex_unlock(&mutex->handle) != 0)
-		abort();
+	if (pthread_mutex_unlock(&mutex->handle) != 0) abort();
 #elif _WIN32
 	LeaveCriticalSection(&mutex->handle);
 #endif
@@ -134,9 +128,7 @@ bool tryLockMutex(Mutex mutex)
 Cond createCond()
 {
 	Cond cond = malloc(sizeof(Cond_T));
-
-	if (!cond)
-		return NULL;
+	if (!cond) return NULL;
 
 #if __linux__ || __APPLE__
 	if (pthread_cond_init(&cond->handle, NULL) != 0)
@@ -152,12 +144,10 @@ Cond createCond()
 
 void destroyCond(Cond cond)
 {
-	if (!cond )
-		return;
+	if (!cond) return;
 
 #if __linux__ || __APPLE__
-	if (pthread_cond_destroy(&cond->handle) != 0)
-		abort();
+	if (pthread_cond_destroy(&cond->handle) != 0) abort();
 #endif
 
 	free(cond);
@@ -168,8 +158,7 @@ void signalCond(Cond cond)
 	assert(cond);
 
 #if __linux__ || __APPLE__
-	if (pthread_cond_signal(&cond->handle) != 0)
-		abort();
+	if (pthread_cond_signal(&cond->handle) != 0) abort();
 #elif _WIN32
 	WakeConditionVariable(&cond->handle);
 #endif
@@ -180,8 +169,7 @@ void broadcastCond(Cond cond)
 	assert(cond);
 
 #if __linux__ || __APPLE__
-	if (pthread_cond_broadcast(&cond->handle) != 0)
-		abort();
+	if (pthread_cond_broadcast(&cond->handle) != 0) abort();
 #elif _WIN32
 	WakeAllConditionVariable(&cond->handle);
 #endif
@@ -193,11 +181,10 @@ void waitCond(Cond cond, Mutex mutex)
 	assert(mutex);
 
 #if __linux__ || __APPLE__
-	if (pthread_cond_wait(&cond->handle, &mutex->handle) != 0)
-		abort();
+	if (pthread_cond_wait(&cond->handle, &mutex->handle) != 0) abort();
 #elif _WIN32
-	if (SleepConditionVariableCS(&cond->handle, &mutex->handle, INFINITE) != TRUE)
-		abort();
+	if (SleepConditionVariableCS(&cond->handle,
+		&mutex->handle, INFINITE) != TRUE) abort();
 #endif
 }
 
@@ -216,7 +203,7 @@ void waitCondFor(Cond cond, Mutex mutex, double timeout)
 	if (pthread_cond_timedwait(&cond->handle, &mutex->handle, &delay) != 0)
 		abort();
 #elif _WIN32
-	if (SleepConditionVariableCS(&cond->handle, &mutex->handle, (DWORD)(timeout * 1000.0)) != TRUE)
-		abort();
+	if (SleepConditionVariableCS(&cond->handle, &mutex->handle,
+		(DWORD)(timeout * 1000.0)) != TRUE) abort();
 #endif
 }

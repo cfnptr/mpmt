@@ -22,11 +22,9 @@ if (TARGET mpmt-static)
 	return()
 endif ()
 
-project(mpmt
-	VERSION 1.6.0
+project(mpmt VERSION 1.6.0 LANGUAGES C
 	DESCRIPTION "Multi-platform multi-threading library"
-	HOMEPAGE_URL "https://github.com/cfnptr/mpmt"
-	LANGUAGES C)
+	HOMEPAGE_URL "https://github.com/cfnptr/mpmt")
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
