@@ -17,6 +17,7 @@
 #include <assert.h>
 
 #if __linux__ || __APPLE__
+#define _GNU_SOURCE
 #include <errno.h>
 #include <pthread.h>
 #elif _WIN32
