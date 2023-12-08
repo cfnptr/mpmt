@@ -34,23 +34,22 @@ option(MPMT_BUILD_TESTS "Build MPMT library tests" ON)
 option(MPMT_BUILD_EXAMPLES "Build MPMT usage examples" ON)
 
 find_package(Threads REQUIRED)
-
 configure_file(cmake/defines.h.in include/mpmt/defines.h)
 
 set(MPMT_SOURCES source/sync.c source/thread.c source/thread_pool.c)
-set(MPMT_INCLUDE_DIRECTORIES ${PROJECT_BINARY_DIR}/include
-	${PROJECT_SOURCE_DIR}/include {CMAKE_THREAD_LIBS_INIT})
+set(MPMT_INCLUDE_DIRS ${PROJECT_BINARY_DIR}/include
+	${PROJECT_SOURCE_DIR}/include ${CMAKE_THREAD_LIBS_INIT})
 
 add_library(mpmt-static STATIC ${MPMT_SOURCES})
 target_link_libraries(mpmt-static PUBLIC Threads::Threads)
-target_include_directories(mpmt-static PUBLIC ${MPMT_INCLUDE_DIRECTORIES})
+target_include_directories(mpmt-static PUBLIC ${MPMT_INCLUDE_DIRS})
 
 if (MPMT_BUILD_SHARED)
 	add_library(mpmt-shared SHARED ${MPMT_SOURCES})
 	set_target_properties(mpmt-shared PROPERTIES OUTPUT_NAME
 		"mpmt" WINDOWS_EXPORT_ALL_SYMBOLS ON)
 	target_link_libraries(mpmt-shared PUBLIC Threads::Threads)
-	target_include_directories(mpmt-shared PUBLIC ${MPMT_INCLUDE_DIRECTORIES})
+	target_include_directories(mpmt-shared PUBLIC ${MPMT_INCLUDE_DIRS})
 endif ()
 
 if (MPMT_BUILD_EXAMPLES)

@@ -14,6 +14,7 @@
 
 #include "mpmt/thread.h"
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 
 #if __linux__ || __APPLE__
