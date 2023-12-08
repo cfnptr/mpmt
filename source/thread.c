@@ -13,9 +13,6 @@
 // limitations under the License.
 
 #include "mpmt/thread.h"
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
 
 #if __linux__ || __APPLE__
 #define _GNU_SOURCE
@@ -26,6 +23,10 @@
 #else
 #error Unknown operating system
 #endif
+
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
 
 #if __linux__ || __APPLE__
 #define THREAD pthread_t
