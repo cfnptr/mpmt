@@ -14,13 +14,13 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-if (${CMAKE_SOURCE_DIR} MATCHES ${CMAKE_BINARY_DIR})
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
 	message(FATAL_ERROR "Prevented in-tree build")
-endif ()
+endif()
 
-if (TARGET mpmt-static)
+if(TARGET mpmt-static)
 	return()
-endif ()
+endif()
 
 project(mpmt VERSION 1.7.1 LANGUAGES C
 	DESCRIPTION "Multi-platform multi-threading library"
@@ -44,15 +44,15 @@ add_library(mpmt-static STATIC ${MPMT_SOURCES})
 target_link_libraries(mpmt-static PUBLIC Threads::Threads)
 target_include_directories(mpmt-static PUBLIC ${MPMT_INCLUDE_DIRS})
 
-if (MPMT_BUILD_SHARED)
+if(MPMT_BUILD_SHARED)
 	add_library(mpmt-shared SHARED ${MPMT_SOURCES})
 	set_target_properties(mpmt-shared PROPERTIES OUTPUT_NAME
 		"mpmt" WINDOWS_EXPORT_ALL_SYMBOLS ON)
 	target_link_libraries(mpmt-shared PUBLIC Threads::Threads)
 	target_include_directories(mpmt-shared PUBLIC ${MPMT_INCLUDE_DIRS})
-endif ()
+endif()
 
-if (MPMT_BUILD_EXAMPLES)
+if(MPMT_BUILD_EXAMPLES)
 	add_executable(mpmt-thread-example examples/thread_example.c)
 	target_link_libraries(mpmt-thread-example PRIVATE mpmt-static)
 	target_include_directories(mpmt-thread-example PRIVATE
@@ -62,9 +62,9 @@ if (MPMT_BUILD_EXAMPLES)
 	target_link_libraries(mpmt-mutex-example PRIVATE mpmt-static)
 	target_include_directories(mpmt-mutex-example PRIVATE
 		${PROJECT_BINARY_DIR}/include ${PROJECT_SOURCE_DIR}/include)
-endif ()
+endif()
 
-if (MPMT_BUILD_TESTS)
+if(MPMT_BUILD_TESTS)
 	enable_testing()
 
 	add_executable(TestMpmtSync tests/test_sync.c)
@@ -76,4 +76,4 @@ if (MPMT_BUILD_TESTS)
 	add_test(NAME TestMpmtThreadPool COMMAND TestMpmtThreadPool)
 
 	# TODO: test atomics
-endif ()
+endif()
