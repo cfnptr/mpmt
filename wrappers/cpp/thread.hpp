@@ -51,7 +51,7 @@ public:
 	 * @brief Returns true if current thread is main.
 	 * @details See the @ref isCurrentThreadMain().
 	 */
-	static bool isCurrentThreadMain() noexcept
+	static bool isCurrentMain() noexcept
 	{
 		return isCurrentThreadMain();
 	}
