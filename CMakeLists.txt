@@ -1,4 +1,4 @@
-# Copyright 2020-2023 Nikita Fediuchin. All rights reserved.
+# Copyright 2020-2024 Nikita Fediuchin. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ if(TARGET mpmt-static)
 	return()
 endif()
 
-project(mpmt VERSION 1.7.1 LANGUAGES C
+project(mpmt VERSION 1.7.2 LANGUAGES C
 	DESCRIPTION "Multi-platform multi-threading library"
 	HOMEPAGE_URL "https://github.com/cfnptr/mpmt")
 
@@ -37,8 +37,8 @@ find_package(Threads REQUIRED)
 configure_file(cmake/defines.h.in include/mpmt/defines.h)
 
 set(MPMT_SOURCES source/sync.c source/thread.c source/thread_pool.c)
-set(MPMT_INCLUDE_DIRS ${PROJECT_BINARY_DIR}/include
-	${PROJECT_SOURCE_DIR}/include ${CMAKE_THREAD_LIBS_INIT})
+set(MPMT_INCLUDE_DIRS ${PROJECT_BINARY_DIR}/include ${PROJECT_SOURCE_DIR}/include
+	${PROJECT_SOURCE_DIR}/wrappers/cpp ${CMAKE_THREAD_LIBS_INIT})
 
 add_library(mpmt-static STATIC ${MPMT_SOURCES})
 target_link_libraries(mpmt-static PUBLIC Threads::Threads)

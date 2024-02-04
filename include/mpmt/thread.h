@@ -1,4 +1,4 @@
-// Copyright 2020-2023 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2024 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,85 +16,112 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-/*
- * Thread structure.
+/***********************************************************************************************************************
+ * @file
+ * @brief Common thread functions.
+ * 
+ * @details
+ * A thread is the smallest unit of execution within a process. Threads are parallel execution paths 
+ * that can run independently but share the same resources, such as memory space, file descriptors, 
+ * and other process-specific information. Threads enable concurrent execution and can be used to 
+ * perform multiple tasks simultaneously within a single process.
+ **********************************************************************************************************************/
+
+/**
+ * @brief Thread structure.
  */
 typedef struct Thread_T Thread_T;
-/*
- * Thread instance.
+/**
+ * @brief Thread instance.
  */
 typedef Thread_T* Thread;
 
-/*
- * Creates a new thread executing the specified function.
- * Returns thread instance on success, otherwise NULL.
+/**
+ * @brief Creates a new thread executing the specified function.
+ * 
+ * @details
+ * Threads begin execution immediately upon construction of the associated 
+ * thread object (pending any OS scheduling delays), starting at the 
+ * top-level function provided as a constructor argument.
  *
- * function - pointer to the function that should be invoked.
- * argument - argument that will be passed to the function or NULL.
+ * @param[in] function pointer to the function that should be invoked
+ * @param[in] argument argument that will be passed to the function or NULL
+ * 
+ * @return Thread instance on success, otherwise NULL.
  */
 Thread createThread(void (*function)(void*), void* argument);
-/*
- * Destroys thread instance.
- * thread - thread instance or NULL.
+
+/**
+ * @brief Destroys thread instance.
+ * @param thread thread instance or NULL
  */
 void destroyThread(Thread thread);
 
-/*
- * Blocks the current thread until the function execution end.
- * thread - thread instance.
+/**
+ * @brief Blocks the current thread until the function execution end.
+ * @param thread thread instance
  */
 void joinThread(Thread thread);
-/*
- * Blocks the execution of the current thread for a specified time.
- * delay - thread sleep delay time (s).
+
+/**
+ * @brief Blocks the execution of the current thread for a specified time.
+ * @param delay thread sleep delay time (in seconds)
  */
 void sleepThread(double delay);
-/*
- * Causes the current thread to yield execution to another thread.
+
+/**
+ * @brief Causes the current thread to yield execution to another thread.
+ * @return True on success, otherwise false.
  */
 bool yieldThread();
 
-/*
- * Returns thread current join status.
- * thread - thread instance.
+/**
+ * @brief Returns thread current join status.
+ * @param thread thread instance
  */
 bool isThreadJoined(Thread thread);
-/*
- * Returns true if thread is currently running one.
- * thread - thread instance.
+
+/**
+ * @brief Returns true if thread is currently running one.
+ * @param thread thread instance
  */
 bool isThreadCurrent(Thread thread);
 
-/*
- * Sets current thread as main.
+/***********************************************************************************************************************
+ * @brief Sets current thread as main.
  */
 void setMainThread();
-/*
- * Returns true if current thread is main.
+
+/**
+ * @brief Returns true if current thread is main.
  */
 bool isCurrentThreadMain();
-/*
- * Returns true if thread is main.
+
+/**
+ * @brief Returns true if thread is main.
+ * @param thread target thread instance
  */
 bool isThreadMain(Thread thread);
 
-/*
- * Sets current thread name.
- * name - thread name string.
- * size - name buffer size.
+/**
+ * @brief Returns current thread name.
+ * @param[out] name pointer to the thread name string
+ * @param size maximal name string capacity (including '\\0')
  */
 void getThreadName(char* name, size_t size);
-/*
- * Returns current thread name.
- * name - thread name string.
+
+/**
+ * @brief Sets current thread name.
+ * @param[in] name thread name string
  */
 void setThreadName(const char* name);
 
-/*
- * Sets current thread priority to foreground.
+/**
+ * @brief Sets current thread priority to foreground.
  */
 void setThreadForegroundPriority();
-/*
- * Sets current thread priority to background.
+
+/**
+ * @brief Sets current thread priority to background.
  */
 void setThreadBackgroundPriority();

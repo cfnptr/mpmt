@@ -1,4 +1,4 @@
-// Copyright 2020-2023 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2024 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -170,6 +170,11 @@ bool isThreadCurrent(Thread thread)
 #elif _WIN32
 	return GetCurrentThreadId() == GetThreadId(thread->handle);
 #endif
+}
+
+const void* getThreadNative(Thread thread)
+{
+	return &thread->handle;
 }
 
 static bool isMainThreadSet = false;

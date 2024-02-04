@@ -1,4 +1,4 @@
-// Copyright 2020-2023 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2024 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -125,6 +125,11 @@ bool tryLockMutex(Mutex mutex)
 	return result;
 }
 
+const void* getMutexNative(Mutex mutex)
+{
+	return &mutex->handle;
+}
+
 Cond createCond()
 {
 	Cond cond = malloc(sizeof(Cond_T));
@@ -206,4 +211,9 @@ void waitCondFor(Cond cond, Mutex mutex, double timeout)
 	if (SleepConditionVariableCS(&cond->handle, &mutex->handle,
 		(DWORD)(timeout * 1000.0)) != TRUE) abort();
 #endif
+}
+
+const void* getCondNative(Cond cond)
+{
+	return &cond->handle;
 }

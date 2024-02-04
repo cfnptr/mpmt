@@ -1,7 +1,9 @@
-# MPMT  ![CI](https://github.com/cfnptr/mpmt/actions/workflows/cmake.yml/badge.svg)
+# MPMT  
 
-A small library providing generic interface for **multithreading** across different platforms.<br/>
+A small [library](https://github.com/cfnptr/mpmt) providing generic interface for **multithreading** across different platforms.<br/>
 Created due to the fact that macOS does not support `<threads.h>` in C11.
+
+See the [documentation](https://cfnptr.github.io/mpmt).
 
 ## Features
 
@@ -9,7 +11,7 @@ Created due to the fact that macOS does not support `<threads.h>` in C11.
 * Cond (Condition variable)
 * Thread (sleep, yield, etc.)
 * Thread pool (tasks)
-* Atomics
+* Atomics (fetch add)
 
 ## Usage example
 
@@ -59,15 +61,18 @@ void threadExample()
 
 ## Supported operating systems
 
-* Ubuntu
-* MacOS
 * Windows
+* macOS
+* Ubuntu (Linux)
 
 ## Build requirements
 
 * C99 compiler
+* C++17 compiler (optional)
 * [Git 2.30+](https://git-scm.com/)
 * [CMake 3.10+](https://cmake.org/)
+
+Use building [instructions](BUILDING.md) to install all required tools and libraries.
 
 ### CMake options
 
@@ -80,10 +85,15 @@ void threadExample()
 ## Cloning
 
 ```
-git clone --recursive https://github.com/cfnptr/mpmt
+git clone https://github.com/cfnptr/mpmt
 ```
+
+## Building ![CI](https://github.com/cfnptr/mpmt/actions/workflows/cmake.yml/badge.svg)
+
+* Windows: ```./scripts/build-release.bat```
+* macOS / Ubuntu: ```./scripts/build-release.sh```
 
 ## Usage
 
-Thread example: [examples/thread_example.c](https://github.com/cfnptr/mpmt/blob/main/examples/thread_example.c)<br/>
-Mutex example: [examples/mutex_example.c](https://github.com/cfnptr/mpmt/blob/main/examples/mutex_example.c)
+Thread example: [examples/thread_example.c](examples/thread_example.c)<br/>
+Mutex example: [examples/mutex_example.c](examples/mutex_example.c)

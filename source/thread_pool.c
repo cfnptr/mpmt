@@ -1,4 +1,4 @@
-// Copyright 2020-2023 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2024 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -89,8 +89,7 @@ static void onThreadUpdate(void* argument)
 		broadcastCond(workingCond);
 	}
 }
-ThreadPool createThreadPool(size_t threadCount,
-	size_t taskCapacity, TaskOrder taskOrder)
+ThreadPool createThreadPool(size_t threadCount, size_t taskCapacity, TaskOrder taskOrder)
 {
 	assert(threadCount);
 	assert(taskOrder < TASK_ORDER_COUNT);
