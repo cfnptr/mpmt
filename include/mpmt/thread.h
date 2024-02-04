@@ -87,6 +87,14 @@ bool isThreadJoined(Thread thread);
  */
 bool isThreadCurrent(Thread thread);
 
+/**
+ * @brief Returns pointer to the native thread handle.
+ * @warning You should not free returned pointer or use it after thread destruction.
+ *
+ * @param thread thread instance
+ */
+const void* getThreadNative(Thread thread);
+
 /***********************************************************************************************************************
  * @brief Sets current thread as main.
  */
