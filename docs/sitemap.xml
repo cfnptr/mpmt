@@ -5,19 +5,19 @@
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
       http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>https://cfnptr.github.io/mpmt/atomic_8h.html</loc>
+    <loc>https://cfnptr.github.io/mpmt/sync_8h.html</loc>
   </url>
   <url>
     <loc>https://cfnptr.github.io/mpmt/thread_8h.html</loc>
+  </url>
+  <url>
+    <loc>https://cfnptr.github.io/mpmt/atomic_8h.html</loc>
   </url>
   <url>
     <loc>https://cfnptr.github.io/mpmt/thread_8hpp.html</loc>
   </url>
   <url>
     <loc>https://cfnptr.github.io/mpmt/thread__pool_8h.html</loc>
-  </url>
-  <url>
-    <loc>https://cfnptr.github.io/mpmt/sync_8h.html</loc>
   </url>
   <url>
     <loc>https://cfnptr.github.io/mpmt/md__b_u_i_l_d_i_n_g.html</loc>
@@ -36,6 +36,9 @@
   </url>
   <url>
     <loc>https://cfnptr.github.io/mpmt/dir_10a2f940f51aa4314f400785f5982489.html</loc>
+  </url>
+  <url>
+    <loc>https://cfnptr.github.io/mpmt/dir_3f977fbd40930562c334a991d01cf80f.html</loc>
   </url>
   <url>
     <loc>https://cfnptr.github.io/mpmt/dir_5cec92fd47c0900910bbc2480fdfd7be.html</loc>

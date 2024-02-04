@@ -99,6 +99,9 @@ Functions</h2></td></tr>
 <tr class="memitem:af84d6b18b571c687dda228539ccc9540" id="r_af84d6b18b571c687dda228539ccc9540"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af84d6b18b571c687dda228539ccc9540">isThreadCurrent</a> (<a class="el" href="#a79426849c17d0662d486f61963ea7632">Thread</a> thread)</td></tr>
 <tr class="memdesc:af84d6b18b571c687dda228539ccc9540"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if thread is currently running one.  <br /></td></tr>
 <tr class="separator:af84d6b18b571c687dda228539ccc9540"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fab1f156b2abaee07a518463aeaa293" id="r_a5fab1f156b2abaee07a518463aeaa293"><td class="memItemLeft" align="right" valign="top">const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5fab1f156b2abaee07a518463aeaa293">getThreadNative</a> (<a class="el" href="#a79426849c17d0662d486f61963ea7632">Thread</a> thread)</td></tr>
+<tr class="memdesc:a5fab1f156b2abaee07a518463aeaa293"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointer to the native thread handle.  <br /></td></tr>
+<tr class="separator:a5fab1f156b2abaee07a518463aeaa293"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab84d0e12ff2fb6bc2d13c2350144cd34" id="r_ab84d0e12ff2fb6bc2d13c2350144cd34"><td class="memItemLeft" align="right" valign="top"><a id="ab84d0e12ff2fb6bc2d13c2350144cd34" name="ab84d0e12ff2fb6bc2d13c2350144cd34"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setMainThread</b> ()</td></tr>
 <tr class="memdesc:ab84d0e12ff2fb6bc2d13c2350144cd34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets current thread as main. <br /></td></tr>
@@ -297,6 +300,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setThreadBackgroundPr
 </div><div class="memdoc">
 
 <p>Returns true if thread is currently running one. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">thread</td><td>thread instance </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5fab1f156b2abaee07a518463aeaa293" name="a5fab1f156b2abaee07a518463aeaa293"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fab1f156b2abaee07a518463aeaa293">&#9670;&#160;</a></span>getThreadNative()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const void * getThreadNative </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a79426849c17d0662d486f61963ea7632">Thread</a></td>          <td class="paramname"><span class="paramname"><em>thread</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns pointer to the native thread handle. </p>
+<dl class="section warning"><dt>Warning</dt><dd>You should not free returned pointer or use it after thread destruction.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">thread</td><td>thread instance </td></tr>

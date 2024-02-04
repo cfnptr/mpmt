@@ -9,6 +9,7 @@ var thread_8h =
     [ "yieldThread", "thread_8h.html#a85b817898071be35463951153c01d0a2", null ],
     [ "isThreadJoined", "thread_8h.html#a93348b0a9865b7206b92b21fe61fa141", null ],
     [ "isThreadCurrent", "thread_8h.html#af84d6b18b571c687dda228539ccc9540", null ],
+    [ "getThreadNative", "thread_8h.html#a5fab1f156b2abaee07a518463aeaa293", null ],
     [ "setMainThread", "thread_8h.html#ab84d0e12ff2fb6bc2d13c2350144cd34", null ],
     [ "isCurrentThreadMain", "thread_8h.html#aee13a099f44ffbebd6d4505cc2357702", null ],
     [ "isThreadMain", "thread_8h.html#a1a3f54e2b119b8f5decc2394508ef7fd", null ],
