@@ -44,7 +44,8 @@ struct Cond_T
 Mutex createMutex()
 {
 	Mutex mutex = malloc(sizeof(Mutex_T));
-	if (!mutex) return NULL;
+	if (!mutex)
+		return NULL;
 
 #if __linux__ || __APPLE__
 	if (pthread_mutex_init(&mutex->handle, NULL) != 0)
@@ -64,7 +65,8 @@ Mutex createMutex()
 
 void destroyMutex(Mutex mutex)
 {
-	if (!mutex) return;
+	if (!mutex)
+		return;
 
 #ifndef NDEBUG
 	assert(!mutex->isLocked);
@@ -120,7 +122,8 @@ bool tryLockMutex(Mutex mutex)
 #endif
 
 #ifndef NDEBUG
-	if (result) mutex->isLocked = true;
+	if (result)
+		mutex->isLocked = true;
 #endif
 	return result;
 }
@@ -133,7 +136,8 @@ const void* getMutexNative(Mutex mutex)
 Cond createCond()
 {
 	Cond cond = malloc(sizeof(Cond_T));
-	if (!cond) return NULL;
+	if (!cond)
+		return NULL;
 
 #if __linux__ || __APPLE__
 	if (pthread_cond_init(&cond->handle, NULL) != 0)
@@ -149,7 +153,8 @@ Cond createCond()
 
 void destroyCond(Cond cond)
 {
-	if (!cond) return;
+	if (!cond)
+		return;
 
 #if __linux__ || __APPLE__
 	if (pthread_cond_destroy(&cond->handle) != 0) abort();

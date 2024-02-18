@@ -95,7 +95,8 @@ Thread createThread(void(*function)(void*), void* argument)
 }
 void destroyThread(Thread thread)
 {
-	if (!thread) return;
+	if (!thread)
+		return;
 
 	if (!thread->joined)
 	{
@@ -138,7 +139,8 @@ void sleepThread(double delay)
 		if (nanosleep(&spec, &spec) != 0)
 		{
 			int error = errno;
-			if (error == EINTR) continue;
+			if (error == EINTR)
+				continue;
 			else abort();
 		}
 
@@ -230,7 +232,8 @@ void getThreadName(char* name, size_t size)
 	for (size_t i = 0; i < size; i++)
 	{
 		name[i] = (char)wideName[i];
-		if (name[i] == '\0') break;
+		if (name[i] == '\0')
+			break;
 	}
 
 	name[size - 1] = '\0';
@@ -263,7 +266,8 @@ void setThreadForegroundPriority()
 #if __linux__ || __APPLE__
 	struct sched_param param; int policy;
 	if (pthread_getschedparam(pthread_self(), &policy, &param) != 0) abort();
-	if (param.sched_priority + 1 < sched_get_priority_max(policy)) param.sched_priority++;
+	if (param.sched_priority + 1 < sched_get_priority_max(policy))
+		param.sched_priority++;
 	if (pthread_setschedparam(pthread_self(), policy, &param) != 0) abort();
 #elif _WIN32
 	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL)) abort();
@@ -274,7 +278,8 @@ void setThreadBackgroundPriority()
 #if __linux__ || __APPLE__
 	struct sched_param param; int policy;
 	if (pthread_getschedparam(pthread_self(), &policy, &param) != 0) abort();
-	if (param.sched_priority - 1 > sched_get_priority_min(policy)) param.sched_priority--;
+	if (param.sched_priority - 1 > sched_get_priority_min(policy))
+		param.sched_priority--;
 	if (pthread_setschedparam(pthread_self(), policy, &param) != 0) abort();
 #elif _WIN32
 	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL)) abort();

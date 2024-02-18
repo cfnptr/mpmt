@@ -96,7 +96,8 @@ ThreadPool createThreadPool(size_t threadCount, size_t taskCapacity, TaskOrder t
 	assert(taskCapacity >= threadCount);
 
 	ThreadPool threadPool = calloc(1, sizeof(ThreadPool_T));
-	if (!threadPool) return NULL;
+	if (!threadPool)
+		return NULL;
 
 	threadPool->workingCount = 0;
 	threadPool->taskOrder = taskOrder;
@@ -160,7 +161,8 @@ ThreadPool createThreadPool(size_t threadCount, size_t taskCapacity, TaskOrder t
 }
 void destroyThreadPool(ThreadPool threadPool)
 {
-	if (!threadPool) return;
+	if (!threadPool)
+		return;
 
 	Thread* threads = threadPool->threads;
 	size_t threadCount = threadPool->threadCount;
@@ -176,7 +178,8 @@ void destroyThreadPool(ThreadPool threadPool)
 		for (size_t i = 0; i < threadCount; i++)
 		{
 			Thread thread = threads[i];
-			if (!thread) continue;
+			if (!thread)
+				continue;
 			joinThread(thread);
 			destroyThread(thread);
 		}
@@ -231,7 +234,8 @@ bool resizeThreadPoolTasks(ThreadPool threadPool, size_t taskCapacity)
 
 	ThreadPoolTask* tasks = realloc(threadPool->tasks,
 		taskCapacity * sizeof(ThreadPoolTask));
-	if (!tasks) return false;
+	if (!tasks)
+		return false;
 
 	threadPool->tasks = tasks;
 	threadPool->taskCapacity = taskCapacity;
