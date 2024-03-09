@@ -82,6 +82,13 @@ Use building [instructions](BUILDING.md) to install all required tools and libra
 | MPMT_BUILD_TESTS    | Build MPMT library tests  | `ON`          |
 | MPMT_BUILD_EXAMPLES | Build MPMT usage examples | `ON`          |
 
+### CMake targets
+
+| Name        | Description          | Windows | macOS    | Linux |
+|-------------|----------------------|---------|----------|-------|
+| mpmt-static | Static MPMT library  | `.lib`  | `.a`     | `.a`  |
+| mpmt-shared | Dynamic MPMT library | `.dll`  | `.dylib` | `.so` |
+
 ## Cloning
 
 ```
