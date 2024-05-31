@@ -39,14 +39,13 @@ var NAVTREEINDEX0 =
 "md__b_u_i_l_d_i_n_g.html#autotoc_md2-install-required-packages-1":[7,3,1],
 "md__b_u_i_l_d_i_n_g.html#autotoc_md3-install-cmake":[7,1,2],
 "md__b_u_i_l_d_i_n_g.html#build-project":[7,4],
-"md__b_u_i_l_d_i_n_g.html#macos-ventura-13":[7,3],
+"md__b_u_i_l_d_i_n_g.html#macos-1314":[7,3],
 "md__b_u_i_l_d_i_n_g.html#operating-systems":[7,0],
-"md__b_u_i_l_d_i_n_g.html#ubuntu-2204-lts":[7,2],
+"md__b_u_i_l_d_i_n_g.html#ubuntu-22042404":[7,2],
 "md__b_u_i_l_d_i_n_g.html#visual-studio-2022":[7,4,0],
 "md__b_u_i_l_d_i_n_g.html#visual-studio-code-vs-code":[7,4,1],
 "md__b_u_i_l_d_i_n_g.html#windows-1011":[7,1],
 "pages.html":[],
-"struct_thread_pool_task.html":[8,0,1],
 "sync_8h.html":[9,0,0,0,1],
 "sync_8h.html#a1baf705710d6e0fe1ce246dd41aa5c4f":[9,0,0,0,1,13],
 "sync_8h.html#a1d31c2ee6cb88f2768e48267ead9b2a8":[9,0,0,0,1,14],
@@ -104,5 +103,6 @@ var NAVTREEINDEX0 =
 "thread__pool_8h.html#ac281fcfc1fff988d0922f7393f0f1171":[9,0,0,0,3,14],
 "thread__pool_8h.html#accd7dd6ed6c5334042ecc19d9d97dc87":[9,0,0,0,3,3],
 "thread__pool_8h.html#adec79ae9f3cac855ea4b2da1e4064750":[9,0,0,0,3,16],
-"thread__pool_8h.html#af49d078f2f9414f356031868d1b4570e":[9,0,0,0,3,10]
+"thread__pool_8h.html#af49d078f2f9414f356031868d1b4570e":[9,0,0,0,3,10],
+"thread__pool_8h.html#struct_thread_pool_task":[9,0,0,0,3,0]
 };

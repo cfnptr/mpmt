@@ -1,6 +1,6 @@
 var thread__pool_8h =
 [
-    [ "ThreadPoolTask", "struct_thread_pool_task.html", null ],
+    [ "ThreadPoolTask", "thread__pool_8h.html#struct_thread_pool_task", null ],
     [ "TaskOrder", "thread__pool_8h.html#a9d078494835512f1f60c86a5fb749bfd", null ],
     [ "ThreadPool_T", "thread__pool_8h.html#a9e6ad746764706e8d323d77758496491", null ],
     [ "ThreadPool", "thread__pool_8h.html#accd7dd6ed6c5334042ecc19d9d97dc87", null ],
