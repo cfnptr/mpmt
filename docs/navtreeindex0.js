@@ -26,6 +26,7 @@ var NAVTREEINDEX0 =
 "index.html#building-cihttpsgithubcomcfnptrmpmtactionsworkflowscmakeymlbadgesvg":[5],
 "index.html#cloning":[4],
 "index.html#cmake-options":[3,0],
+"index.html#cmake-targets":[3,1],
 "index.html#features":[0],
 "index.html#supported-operating-systems":[2],
 "index.html#usage":[6],
