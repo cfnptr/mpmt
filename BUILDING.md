@@ -4,7 +4,7 @@
 
 * [Window (10/11)](BUILDING.md#windows-1011)
 * [Ubuntu (22.04/24.04)](BUILDING.md#ubuntu-22042404)
-* [macOS (13/14)](BUILDING.md#macos-1314)
+* [macOS (14/15)](BUILDING.md#macos-1415)
 * [Build Project](BUILDING.md#build-project)
 
 
@@ -37,21 +37,21 @@ You may use default Git install options or chose any other default Git editor in
 
 ## 2. Install required packages
 
-1. Run ```sudo apt-get update``` using **Terminal** app
-2. And ```sudo apt-get install git gcc g++ cmake```
+1. Run ```sudo apt-get update``` command using **Terminal** app
+2. And ```sudo apt-get install git cmake gcc g++```
 
 
-# macOS (13/14)
+# macOS (14/15)
 
 ## 1. Install Xcode (Or any other IDE)
 
 1. Download and install latest version from **App Store** app
-2. Run ```xcode-select --install``` using **Terminal** app to install Xcode tools
+2. Run ```xcode-select --install``` command using **Terminal** app to install Xcode tools
 
 ## 2. Install required packages
 
 1. Install **Homebrew** package manager from [brew.sh](https://brew.sh)
-2. Run ```brew update``` using **Terminal** app
+2. Run ```brew update``` command using **Terminal** app
 3. And ```brew install git cmake```
 
 
