@@ -46,7 +46,7 @@ var NAVTREE =
         [ "Install Visual Studio Code (Or any other IDE)", "md__b_u_i_l_d_i_n_g.html#autotoc_md1-install-visual-studio-code-or-any-other-ide", null ],
         [ "Install required packages", "md__b_u_i_l_d_i_n_g.html#autotoc_md2-install-required-packages", null ]
       ] ],
-      [ "macOS (13/14)", "md__b_u_i_l_d_i_n_g.html#macos-1314", [
+      [ "macOS (14/15)", "md__b_u_i_l_d_i_n_g.html#macos-1415", [
         [ "Install Xcode (Or any other IDE)", "md__b_u_i_l_d_i_n_g.html#autotoc_md1-install-xcode-or-any-other-ide", null ],
         [ "Install required packages", "md__b_u_i_l_d_i_n_g.html#autotoc_md2-install-required-packages-1", null ]
       ] ],
