@@ -66,7 +66,7 @@ typedef ThreadPool_T* ThreadPool;
  * @note You should destroy created thread pool instance manually.
  * 
  * @details
- * Internally it allocates the necessary mutexes, condwars and arrays.
+ * Internally it allocates the necessary mutexes, condvars and arrays.
  * It also creates and starts the specified number of threads.
  *
  * @param threadCount target thread count in the pool
