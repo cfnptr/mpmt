@@ -46,7 +46,6 @@ public:
 	{
 		setMainThread();
 	}
-
 	/**
 	 * @brief Returns true if current thread is main.
 	 * @details See the @ref isCurrentThreadMain().
@@ -66,7 +65,6 @@ public:
 	{
 		getThreadName(name, size);
 	}
-
 	/**
 	 * @brief Sets current thread name.
 	 * @details See the @ref setThreadName().
@@ -85,7 +83,6 @@ public:
 	{
 		setThreadForegroundPriority();
 	}
-
 	/**
 	 * @brief Sets current thread priority to background.
 	 * @details See the @ref setThreadBackgroundPriority().
@@ -93,6 +90,16 @@ public:
 	static void setBackgroundPriority() noexcept
 	{
 		setThreadBackgroundPriority();
+	}
+
+	/**
+	 * @brief Blocks the execution of the current thread for a specified time.
+	 * @details See the @ref setThreadBackgroundPriority().
+	 * @param delay thread sleep delay time (in seconds)
+	 */
+	static void sleep(double delay) noexcept
+	{
+		sleepThread(delay);
 	}
 
 	// Note: for other functions use C++ STD thread.
