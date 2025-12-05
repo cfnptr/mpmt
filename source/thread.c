@@ -128,12 +128,17 @@ void sleepThread(double delay)
 	spec.tv_sec = (time_t)delay;
 	spec.tv_nsec = (long)((delay - (double)spec.tv_sec) * 1000000000.0);
 
-	if (nanosleep(&spec, &spec) != 0)
+	while (true)
 	{
-		int error = errno;
-		if (error == EINTR)
-			return;
-		else abort();
+		if (nanosleep(&spec, &spec) != 0)
+		{
+			int error = errno;
+			if (error == EINTR)
+				continue; // Note: resuming sleep.
+			else abort();
+		}
+
+		return;
 	}
 	#elif _WIN32
 	Sleep((DWORD)(delay * 1000.0));
