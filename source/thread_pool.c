@@ -301,7 +301,6 @@ void addThreadPoolTasks(ThreadPool threadPool,
 	size_t taskCapacity = threadPool->taskCapacity;
 
 	lockMutex(mutex);
-
 	for (size_t i = 0; i < taskCount; i++)
 	{
 		while (threadPool->taskCount == taskCapacity)
@@ -315,7 +314,6 @@ void addThreadPoolTasks(ThreadPool threadPool,
 		threadPool->taskCount = taskArrayCount;
 		broadcastCond(threadPool->workCond);
 	}
-
 	unlockMutex(mutex);
 }
 void addThreadPoolTaskNumber(ThreadPool threadPool,
@@ -331,7 +329,6 @@ void addThreadPoolTaskNumber(ThreadPool threadPool,
 	size_t taskCapacity = threadPool->taskCapacity;
 
 	lockMutex(mutex);
-
 	for (size_t i = 0; i < taskCount; i++)
 	{
 		while (threadPool->taskCount == taskCapacity)
@@ -348,7 +345,6 @@ void addThreadPoolTaskNumber(ThreadPool threadPool,
 		threadPool->taskCount = taskArrayCount;
 		broadcastCond(threadPool->workCond);
 	}
-
 	unlockMutex(mutex);
 }
 
@@ -360,9 +356,7 @@ void waitThreadPool(ThreadPool threadPool)
 	Cond workingCond = threadPool->workingCond;
 
 	lockMutex(mutex);
-
 	while (threadPool->taskCount || threadPool->workingCount)
 		waitCond(workingCond, mutex);
-
 	unlockMutex(mutex);
 }
