@@ -290,10 +290,10 @@ void addThreadPoolTasks(ThreadPool threadPool,
 	assert(tasks);
 	assert(taskCount > 0);
 
-#ifndef NDEBUG
+	#ifndef NDEBUG
 	for (size_t i = 0; i < taskCount; i++)
 		assert(tasks[i].function);
-#endif
+	#endif
 
 	Mutex mutex = threadPool->mutex;
 	Cond workingCond = threadPool->workingCond;
