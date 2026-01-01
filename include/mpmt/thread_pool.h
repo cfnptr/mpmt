@@ -1,4 +1,4 @@
-// Copyright 2020-2025 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2026 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * a thread pool maintains a fixed number of threads that are created and initialized upfront, 
  * ready to execute tasks concurrently. This helps to reduce the overhead associated with creating and 
  * destroying threads for every individual task, resulting in better performance and resource utilization.
- **********************************************************************************************************************/
+ */
 
 #pragma once
 #include <stddef.h>

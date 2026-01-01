@@ -1,4 +1,4 @@
-// Copyright 2020-2025 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2026 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,6 +60,7 @@ DWORD threadFunction(LPVOID argument)
 }
 #endif
 
+//**********************************************************************************************************************
 Thread createThread(void(*function)(void*), void* argument)
 {
 	assert(function);
@@ -153,6 +154,7 @@ bool yieldThread()
 	#endif
 }
 
+//**********************************************************************************************************************
 bool isThreadJoined(Thread thread)
 {
 	assert(thread);
@@ -255,6 +257,7 @@ void setThreadName(const char* name)
 	#endif
 }
 
+//**********************************************************************************************************************
 void setThreadForegroundPriority()
 {
 	#if __linux__ || __APPLE__

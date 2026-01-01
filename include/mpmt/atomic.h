@@ -1,4 +1,4 @@
-// Copyright 2020-2025 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2026 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * Atomic operations are used to perform certain operations in a way that is guaranteed to be indivisible and 
  * not subject to interruption by other threads. This is particularly useful in multithreaded programming to avoid 
  * race conditions and ensure correct behavior when multiple threads are concurrently accessing shared data.
- **********************************************************************************************************************/
+ */
 
 #pragma once
 #include <stdint.h>

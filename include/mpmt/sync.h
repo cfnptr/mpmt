@@ -1,4 +1,4 @@
-// Copyright 2020-2025 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2026 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
  * @details
  * Synchronization primitives are used for managing concurrent access to 
  * shared resources, preventing race conditions, and ensuring thread safety.
- **********************************************************************************************************************/
+ */
 
 /**
  * @brief Mutual exclusion structure.
@@ -42,7 +42,7 @@ typedef struct Cond_T Cond_T;
  */
 typedef Cond_T* Cond;
 
-/***********************************************************************************************************************
+/**
  * @brief Create a new mutex instance.
  * @note You should destroy created mutex instance manually.
  * 
@@ -60,7 +60,7 @@ Mutex createMutex();
  */
 void destroyMutex(Mutex mutex);
 
-/**
+/***********************************************************************************************************************
  * @brief Locks the mutex, blocks if the mutex is not available.
  * 
  * @details

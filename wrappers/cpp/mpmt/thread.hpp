@@ -1,4 +1,4 @@
-// Copyright 2020-2025 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2026 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  * @file
  * @brief Common thread functions.
  * @details See the @ref thread.h
- **********************************************************************************************************************/
+ */
 
 #pragma once
 #include <string>
@@ -105,4 +105,4 @@ public:
 	// Note: for other functions use C++ STD thread.
 };
 
-}; // mpmt
+}; // namespace mpmt

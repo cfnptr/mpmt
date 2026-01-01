@@ -1,4 +1,4 @@
-// Copyright 2020-2025 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2026 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -62,7 +62,6 @@ Mutex createMutex()
 	#endif
 	return mutex;
 }
-
 void destroyMutex(Mutex mutex)
 {
 	if (!mutex)
@@ -80,6 +79,7 @@ void destroyMutex(Mutex mutex)
 	free(mutex);
 }
 
+//**********************************************************************************************************************
 void lockMutex(Mutex mutex)
 {
 	assert(mutex);
@@ -94,7 +94,6 @@ void lockMutex(Mutex mutex)
 	mutex->isLocked = true;
 	#endif
 }
-
 void unlockMutex(Mutex mutex)
 {
 	assert(mutex);
@@ -109,7 +108,6 @@ void unlockMutex(Mutex mutex)
 	mutex->isLocked = false;
 	#endif
 }
-
 bool tryLockMutex(Mutex mutex)
 {
 	assert(mutex);
@@ -132,6 +130,7 @@ const void* getMutexNative(Mutex mutex)
 	return &mutex->handle;
 }
 
+//**********************************************************************************************************************
 Cond createCond()
 {
 	Cond cond = malloc(sizeof(Cond_T));
@@ -149,7 +148,6 @@ Cond createCond()
 	#endif
 	return cond;
 }
-
 void destroyCond(Cond cond)
 {
 	if (!cond)
@@ -170,7 +168,6 @@ void signalCond(Cond cond)
 	WakeConditionVariable(&cond->handle);
 	#endif
 }
-
 void broadcastCond(Cond cond)
 {
 	assert(cond);
@@ -193,7 +190,6 @@ void waitCond(Cond cond, Mutex mutex)
 		&mutex->handle, INFINITE) != TRUE) abort();
 	#endif
 }
-
 void waitCondFor(Cond cond, Mutex mutex, double timeout)
 {
 	assert(cond);

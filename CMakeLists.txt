@@ -1,4 +1,4 @@
-# Copyright 2020-2025 Nikita Fediuchin. All rights reserved.
+# Copyright 2020-2026 Nikita Fediuchin. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ if(TARGET mpmt-static)
 	return()
 endif()
 
-project(mpmt VERSION 1.7.5 LANGUAGES C
+project(mpmt VERSION 1.7.6 LANGUAGES C
 	DESCRIPTION "Multi-platform multi-threading library"
 	HOMEPAGE_URL "https://github.com/cfnptr/mpmt")
 

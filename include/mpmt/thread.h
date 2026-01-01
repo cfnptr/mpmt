@@ -1,4 +1,4 @@
-// Copyright 2020-2025 Nikita Fediuchin. All rights reserved.
+// Copyright 2020-2026 Nikita Fediuchin. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
  * that can run independently but share the same resources, such as memory space, file descriptors, 
  * and other process-specific information. Threads enable concurrent execution and can be used to 
  * perform multiple tasks simultaneously within a single process.
- **********************************************************************************************************************/
+ */
 
 /**
  * @brief Thread structure.
