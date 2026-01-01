@@ -105,4 +105,4 @@ public:
 	// Note: for other functions use C++ STD thread.
 };
 
-}; // namespace mpmt
+} // namespace mpmt
