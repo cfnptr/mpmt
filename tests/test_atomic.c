@@ -18,14 +18,17 @@
 
 int main()
 {
-	atomic_int32 value32 = 0; atomic_int64 value64 = 0;
-	atomicStore32(&value32, 123); atomicStore64(&value64, 456);
-	bool result = value32 == 123 && value64 == 456;
-	result &= atomicLoad32(&value32) == 123 && atomicLoad64(&value64) == 456;
-	result &= atomicFetchAdd32(&value32, 1) == 123 && atomicFetchAdd64(&value64, 1) == 456;
-	result &= value32 == 124 && value64 == 457;
-	result &= atomicExchange32(&value32, 0) == 124 && atomicExchange64(&value64, 0) == 457;
-	result &= atomicOrFetch32(&value32, 111) == 111 && atomicOrFetch64(&value64, 2222) == 2222;
-	result &= atomicAndFetch32(&value32, 1) == 1 && atomicAndFetch64(&value64, 0) == 0;
+	atomic_int32* value32 = calloc(1, sizeof(atomic_int32));
+	atomic_int64* value64 = calloc(1, sizeof(atomic_int64));
+	atomicStore32(value32, 123); atomicStore64(value64, 456);
+	bool result = atomicLoad32(value32) == 123 && atomicLoad64(value64) == 456;
+	result &= atomicLoad32(value32) == 123 && atomicLoad64(value64) == 456;
+	result &= atomicFetchAdd32(value32, 1) == 123 && atomicFetchAdd64(value64, 1) == 456;
+	result &= atomicLoad32(value32) == 124 && atomicLoad64(value64) == 457;
+	result &= atomicExchange32(value32, 0) == 124 && atomicExchange64(value64, 0) == 457;
+	atomicFetchOr32(value32, 111); atomicFetchOr64(value64, 2222);
+	result &= atomicLoad32(value32) == 111 && atomicLoad64(value64) == 2222;
+	atomicFetchAnd32(value32, 1); atomicFetchAnd64(value64, 0);
+	result &= atomicLoad32(value32) == 1 && atomicLoad64(value64) == 0;
 	return result ? EXIT_SUCCESS : EXIT_FAILURE;
 }

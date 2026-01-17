@@ -23,6 +23,7 @@
  */
 
 // TODO: compare exchange, test/set/clear, thread fences and barriers.
+// TODO: relaxed barrier functions.
 
 #pragma once
 
@@ -135,102 +136,102 @@
 
 /***********************************************************************************************************************
  * @brief Atomically performs AND operation to the variable that memory points to.
- * @return The resulting value of the AND operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the AND operation is to be performed
  * @param value variable whose value is to be used for an AND operation
  */
-#define atomicAndFetch8(memory, value) __atomic_and_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchAnd8(memory, value) __atomic_fetch_and(memory, value, __ATOMIC_SEQ_CST)
 /**
  * @brief Atomically performs AND operation to the variable that memory points to.
- * @return The resulting value of the AND operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the AND operation is to be performed
  * @param value variable whose value is to be used for an AND operation
  */
-#define atomicAndFetch16(memory, value) __atomic_and_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchAnd16(memory, value) __atomic_fetch_and(memory, value, __ATOMIC_SEQ_CST)
 /**
  * @brief Atomically performs AND operation to the variable that memory points to.
- * @return The resulting value of the AND operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the AND operation is to be performed
  * @param value variable whose value is to be used for an AND operation
  */
-#define atomicAndFetch32(memory, value) __atomic_and_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchAnd32(memory, value) __atomic_fetch_and(memory, value, __ATOMIC_SEQ_CST)
 /**
  * @brief Atomically performs AND operation to the variable that memory points to.
- * @return The resulting value of the AND operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the AND operation is to be performed
  * @param value variable whose value is to be used for an AND operation
  */
-#define atomicAndFetch64(memory, value) __atomic_and_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchAnd64(memory, value) __atomic_fetch_and(memory, value, __ATOMIC_SEQ_CST)
 
 /***********************************************************************************************************************
  * @brief Atomically performs OR operation to the variable that memory points to.
- * @return The resulting value of the OR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the OR operation is to be performed
  * @param value variable whose value is to be used for an OR operation
  */
-#define atomicOrFetch8(memory, value) __atomic_or_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchOr8(memory, value) __atomic_fetch_or(memory, value, __ATOMIC_SEQ_CST)
 /**
  * @brief Atomically performs OR operation to the variable that memory points to.
- * @return The resulting value of the OR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the OR operation is to be performed
  * @param value variable whose value is to be used for an OR operation
  */
-#define atomicOrFetch16(memory, value) __atomic_or_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchOr16(memory, value) __atomic_fetch_or(memory, value, __ATOMIC_SEQ_CST)
 /**
  * @brief Atomically performs OR operation to the variable that memory points to.
- * @return The resulting value of the OR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the OR operation is to be performed
  * @param value variable whose value is to be used for an OR operation
  */
-#define atomicOrFetch32(memory, value) __atomic_or_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchOr32(memory, value) __atomic_fetch_or(memory, value, __ATOMIC_SEQ_CST)
 /**
  * @brief Atomically performs OR operation to the variable that memory points to.
- * @return The resulting value of the OR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the OR operation is to be performed
  * @param value variable whose value is to be used for an OR operation
  */
-#define atomicOrFetch64(memory, value) __atomic_or_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchOr64(memory, value) __atomic_fetch_or(memory, value, __ATOMIC_SEQ_CST)
 
 /***********************************************************************************************************************
  * @brief Atomically performs XOR operation to the variable that memory points to.
- * @return The resulting value of the XOR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the XOR operation is to be performed
  * @param value variable whose value is to be used for an XOR operation
  */
-#define atomicXorFetch8(memory, value) __atomic_xor_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchXor8(memory, value) __atomic_fetch_xor(memory, value, __ATOMIC_SEQ_CST)
 /**
  * @brief Atomically performs XOR operation to the variable that memory points to.
- * @return The resulting value of the XOR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the XOR operation is to be performed
  * @param value variable whose value is to be used for an XOR operation
  */
-#define atomicXorFetch16(memory, value) __atomic_xor_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchXor16(memory, value) __atomic_fetch_xor(memory, value, __ATOMIC_SEQ_CST)
 /**
  * @brief Atomically performs XOR operation to the variable that memory points to.
- * @return The resulting value of the XOR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the XOR operation is to be performed
  * @param value variable whose value is to be used for an XOR operation
  */
-#define atomicXorFetch32(memory, value) __atomic_xor_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchXor32(memory, value) __atomic_fetch_xor(memory, value, __ATOMIC_SEQ_CST)
 /**
  * @brief Atomically performs XOR operation to the variable that memory points to.
- * @return The resulting value of the XOR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the XOR operation is to be performed
  * @param value variable whose value is to be used for an XOR operation
  */
-#define atomicXorFetch64(memory, value) __atomic_xor_fetch(memory, value, __ATOMIC_SEQ_CST)
+#define atomicFetchXor64(memory, value) __atomic_fetch_xor(memory, value, __ATOMIC_SEQ_CST)
 
 /***********************************************************************************************************************
  * @brief Atomically adds the value to the variable that memory points to.
@@ -411,102 +412,102 @@ static inline void atomicStore64(atomic_int64* memory, atomic_int64 value)
 
 /***********************************************************************************************************************
  * @brief Atomically performs AND operation to the variable that memory points to.
- * @return The resulting value of the AND operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the AND operation is to be performed
  * @param value variable whose value is to be used for an AND operation
  */
-#define atomicAndFetch8(memory, value) _InterlockedAnd8(memory, value)
+#define atomicFetchAnd8(memory, value) _InterlockedAnd8(memory, value)
 /**
  * @brief Atomically performs AND operation to the variable that memory points to.
- * @return The resulting value of the AND operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the AND operation is to be performed
  * @param value variable whose value is to be used for an AND operation
  */
-#define atomicAndFetch16(memory, value) _InterlockedAnd16(memory, value)
+#define atomicFetchAnd16(memory, value) _InterlockedAnd16(memory, value)
 /**
  * @brief Atomically performs AND operation to the variable that memory points to.
- * @return The resulting value of the AND operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the AND operation is to be performed
  * @param value variable whose value is to be used for an AND operation
  */
-#define atomicAndFetch32(memory, value) _InterlockedAnd(memory, value)
+#define atomicFetchAnd32(memory, value) _InterlockedAnd(memory, value)
 /**
  * @brief Atomically performs AND operation to the variable that memory points to.
- * @return The resulting value of the AND operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the AND operation is to be performed
  * @param value variable whose value is to be used for an AND operation
  */
-#define atomicAndFetch64(memory, value) _InterlockedAnd64(memory, value)
+#define atomicFetchAnd64(memory, value) _InterlockedAnd64(memory, value)
 
 /***********************************************************************************************************************
  * @brief Atomically performs OR operation to the variable that memory points to.
- * @return The resulting value of the OR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the OR operation is to be performed
  * @param value variable whose value is to be used for an OR operation
  */
-#define atomicOrFetch8(memory, value) _InterlockedOr8(memory, value)
+#define atomicFetchOr8(memory, value) _InterlockedOr8(memory, value)
 /**
  * @brief Atomically performs OR operation to the variable that memory points to.
- * @return The resulting value of the OR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the OR operation is to be performed
  * @param value variable whose value is to be used for an OR operation
  */
-#define atomicOrFetch16(memory, value) _InterlockedOr16(memory, value)
+#define atomicFetchOr16(memory, value) _InterlockedOr16(memory, value)
 /**
  * @brief Atomically performs OR operation to the variable that memory points to.
- * @return The resulting value of the OR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the OR operation is to be performed
  * @param value variable whose value is to be used for an OR operation
  */
-#define atomicOrFetch32(memory, value) _InterlockedOr(memory, value)
+#define atomicFetchOr32(memory, value) _InterlockedOr(memory, value)
 /**
  * @brief Atomically performs OR operation to the variable that memory points to.
- * @return The resulting value of the OR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the OR operation is to be performed
  * @param value variable whose value is to be used for an OR operation
  */
-#define atomicOrFetch64(memory, value) _InterlockedOr64(memory, value)
+#define atomicFetchOr64(memory, value) _InterlockedOr64(memory, value)
 
 /***********************************************************************************************************************
  * @brief Atomically performs XOR operation to the variable that memory points to.
- * @return The resulting value of the XOR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the XOR operation is to be performed
  * @param value variable whose value is to be used for an XOR operation
  */
-#define atomicXorFetch8(memory, value) _InterlockedXor8(memory, value)
+#define atomicFetchXor8(memory, value) _InterlockedXor8(memory, value)
 /**
  * @brief Atomically performs XOR operation to the variable that memory points to.
- * @return The resulting value of the XOR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the XOR operation is to be performed
  * @param value variable whose value is to be used for an XOR operation
  */
-#define atomicXorFetch16(memory, value) _InterlockedXor16(memory, value)
+#define atomicFetchXor16(memory, value) _InterlockedXor16(memory, value)
 /**
  * @brief Atomically performs XOR operation to the variable that memory points to.
- * @return The resulting value of the XOR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the XOR operation is to be performed
  * @param value variable whose value is to be used for an XOR operation
  */
-#define atomicXorFetch32(memory, value) _InterlockedXor(memory, value)
+#define atomicFetchXor32(memory, value) _InterlockedXor(memory, value)
 /**
  * @brief Atomically performs XOR operation to the variable that memory points to.
- * @return The resulting value of the XOR operation.
+ * @return The current value of the variable that memory points to.
  *
  * @param[in,out] memory pointer of a variable to which the XOR operation is to be performed
  * @param value variable whose value is to be used for an XOR operation
  */
-#define atomicXorFetch64(memory, value) _InterlockedXor64(memory, value)
+#define atomicFetchXor64(memory, value) _InterlockedXor64(memory, value)
 
 /***********************************************************************************************************************
  * @brief Atomically adds the value to the variable that memory points to.
