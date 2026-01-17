@@ -67,6 +67,10 @@ endif()
 if(MPMT_BUILD_TESTS)
 	enable_testing()
 
+	add_executable(TestMpmtAtomic tests/test_atomic.c)
+	target_link_libraries(TestMpmtAtomic PUBLIC mpmt-static)
+	add_test(NAME TestMpmtAtomic COMMAND TestMpmtAtomic)
+
 	add_executable(TestMpmtSync tests/test_sync.c)
 	target_link_libraries(TestMpmtSync PUBLIC mpmt-static)
 	add_test(NAME TestMpmtSync COMMAND TestMpmtSync)
