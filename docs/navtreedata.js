@@ -37,23 +37,10 @@ var NAVTREE =
     [ "Usage", "index.html#usage", null ],
     [ "Build instructions", "md_BUILDING.html", [
       [ "Operating Systems", "md_BUILDING.html#operating-systems", null ],
-      [ "Windows (10/11)", "md_BUILDING.html#windows-1011", [
-        [ "1. Install Visual Studio Community (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-visual-studio-community-or-any-other-ide", null ],
-        [ "2. Install Git", "md_BUILDING.html#autotoc_md2-install-git", null ],
-        [ "3. Install CMake", "md_BUILDING.html#autotoc_md3-install-cmake", null ]
-      ] ],
-      [ "Ubuntu (22.04/24.04)", "md_BUILDING.html#ubuntu-22042404", [
-        [ "1. Install Visual Studio Code (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-visual-studio-code-or-any-other-ide", null ],
-        [ "2. Install required packages", "md_BUILDING.html#autotoc_md2-install-required-packages", null ]
-      ] ],
-      [ "macOS (15/26)", "md_BUILDING.html#macos-1526", [
-        [ "1. Install Xcode (Or any other IDE)", "md_BUILDING.html#autotoc_md1-install-xcode-or-any-other-ide", null ],
-        [ "2. Install required packages", "md_BUILDING.html#autotoc_md2-install-required-packages-1", null ]
-      ] ],
-      [ "Build Project", "md_BUILDING.html#build-project", [
-        [ "Visual Studio", "md_BUILDING.html#visual-studio", null ],
-        [ "Visual Studio Code (VS Code)", "md_BUILDING.html#visual-studio-code-vs-code", null ]
-      ] ]
+      [ "Windows", "md_BUILDING.html#windows", null ],
+      [ "macOS", "md_BUILDING.html#macos", null ],
+      [ "Linux", "md_BUILDING.html#linux", null ],
+      [ "Build project (Compile)", "md_BUILDING.html#build-project-compile", null ]
     ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],

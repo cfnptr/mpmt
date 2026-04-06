@@ -1,7 +1,27 @@
 var atomic_8h =
 [
+    [ "atomic_int8", "atomic_8h.html#af7d9c267d6b361020c3b5f4b44568644", null ],
+    [ "atomic_int16", "atomic_8h.html#aa08c192e01faac6783da55f6fefb7fda", null ],
     [ "atomic_int32", "atomic_8h.html#ab42503877ddcd040d007daf9915406db", null ],
     [ "atomic_int64", "atomic_8h.html#a22219a8dc48bdf4dfbb8d67b92e9c782", null ],
+    [ "atomicExchange8", "atomic_8h.html#ab07527412a77c44695eb913a57e824dc", null ],
+    [ "atomicExchange16", "atomic_8h.html#a7df070673bbb798a031f79015465fa3d", null ],
+    [ "atomicExchange32", "atomic_8h.html#a9d2d9753080b3f0c022e874e5ddaef00", null ],
+    [ "atomicExchange64", "atomic_8h.html#ae6106b1246c871e99741353c0601db84", null ],
+    [ "atomicFetchAnd8", "atomic_8h.html#a2e0d98da73af7edb6737cbbaf2ae751d", null ],
+    [ "atomicFetchAnd16", "atomic_8h.html#a84a206a761b941a50bfee87daca765da", null ],
+    [ "atomicFetchAnd32", "atomic_8h.html#aca32ad7a766d162042a9c85fbe8b3f8e", null ],
+    [ "atomicFetchAnd64", "atomic_8h.html#a81aba536317e8e29fe1e43c6b55a8b4b", null ],
+    [ "atomicFetchOr8", "atomic_8h.html#a8895d174c9f67bb5948ed0e7101d5b2a", null ],
+    [ "atomicFetchOr16", "atomic_8h.html#aa1bc111b21ce096e054f0e491b63173c", null ],
+    [ "atomicFetchOr32", "atomic_8h.html#adcd146f5b56cc83db373cf73a9054c1e", null ],
+    [ "atomicFetchOr64", "atomic_8h.html#a525caae18bbd31ab5a04b8005ab3751e", null ],
+    [ "atomicFetchXor8", "atomic_8h.html#a74c60e08974f31630c2d4c442ab5e281", null ],
+    [ "atomicFetchXor16", "atomic_8h.html#abcc5736aaf588a757d1bc48360e4aef1", null ],
+    [ "atomicFetchXor32", "atomic_8h.html#a822394f934fb5f1a1391d00326ef38d6", null ],
+    [ "atomicFetchXor64", "atomic_8h.html#a0f27d658c432bc24f846703d1a3b5aac", null ],
+    [ "atomicFetchAdd8", "atomic_8h.html#a824c05364a1bcee81bc78c27ad87ce09", null ],
+    [ "atomicFetchAdd16", "atomic_8h.html#ae8359eaad68559edc3c6c91b96d1ce61", null ],
     [ "atomicFetchAdd32", "atomic_8h.html#a2864634880acce136a27136517d28266", null ],
     [ "atomicFetchAdd64", "atomic_8h.html#a32450a820902052a3f0c2ad6f8380168", null ]
 ];

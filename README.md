@@ -12,6 +12,7 @@ See the [documentation](https://cfnptr.github.io/mpmt).
 * Thread (sleep, yield, etc.)
 * Thread pool (tasks)
 * Atomics (fetch add)
+* Supports Windows, macOS and Linux
 
 ## Usage example
 
@@ -32,7 +33,7 @@ void mutexExample()
 
 // ========================================
 
-static void onUpdate(void* arument)
+static void onUpdate(void* argument)
 {
     volatile bool* isRunning = argument;
     
@@ -59,20 +60,11 @@ void threadExample()
 }
 ```
 
-## Supported operating systems
-
-* Windows (10/11)
-* Ubuntu (22.04/24.04)
-* macOS (15/26)
-
-This list includes only those systems on which functionality testing is conducted.
-However, you can also compile it under any other Linux distribution or operating system.
-
 ## Build requirements
 
 * C99 compiler
 * C++17 compiler (optional)
-* [Git 2.30+](https://git-scm.com/)
+* [Git 2.53+](https://git-scm.com/)
 * [CMake 3.10+](https://cmake.org/)
 
 Use building [instructions](BUILDING.md) to install all required tools and libraries.
@@ -101,7 +93,7 @@ git clone https://github.com/cfnptr/mpmt
 ## Building ![CI](https://github.com/cfnptr/mpmt/actions/workflows/cmake.yml/badge.svg)
 
 * Windows: ```./scripts/build-release.bat```
-* macOS / Ubuntu: ```./scripts/build-release.sh```
+* macOS / Linux: ```./scripts/build-release.sh```
 
 ## Usage
 
