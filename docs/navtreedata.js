@@ -27,7 +27,6 @@ var NAVTREE =
   [ "MPMT", "index.html", [
     [ "Features", "index.html#features", null ],
     [ "Usage example", "index.html#usage-example", null ],
-    [ "Supported operating systems", "index.html#supported-operating-systems", null ],
     [ "Build requirements", "index.html#build-requirements", [
       [ "CMake options", "index.html#cmake-options", null ],
       [ "CMake targets", "index.html#cmake-targets", null ]
